@@ -12,14 +12,14 @@ var ParseReact = require('parse-react');
 
 
 var HomePageComponent = React.createClass({
-  mixins: [Backbone.React.Component.mixin];
+  mixins: [Backbone.React.Component.mixin],
 
   login: function(username, password){
     Parse.User.logIn(username, password, {
       success: function(user){
         Backbone.history.navigate("profile", {trigger: true});
         this.props.setUser(user);
-      }bind(this),
+      }.bind(this),
       error: function(user, error){
 
       }
@@ -87,7 +87,7 @@ var SignupComponent = React.createClass({
 });
 
 var LoginComponent = React.createClass({
-  mixins: [Backbone.React.Component.mixin];
+  mixins: [Backbone.React.Component.mixin],
 
   getInitialState: function(){
     return{

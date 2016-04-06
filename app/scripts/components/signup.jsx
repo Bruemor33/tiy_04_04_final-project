@@ -64,8 +64,59 @@ var SignupComponent = React.createClass({
     }
   },
   handlePassword: function(){
-
+    this.setState({'password': event.target.value});
   },
+  handleEmail: function(){
+    this.setState({'email': event.target.value});
+  },
+  handleSubmit: function(e){
+    e.preventDefault();
+    this.props.createUser(this.state.email, this.state.password);
+  },
+  render: function(){
+    return (
+      <div>
+        <form onSubmit={this.handleSubmit} className="signup">
+          <input name="email" onChange={this.handleEmail} value={this.state.email} id="email" placeholder="example@email.com" /><br/>
+          <input name="password" onChange={this.handlePassword} value={this.state.password} id="password" placeholder="password" /><br/>
+          <input type="submit" value="Signup!" />
+        </form>
+      </div>
+    )
+  }
+});
+
+var LoginComponent = React.createClass({
+  mixins: [Backbone.React.Component.mixin];
+
+  getInitialState: function(){
+    return{
+      "username": '',
+      "password": ''
+    }
+  },
+  handlePassword: function(event){
+    this.setState({'password': event.target.value});
+  },
+  handleUsername: function(event){
+    this.setState({'username': event.target.value});
+  },
+  handleSubmit: function(event){
+    event.preventDefault();
+    this.props.login(this.state.username, this.state.password)
+  },
+  render: function(){
+    return (
+      <div>
+        <form onSubmit={this.handleSubmit} className="login">
+          <input name="username" onChange={this.handleUsername} value={this.state.username} id="username" placeholder="username" /><br/>
+          <input name="password" onChange={this.handlePassword} value={this.state.password} id="login-password" placeholder="pw" /><br/>
+          <input type="submit" value="Login!" />
+        </form>
+      </div>
+    )
+  }
+
 })
 
 

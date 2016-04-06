@@ -22,11 +22,9 @@ var Router = Backbone.Router.extend({
     this.current = "profile";
   },
   builder: function(){
-    this.current = "profile";
+    this.current = "builder";
   }
 });
 
 //Exports
-module.exports = {
-  'Router': Router
-}
+module.exports = new Router()

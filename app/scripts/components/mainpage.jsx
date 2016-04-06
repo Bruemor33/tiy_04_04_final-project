@@ -17,7 +17,6 @@ var Navigation = require('./header.jsx').Navigation;
 //Components
 var MainComponent = React.createClass({
   mixins: [Backbone.React.Component.mixin],
-
   getInitialState: function(){
     return {
       router: this.props.router
@@ -33,6 +32,7 @@ var MainComponent = React.createClass({
     this.state.router.off('route', this.callback);
   },
   render: function(){
+    console.log(this.props.router);
     return (
       <div>
         <Navigation />

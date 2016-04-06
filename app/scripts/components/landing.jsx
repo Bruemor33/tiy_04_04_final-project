@@ -12,10 +12,11 @@ require('Backbone-React-Component');
 //Local Inports
 var Navigation = require('./header.jsx').Navigation;
 var HomePageComponent = require('./signup.jsx').HomePageComponent;
+var ProfileComponent = require('./profile.jsx').ProfileComponent;
 
 $(function(){
-Parse.initialize("bikebuilder");
-Parse.serverURL = "http://bikebuilders3.herokuapp.com/";
+  Parse.initialize("bikebuilder");
+  Parse.serverURL = "http://bikebuilders3.herokuapp.com/";
 });
 
 var LandingComponent = React.createClass({
@@ -37,7 +38,7 @@ var LandingComponent = React.createClass({
       return body;
     }
     if(this.state.router.current == "profile"){
-      body = <Navigation />
+      body = <ProfileComponent setUser={this.setUser}/>
       return body;
     }
   }

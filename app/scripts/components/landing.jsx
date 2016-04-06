@@ -6,3 +6,12 @@ var ReactDOM = require('react-dom');
 var Parse = require('parse');
 var ParseReact = require('parse-react');
 require('Backbone-React-Component');
+
+$(function(){
+Parse.initialize("bikebuilder");
+Parse.serverURL = "http://bikebuilders3.herokuapp.com/";
+});
+
+var LandingComponent = React.createClass({
+
+});

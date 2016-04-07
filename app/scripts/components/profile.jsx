@@ -13,7 +13,7 @@ var Backbone = require('backbone');
 
 
 var ProfileComponent = React.createClass({
-  mixins: [Backbone.React.Component.mixin],
+  // mixins: [Backbone.React.Component.mixin],
 
   handleBuild: function(e){
     e.preventDefault();

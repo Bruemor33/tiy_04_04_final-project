@@ -19,9 +19,32 @@ $(function(){
   Parse.serverURL = "http://bikebuilders3.herokuapp.com/";
 });
 
-var LandingComponent = React.createClass({
+var ControllerComponent = React.createClass({
   mixins: [Backbone.React.Component.mixin],
 
+  getInitialState: function(){
+    return {
+      router: this.props.router
+    }
+  },
+  componentWillMount: function(){
+    this.callback = (function(){
+      this.forceUpdate();
+    }).bind(this);
+    this.state.router.on('route', this.callback);
+  },
+  componentWillUnmount: function(){
+    this.state.router.off('route', this.callback);
+  },
+  render: function(){
+    console.log(this.props.router);
+    return (
+      <div>
+        <Navigation />
+        <LandingComponent router={this.state.router} />
+      </div>
+    )
+  },
   getInitialState: function(){
     return {
       router: this.props.router,
@@ -34,17 +57,20 @@ var LandingComponent = React.createClass({
   render: function(){
     var body;
     if(this.state.router.current == "index"){
-      body = <HomePageComponent setUser={this.setUser} />
-      return body;
+      body = (<HomePageComponent setUser={this.setUser} />)
     }
     if(this.state.router.current == "profile"){
-      body = <ProfileComponent setUser={this.setUser}/>
-      return body;
+      body = (<ProfileComponent setUser={this.setUser}/>)
     }
+    return(
+      <div>
+        {body}
+      </div>
+    )
   }
 });
 
 //Exports
 module.exports = {
-  'LandingComponent': LandingComponent
+  'ControllerComponent': ControllerComponent
 }

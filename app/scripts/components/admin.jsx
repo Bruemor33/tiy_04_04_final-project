@@ -11,6 +11,15 @@ var LinkedStateMixin = require('react/lib/LinkedStateMixin');
 Parse.initialize("bikebuilder");
 Parse.serverURL = "http://bikebuilders3.herokuapp.com/";
 
+var Frames = Parse.Object.extend("Frames");
+var frameSet = new Parse.Query( Frames );
+frameSet.find().then(function(mod){
+  console.log(mod);
+  self.setState({"frameSet": mod});
+}, function(error){
+  console.log(error);
+});
+
 
 
 var AdminFormComponent = React.createClass({
@@ -22,7 +31,7 @@ var AdminFormComponent = React.createClass({
       price: 0,
       material: "",
       headset: "",
-      seattube: 0,
+      seatTube: 0,
       color: "",
       url: "",
       image: "",
@@ -33,15 +42,40 @@ var AdminFormComponent = React.createClass({
     var self = this;
     var BottomBracket = Parse.Object.extend("BottomBracket");
     var query = new Parse.Query( BottomBracket );
-    query.find().then(function(bottombracket){
-      self.setState({"bottomBracket": bottombracket});
+    query.find().then(function(bB){
+      console.log(bB);
+      self.setState({"bottomBracket": bB});
     }, function(error){
       console.log(error);
     });
+
   },
   handleSubmit: function(e){
     e.preventDefault();
-  }
+    var Frames = Parse.Object.extend("Frames");
+    var frames = new Frames();
+    var newFrameData = {
+      name: this.state.name,
+      price: this.state.price,
+      material: this.state.material,
+      headset: this.state.headset,
+      seatTube: this.state.seatTube,
+      color: this.state.color,
+      url: this.state.url,
+      image: this.state.image,
+    };
+    var relation = frames.relation("bB");
+    console.log(relation);
+    frames.set(newFrameData);
+    frames.save(null, {
+      success: function(user){
+        console.log("You pushed successfully");
+      },
+      error: function(user, error){
+        alert("Error" + error.code + " " + error.message);
+      }
+    });
+  },
 
   render: function(){
     return (
@@ -87,6 +121,7 @@ var AdminFormComponent = React.createClass({
             </fieldset>
           </div>
         </form>
+        <button type="submit" form="add-component-form" id="add-frame-form-button" className="btn btn-primary ">Add</button>
       </div>
     )
   }

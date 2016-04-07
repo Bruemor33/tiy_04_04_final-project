@@ -12,17 +12,29 @@ require('Backbone-React-Component')
 var Router = Backbone.Router.extend({
   routes: {
     "": "index",
+    "home": "home",
     "profile": "profile",
-    "builder": "builder"
+    "builder": "builder",
+    "admin": "admin",
+    "*notFound": "notFound"
   },
   index: function(){
     this.current = "index";
+  },
+  home: function(){
+    this.current = "home";
   },
   profile: function(){
     this.current = "profile";
   },
   builder: function(){
     this.current = "builder";
+  },
+  admin: function(){
+    this.current = "admin";
+  },
+  notFound: function(){
+    this.current = "notFound"
   }
 });
 

@@ -13,6 +13,7 @@ require('Backbone-React-Component');
 var Navigation = require('./header.jsx').Navigation;
 var HomePageComponent = require('./signup.jsx').HomePageComponent;
 var ProfileComponent = require('./profile.jsx').ProfileComponent;
+var AdminFormComponent = require('./admin.jsx').AdminFormComponent;
 
 $(function(){
   Parse.initialize("bikebuilder");
@@ -24,8 +25,9 @@ var ControllerComponent = React.createClass({
 
   getInitialState: function(){
     return {
-      router: this.props.router
-    }
+      router: this.props.router,
+      userId: null
+    };
   },
   componentWillMount: function(){
     this.callback = (function(){
@@ -36,34 +38,30 @@ var ControllerComponent = React.createClass({
   componentWillUnmount: function(){
     this.state.router.off('route', this.callback);
   },
-  render: function(){
-    console.log(this.props.router);
-    return (
-      <div>
-        <Navigation />
-        <LandingComponent router={this.state.router} />
-      </div>
-    )
-  },
-  getInitialState: function(){
-    return {
-      router: this.props.router,
-      userId: null
-    };
-  },
   setUser: function(user){
     this.setState({"userId": user.id});
   },
   render: function(){
     var body;
+    console.log(this.state.router);
     if(this.state.router.current == "index"){
-      body = (<HomePageComponent setUser={this.setUser} />)
+      body = (<div>Index</div>);
+    }
+    if(this.state.router.current == "home"){
+      body = (<HomePageComponent />)
     }
     if(this.state.router.current == "profile"){
       body = (<ProfileComponent setUser={this.setUser}/>)
     }
+    if(this.state.router.current == "admin"){
+      body = (<AdminFormComponent />)
+    }
+    if(this.state.router.current == "notFound"){
+      body = (<div><h1>404 Page Not Found!!</h1></div>)
+    }
     return(
       <div>
+        <Navigation />
         {body}
       </div>
     )

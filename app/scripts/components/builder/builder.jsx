@@ -19,7 +19,7 @@ var BuilderComponent = React.CreateClass({
         <div className="row">
           <div className="col-md-10">
             <div className="bike-box"></div>
-            <button type="button"
+            <button type="button"></button>
           </div>
         </div>
       </div>

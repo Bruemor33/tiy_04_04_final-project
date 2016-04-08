@@ -11,14 +11,15 @@ var LinkedStateMixin = require('react/lib/LinkedStateMixin');
 Parse.initialize("bikebuilder");
 Parse.serverURL = "http://bikebuilders3.herokuapp.com/";
 
-var Frames = Parse.Object.extend("Frames");
-var frameSet = new Parse.Query( Frames );
-frameSet.find().then(function(mod){
-  console.log(mod);
-  self.setState({"frameSet": mod});
-}, function(error){
-  console.log(error);
-});
+//Testing Parse Data.
+// var Frames = Parse.Object.extend("Frames");
+// var frameSet = new Parse.Query( Frames );
+// frameSet.find().then(function(mod){
+//   console.log(mod);
+//   self.setState({"frameSet": mod});
+// }, function(error){
+//   console.log(error);
+// });
 
 
 
@@ -27,14 +28,13 @@ var AdminFormComponent = React.createClass({
 
   getInitialState: function(){
     return{
-      name: "",
+      Name: "",
       price: 0,
       material: "",
       headset: "",
       seatTube: 0,
       color: "",
       url: "",
-      image: "",
       bottomBracket: []
     }
   },
@@ -42,29 +42,43 @@ var AdminFormComponent = React.createClass({
     var self = this;
     var BottomBracket = Parse.Object.extend("BottomBracket");
     var query = new Parse.Query( BottomBracket );
-    query.find().then(function(bB){
-      console.log(bB);
-      self.setState({"bottomBracket": bB});
+    query.find().then(function(bottomBracket){
+      console.log(bottomBracket);
+      self.setState({"bottomBracket": bottomBracket});
     }, function(error){
       console.log(error);
     });
 
   },
+  // handleFile: function(e){
+  //   e.preventDefault();
+  //   var name = this.props.user.id + ".jpg" || ".png";
+  //   var file = new Parse.File(name, e.target.files[0] );
+  //   file.save().then(function(file){
+  //     console.log(file);
+  //     this.setState({image: file});
+  //   }.bind(this),
+  //   function(error){
+  //     console.log('error saving file' error);
+  //   });
+  // },
   handleSubmit: function(e){
     e.preventDefault();
-    var Frames = Parse.Object.extend("Frames");
+    var Frames = Parse.Object.extend("frameSets");
     var frames = new Frames();
     var newFrameData = {
       name: this.state.name,
-      price: this.state.price,
+      price: parseInt(this.state.price),
       material: this.state.material,
-      headset: this.state.headset,
-      seatTube: this.state.seatTube,
+      headset: parseInt(this.state.headset),
+      seatTube: parseInt(this.state.seatTube),
       color: this.state.color,
       url: this.state.url,
-      image: this.state.image,
+      // bottomBracket: ,
     };
-    var relation = frames.relation("bB");
+    var bracketRelation = "hello";
+    var relation = frames.relation("bottomBracket");
+    relation.add();
     console.log(relation);
     frames.set(newFrameData);
     frames.save(null, {
@@ -78,6 +92,18 @@ var AdminFormComponent = React.createClass({
   },
 
   render: function(){
+
+    // var fileDisplay;
+    // if(this.state.image){
+    //   fileDisplay = (
+    //     <img src={this.state.image.url()} />
+    //   );
+    // }else{
+    //   fileDisplay = (<input id="file-input" type="file" ref="fileInput"
+    //   onChange={this.handleFile}
+    //   )
+    // }
+
     return (
       <div className="container-fluid col-md-12">
         <h2 className="add-component-heading text-center">Add Comp Here</h2>
@@ -113,7 +139,7 @@ var AdminFormComponent = React.createClass({
             </fieldset>
             <fieldset className="form-group add-comp-form">
               <label className="form-label" htmlFor="add-frame-image">image</label>
-              <input valueLink={this.linkState('image')} type="img" className="form-control" id="add-frame-image" />
+              <input valueLink={this.handleFile} type="file" name="newpload" className="form-control" id="add-frame-image" />
             </fieldset>
             <fieldset className="form-group add-comp-form">
               <label className="form-label" htmlFor="add-frame-bottombracket">bb</label>

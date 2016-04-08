@@ -16,6 +16,9 @@ var Router = Backbone.Router.extend({
     "profile": "profile",
     "builder": "builder",
     "admin": "admin",
+    "bb": "bb",
+    "headset": "headset",
+    "seatpost": "seatpost",
     "*notFound": "notFound"
   },
   index: function(){
@@ -32,6 +35,15 @@ var Router = Backbone.Router.extend({
   },
   admin: function(){
     this.current = "admin";
+  },
+  bb: function(){
+    this.current = "bb";
+  },
+  headset: function(){
+    this.current = "headset"
+  },
+  seatpost: function(){
+    this.current = "seatpost"
   },
   notFound: function(){
     this.current = "notFound"

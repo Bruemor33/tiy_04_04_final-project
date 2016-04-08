@@ -37,12 +37,17 @@ var AdminFormComponent = React.createClass({displayName: "AdminFormComponent",
       seatTube: 0,
       color: "",
       url: "",
-      bottomBracket: []
+      bottomBracket: [],
+      addedBracket: [],
+      headset: [],
+      addedHeadset: [],
+      seatpost: [],
+      addedSeatpost: []
     }
   },
   componentWillMount: function(){
     var self = this;
-    var BottomBracket = Parse.Object.extend("BottomBracket");
+    var BottomBracket = Parse.Object.extend("bottomBracket");
     var query = new Parse.Query( BottomBracket );
     query.find().then(function(bottomBracket){
       console.log(bottomBracket);

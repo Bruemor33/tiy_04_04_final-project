@@ -21,6 +21,10 @@ Parse.serverURL = "http://bikebuilders3.herokuapp.com/";
 //   console.log(error);
 // });
 
+//Local Imports
+var BbSelectionComponent = require('./checkbox-comps/bottombracket-check.jsx').BbSelectionComponent;
+var HeadsetSelectionComponent = require('./checkbox-comps/headset-check.jsx').HeadsetSelectionComponent;
+var SeatpostSelectionComponent = require('./checkbox-comps/seatpost-check.jsx').SeatpostSelectionComponent;
 
 
 var AdminFormComponent = React.createClass({
@@ -54,6 +58,43 @@ var AdminFormComponent = React.createClass({
       console.log(error);
     });
 
+  },
+  handleBracketSelection: function(bracket, checked){
+    var addedBracket = this.state.addedBracket;
+
+    if(checked){
+      addedBracket.push(bracket);
+    }else{
+      for(var i = 0; i < addedBracket.length; i++){
+        if(addedBracket[i] == bracket){
+          addedBracket.splice(i, 1);
+        }
+      }
+    }
+  },
+  handleHeadsetSelection: function(headset, checked){
+    var addedHeadset = this.state.addedHeadset;
+    if(checked){
+      addedHeadset.push(headset);
+    }else{
+      for(var i = 0; i < addedHeadset.length; i++){
+        if(addedHeadset[i] == headset){
+          addedBracket.splice(i, 1);
+        }
+      }
+    }
+  },
+  handleSeatpostSelection: function(seatpost, checked){
+    var addedSeatpost = this.state.addedSeatpost;
+    if(checked){
+      addedSeatpost.push(seatpost);
+    }else{
+      for(var i = 0; i < addedSeatpost.length; i++){
+        if(addedSeatpost[i] == seatpost){
+          addedSeatpost.splice(i, 1);
+        }
+      }
+    }
   },
   // handleFile: function(e){
   //   e.preventDefault();
@@ -109,6 +150,28 @@ var AdminFormComponent = React.createClass({
     //   )
     // }
 
+    var newBottomBracket = function(bracket){
+      return (
+        <div key={bracket.objectId}>
+          <BbSelectionComponent addedBracket={this.state.addedBracket} handleCheck={this.handleCheck} bracket={bracket}/>
+        </div>
+      )
+    }
+    var newHeadset = function(headSet){
+      return (
+        <div key={headSet.objectId}>
+          <HeadsetSelectionComponent addedHeadset={this.state.addedHeadset} handleCheck={this.handleCheck} headSet={headSet}/>
+        </div>
+      )
+    }
+    var newSeatpost = function(seatPost){
+      return (
+        <div key={seatPost.objectId}>
+          <SeatpostSelectionComponent addedSeatpost={this.state.addedSeatpost} handleCheck={this.handleCheck} seatPost={seatPost}/>
+        </div>
+      )
+    }
+
     return (
       <div className="container-fluid col-md-12">
         <h2 className="add-component-heading text-center">Add Comp Here</h2>
@@ -146,9 +209,25 @@ var AdminFormComponent = React.createClass({
               <label className="form-label" htmlFor="add-frame-image">image</label>
               <input valueLink={this.handleFile} type="file" name="newpload" className="form-control" id="add-frame-image" />
             </fieldset>
+          </div>
+          <div className="col-md-4">
             <fieldset className="form-group add-comp-form">
-              <label className="form-label" htmlFor="add-frame-bottombracket">bb</label>
-              <input valueLink={this.linkState('bottomBracket')} type="array" className="form-control" id="add-frame-bottombracket" />
+              <h3 className="component-title">Bottom Bracket</h3>
+              <div className="col-md-12 add-comp-form-bottombracket-checklist">
+                {this.state.bottomBracket.map(newBottomBracket.bind(this))}
+              </div>
+            </fieldset>
+            <fieldset className="form-group add-comp-form">
+              <h3 className="component-title">Headset</h3>
+              <div className="col-md-12 add-comp-form-headset-checklist">
+                {this.state.headset.map(newHeadset.bind(this))}
+              </div>
+            </fieldset>
+            <fieldset className="form-group add-comp-form">
+              <h3 className="component-title">Seatpost</h3>
+              <div className="col-md-12 add-comp-form-seatpost-checklist">
+                {this.state.seatpost.map(newSeatpost.bind(this))}
+              </div>
             </fieldset>
           </div>
         </form>

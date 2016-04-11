@@ -35,8 +35,6 @@ var AdminFormComponent = React.createClass({
       Name: "",
       price: 0,
       material: "",
-      headset: "",
-      seatTube: 0,
       color: "",
       url: "",
       BottomBracket: [],
@@ -52,7 +50,7 @@ var AdminFormComponent = React.createClass({
     var BottomBracket = Parse.Object.extend("BottomBracket");
     var query = new Parse.Query( BottomBracket );
     query.find().then(function(BottomBracket){
-      console.log(BottomBracket);
+      // console.log(BottomBracket);
       self.setState({"BottomBracket": BottomBracket});
     }, function(error){
       console.log(error);
@@ -60,7 +58,7 @@ var AdminFormComponent = React.createClass({
     var HeadSet = Parse.Object.extend("HeadSet");
     var queryH = new Parse.Query( HeadSet );
     queryH.find().then(function(HeadSet){
-      console.log(HeadSet);
+      // console.log(HeadSet);
       self.setState({"HeadSet": HeadSet});
     }, function(error){
       console.log(error);
@@ -68,7 +66,7 @@ var AdminFormComponent = React.createClass({
     var SeatPost = Parse.Object.extend("SeatPost");
     var querySeat = new Parse.Query( SeatPost );
     querySeat.find().then(function(SeatPost){
-      console.log(SeatPost);
+      // console.log(SeatPost);
       self.setState({"SeatPost": SeatPost});
     }, function(error){
       console.log(error);
@@ -169,25 +167,25 @@ var AdminFormComponent = React.createClass({
     var newBottomBracket = function(bracket){
       return (
         <div key={bracket.objectId}>
-          <BbSelectionComponent addedBracket={this.state.addedBracket} handleCheck={this.handleCheck} bracket={bracket}/>
+          <BbSelectionComponent addedBracket={this.state.addedBracket} handleBracketSelection={this.handleBracketSelection} bracket={bracket}/>
         </div>
       )
     }
     var newHeadset = function(headset){
       return (
         <div key={headset.objectId}>
-          <HeadsetSelectionComponent addedHeadset={this.state.addedHeadset} handleCheck={this.handleCheck} headset={headset}/>
+          <HeadsetSelectionComponent addedHeadset={this.state.addedHeadset} handleHeadsetSelection={this.handleHeadsetSelection} headset={headset}/>
         </div>
       )
     }
     var newSeatpost = function(seatpost){
       return (
         <div key={seatpost.objectId}>
-          <SeatpostSelectionComponent addedSeatpost={this.state.addedSeatpost} handleCheck={this.handleCheck} seatpost={seatpost}/>
+          <SeatpostSelectionComponent addedSeatpost={this.state.addedSeatpost} handleSeatpostSelection={this.handleSeatpostSelection} seatpost={seatpost}/>
         </div>
       )
     }
-    console.log(this.state.HeadSet);
+    
     return (
       <div className="container-fluid col-md-12">
         <h2 className="add-component-heading text-center">Add Comp Here</h2>
@@ -204,14 +202,6 @@ var AdminFormComponent = React.createClass({
             <fieldset className="form-group add-comp-form">
               <label className="form-label" htmlFor="add-frame-material">material</label>
               <input valueLink={this.linkState('material')} type="text" className="form-control" id="add-frame-material" />
-            </fieldset>
-            <fieldset className="form-group add-comp-form">
-              <label className="form-label" htmlFor="add-frame-headset">headset</label>
-              <input valueLink={this.linkState('headset')} type="text" className="form-control" id="add-frame-headset" />
-            </fieldset>
-            <fieldset className="form-group add-comp-form">
-              <label className="form-label" htmlFor="add-frame-seatpost">seatpost</label>
-              <input valueLink={this.linkState('seatpost')} type="text" className="form-control" id="add-frame-seatpost" />
             </fieldset>
             <fieldset className="form-group add-comp-form">
               <label className="form-label" htmlFor="add-frame-color">color</label>

@@ -20,8 +20,8 @@ var HeadsetSelectionComponent = React.createClass({
   },
   handleSelection: function(e){
     var selected = e.target.selected;
-    console.log(selected);
-    this.props.handleSelection(this.props.headset, selected);
+    // console.log(selected);
+    // this.props.handleSelection(this.props.headset, selected);
   },
   render: function(){
     return (

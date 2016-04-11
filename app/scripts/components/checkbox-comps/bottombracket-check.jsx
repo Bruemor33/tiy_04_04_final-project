@@ -21,7 +21,7 @@ var BbSelectionComponent = React.createClass({
   handleSelection: function(e){
     var selected = e.target.selected;
     console.log(selected);
-    this.props.handleSelection(this.props.bracket, selected);
+    // this.props.handleSelection(this.props.bracket, selected);
   },
   render: function(){
     return (

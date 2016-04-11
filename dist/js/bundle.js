@@ -37,8 +37,6 @@ var AdminFormComponent = React.createClass({displayName: "AdminFormComponent",
       Name: "",
       price: 0,
       material: "",
-      headset: "",
-      seatTube: 0,
       color: "",
       url: "",
       BottomBracket: [],
@@ -54,7 +52,7 @@ var AdminFormComponent = React.createClass({displayName: "AdminFormComponent",
     var BottomBracket = Parse.Object.extend("BottomBracket");
     var query = new Parse.Query( BottomBracket );
     query.find().then(function(BottomBracket){
-      console.log(BottomBracket);
+      // console.log(BottomBracket);
       self.setState({"BottomBracket": BottomBracket});
     }, function(error){
       console.log(error);
@@ -62,7 +60,7 @@ var AdminFormComponent = React.createClass({displayName: "AdminFormComponent",
     var HeadSet = Parse.Object.extend("HeadSet");
     var queryH = new Parse.Query( HeadSet );
     queryH.find().then(function(HeadSet){
-      console.log(HeadSet);
+      // console.log(HeadSet);
       self.setState({"HeadSet": HeadSet});
     }, function(error){
       console.log(error);
@@ -70,7 +68,7 @@ var AdminFormComponent = React.createClass({displayName: "AdminFormComponent",
     var SeatPost = Parse.Object.extend("SeatPost");
     var querySeat = new Parse.Query( SeatPost );
     querySeat.find().then(function(SeatPost){
-      console.log(SeatPost);
+      // console.log(SeatPost);
       self.setState({"SeatPost": SeatPost});
     }, function(error){
       console.log(error);
@@ -171,25 +169,25 @@ var AdminFormComponent = React.createClass({displayName: "AdminFormComponent",
     var newBottomBracket = function(bracket){
       return (
         React.createElement("div", {key: bracket.objectId}, 
-          React.createElement(BbSelectionComponent, {addedBracket: this.state.addedBracket, handleCheck: this.handleCheck, bracket: bracket})
+          React.createElement(BbSelectionComponent, {addedBracket: this.state.addedBracket, handleBracketSelection: this.handleBracketSelection, bracket: bracket})
         )
       )
     }
     var newHeadset = function(headset){
       return (
         React.createElement("div", {key: headset.objectId}, 
-          React.createElement(HeadsetSelectionComponent, {addedHeadset: this.state.addedHeadset, handleCheck: this.handleCheck, headset: headset})
+          React.createElement(HeadsetSelectionComponent, {addedHeadset: this.state.addedHeadset, handleHeadsetSelection: this.handleHeadsetSelection, headset: headset})
         )
       )
     }
     var newSeatpost = function(seatpost){
       return (
         React.createElement("div", {key: seatpost.objectId}, 
-          React.createElement(SeatpostSelectionComponent, {addedSeatpost: this.state.addedSeatpost, handleCheck: this.handleCheck, seatpost: seatpost})
+          React.createElement(SeatpostSelectionComponent, {addedSeatpost: this.state.addedSeatpost, handleSeatpostSelection: this.handleSeatpostSelection, seatpost: seatpost})
         )
       )
     }
-    console.log(this.state.HeadSet);
+    
     return (
       React.createElement("div", {className: "container-fluid col-md-12"}, 
         React.createElement("h2", {className: "add-component-heading text-center"}, "Add Comp Here"), 
@@ -206,14 +204,6 @@ var AdminFormComponent = React.createClass({displayName: "AdminFormComponent",
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
               React.createElement("label", {className: "form-label", htmlFor: "add-frame-material"}, "material"), 
               React.createElement("input", {valueLink: this.linkState('material'), type: "text", className: "form-control", id: "add-frame-material"})
-            ), 
-            React.createElement("fieldset", {className: "form-group add-comp-form"}, 
-              React.createElement("label", {className: "form-label", htmlFor: "add-frame-headset"}, "headset"), 
-              React.createElement("input", {valueLink: this.linkState('headset'), type: "text", className: "form-control", id: "add-frame-headset"})
-            ), 
-            React.createElement("fieldset", {className: "form-group add-comp-form"}, 
-              React.createElement("label", {className: "form-label", htmlFor: "add-frame-seatpost"}, "seatpost"), 
-              React.createElement("input", {valueLink: this.linkState('seatpost'), type: "text", className: "form-control", id: "add-frame-seatpost"})
             ), 
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
               React.createElement("label", {className: "form-label", htmlFor: "add-frame-color"}, "color"), 
@@ -285,7 +275,7 @@ var BbSelectionComponent = React.createClass({displayName: "BbSelectionComponent
   handleSelection: function(e){
     var selected = e.target.selected;
     console.log(selected);
-    this.props.handleSelection(this.props.bracket, selected);
+    // this.props.handleSelection(this.props.bracket, selected);
   },
   render: function(){
     return (
@@ -327,8 +317,8 @@ var HeadsetSelectionComponent = React.createClass({displayName: "HeadsetSelectio
   },
   handleSelection: function(e){
     var selected = e.target.selected;
-    console.log(selected);
-    this.props.handleSelection(this.props.headset, selected);
+    // console.log(selected);
+    // this.props.handleSelection(this.props.headset, selected);
   },
   render: function(){
     return (
@@ -371,7 +361,7 @@ var SeatpostSelectionComponent = React.createClass({displayName: "SeatpostSelect
   },
   handleSelection: function(e){
     var selected = e.target.selected;
-    console.log(selected);
+    // console.log(selected);
     this.props.handleSelection(this.props.seatpost, selected);
   },
   render: function(){

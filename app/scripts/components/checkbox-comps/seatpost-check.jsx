@@ -20,7 +20,7 @@ var SeatpostSelectionComponent = React.createClass({
   },
   handleSelection: function(e){
     var selected = e.target.selected;
-    console.log(selected);
+    // console.log(selected);
     this.props.handleSelection(this.props.seatpost, selected);
   },
   render: function(){

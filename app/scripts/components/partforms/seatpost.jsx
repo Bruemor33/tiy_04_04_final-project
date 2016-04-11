@@ -36,7 +36,7 @@ var SeatpostForm = React.createClass({
   },
   handleSubmit: function(e){
     e.preventDefault();
-    var Seatpost = Parse.Object.extend("seatpost");
+    var Seatpost = Parse.Object.extend("SeatPost");
     var seatPost = new Seatpost();
     var newSeatpostData = {
       name: this.state.name,

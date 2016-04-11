@@ -21,13 +21,13 @@ var HeadsetSelectionComponent = React.createClass({
   handleSelection: function(e){
     var selected = e.target.selected;
     console.log(selected);
-    this.props.handleSelection(this.props.headSet, selected);
+    this.props.handleSelection(this.props.headset, selected);
   },
   render: function(){
     return (
       <div className="checkbox col-md-6">
         <label className="add-frame-checkbox-labels">
-          <input type="checkbox" onChange={this.handleSelection} value={this.props.headSet.id} />{this.props.headSet.get("name")}
+          <input type="checkbox" onChange={this.handleSelection} value={this.props.headset.id} />{this.props.headset.get("name")}
         </label>
       </div>
     )

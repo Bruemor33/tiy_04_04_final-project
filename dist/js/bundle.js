@@ -41,21 +41,37 @@ var AdminFormComponent = React.createClass({displayName: "AdminFormComponent",
       seatTube: 0,
       color: "",
       url: "",
-      bottomBracket: [],
+      BottomBracket: [],
       addedBracket: [],
-      headset: [],
+      HeadSet: [],
       addedHeadset: [],
-      seatpost: [],
+      SeatPost: [],
       addedSeatpost: []
     }
   },
   componentWillMount: function(){
     var self = this;
-    var BottomBracket = Parse.Object.extend("bottomBracket");
+    var BottomBracket = Parse.Object.extend("BottomBracket");
     var query = new Parse.Query( BottomBracket );
-    query.find().then(function(bottomBracket){
-      console.log(bottomBracket);
-      self.setState({"bottomBracket": bottomBracket});
+    query.find().then(function(BottomBracket){
+      console.log(BottomBracket);
+      self.setState({"BottomBracket": BottomBracket});
+    }, function(error){
+      console.log(error);
+    });
+    var HeadSet = Parse.Object.extend("HeadSet");
+    var queryH = new Parse.Query( HeadSet );
+    queryH.find().then(function(HeadSet){
+      console.log(HeadSet);
+      self.setState({"HeadSet": HeadSet});
+    }, function(error){
+      console.log(error);
+    });
+    var SeatPost = Parse.Object.extend("SeatPost");
+    var querySeat = new Parse.Query( SeatPost );
+    querySeat.find().then(function(SeatPost){
+      console.log(SeatPost);
+      self.setState({"SeatPost": SeatPost});
     }, function(error){
       console.log(error);
     });
@@ -125,7 +141,7 @@ var AdminFormComponent = React.createClass({displayName: "AdminFormComponent",
       // bottomBracket: ,
     };
     var bracketRelation = "hello";
-    var relation = frames.relation("bottomBracket");
+    var relation = frames.relation("BottomBracket");
     relation.add();
     console.log(relation);
     frames.set(newFrameData);
@@ -159,21 +175,21 @@ var AdminFormComponent = React.createClass({displayName: "AdminFormComponent",
         )
       )
     }
-    var newHeadset = function(headSet){
+    var newHeadset = function(headset){
       return (
-        React.createElement("div", {key: headSet.objectId}, 
-          React.createElement(HeadsetSelectionComponent, {addedHeadset: this.state.addedHeadset, handleCheck: this.handleCheck, headSet: headSet})
+        React.createElement("div", {key: headset.objectId}, 
+          React.createElement(HeadsetSelectionComponent, {addedHeadset: this.state.addedHeadset, handleCheck: this.handleCheck, headset: headset})
         )
       )
     }
-    var newSeatpost = function(seatPost){
+    var newSeatpost = function(seatpost){
       return (
-        React.createElement("div", {key: seatPost.objectId}, 
-          React.createElement(SeatpostSelectionComponent, {addedSeatpost: this.state.addedSeatpost, handleCheck: this.handleCheck, seatPost: seatPost})
+        React.createElement("div", {key: seatpost.objectId}, 
+          React.createElement(SeatpostSelectionComponent, {addedSeatpost: this.state.addedSeatpost, handleCheck: this.handleCheck, seatpost: seatpost})
         )
       )
     }
-
+    console.log(this.state.HeadSet);
     return (
       React.createElement("div", {className: "container-fluid col-md-12"}, 
         React.createElement("h2", {className: "add-component-heading text-center"}, "Add Comp Here"), 
@@ -216,19 +232,19 @@ var AdminFormComponent = React.createClass({displayName: "AdminFormComponent",
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
               React.createElement("h3", {className: "component-title"}, "Bottom Bracket"), 
               React.createElement("div", {className: "col-md-12 add-comp-form-bottombracket-checklist"}, 
-                this.state.bottomBracket.map(newBottomBracket.bind(this))
+                this.state.BottomBracket.map(newBottomBracket.bind(this))
               )
             ), 
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
               React.createElement("h3", {className: "component-title"}, "Headset"), 
               React.createElement("div", {className: "col-md-12 add-comp-form-headset-checklist"}, 
-                this.state.headset.map(newHeadset.bind(this))
+                this.state.HeadSet.map(newHeadset.bind(this))
               )
             ), 
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
               React.createElement("h3", {className: "component-title"}, "Seatpost"), 
               React.createElement("div", {className: "col-md-12 add-comp-form-seatpost-checklist"}, 
-                this.state.seatpost.map(newSeatpost.bind(this))
+                this.state.SeatPost.map(newSeatpost.bind(this))
               )
             )
           )
@@ -312,13 +328,13 @@ var HeadsetSelectionComponent = React.createClass({displayName: "HeadsetSelectio
   handleSelection: function(e){
     var selected = e.target.selected;
     console.log(selected);
-    this.props.handleSelection(this.props.headSet, selected);
+    this.props.handleSelection(this.props.headset, selected);
   },
   render: function(){
     return (
       React.createElement("div", {className: "checkbox col-md-6"}, 
         React.createElement("label", {className: "add-frame-checkbox-labels"}, 
-          React.createElement("input", {type: "checkbox", onChange: this.handleSelection, value: this.props.headSet.id}), this.props.headSet.get("name")
+          React.createElement("input", {type: "checkbox", onChange: this.handleSelection, value: this.props.headset.id}), this.props.headset.get("name")
         )
       )
     )
@@ -356,13 +372,13 @@ var SeatpostSelectionComponent = React.createClass({displayName: "SeatpostSelect
   handleSelection: function(e){
     var selected = e.target.selected;
     console.log(selected);
-    this.props.handleSelection(this.props.seatPost, selected);
+    this.props.handleSelection(this.props.seatpost, selected);
   },
   render: function(){
     return (
       React.createElement("div", {className: "checkbox col-md-6"}, 
         React.createElement("label", {className: "add-frame-checkbox-labels"}, 
-          React.createElement("input", {type: "checkbox", onChange: this.handleSelection, value: this.props.seatPost.id}), this.props.seatPost.get("name")
+          React.createElement("input", {type: "checkbox", onChange: this.handleSelection, value: this.props.seatpost.id}), this.props.seatpost.get("name")
         )
       )
     )
@@ -548,9 +564,9 @@ var BottomBracketForm = React.createClass({displayName: "BottomBracketForm",
     var self = this;
     var BottomBracket = Parse.Object.extend("BottomBracket");
     var query = new Parse.Query( BottomBracket );
-    query.find().then(function(bottomBracket){
-      console.log(bottomBracket);
-      self.setState({"bottomBracket": bottomBracket});
+    query.find().then(function(BottomBracket){
+      console.log(BottomBracket);
+      self.setState({"BottomBracket": BottomBracket});
     }, function(error){
       console.log(error);
     });
@@ -558,7 +574,7 @@ var BottomBracketForm = React.createClass({displayName: "BottomBracketForm",
   },
   handleSubmit: function(e){
     e.preventDefault();
-    var BottomBracket = Parse.Object.extend("bottomBracket");
+    var BottomBracket = Parse.Object.extend("BottomBracket");
     var bb = new BottomBracket();
     var newBracketData = {
       name: this.state.name,
@@ -653,7 +669,7 @@ var HeadsetForm = React.createClass({displayName: "HeadsetForm",
   },
   handleSubmit: function(e){
     e.preventDefault();
-    var Headset = Parse.Object.extend("headset");
+    var Headset = Parse.Object.extend("HeadSet");
     var headSet = new Headset();
     var newHeadsetData = {
       name: this.state.name,
@@ -748,7 +764,7 @@ var SeatpostForm = React.createClass({displayName: "SeatpostForm",
   },
   handleSubmit: function(e){
     e.preventDefault();
-    var Seatpost = Parse.Object.extend("seatpost");
+    var Seatpost = Parse.Object.extend("SeatPost");
     var seatPost = new Seatpost();
     var newSeatpostData = {
       name: this.state.name,

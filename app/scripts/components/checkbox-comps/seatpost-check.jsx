@@ -21,13 +21,13 @@ var SeatpostSelectionComponent = React.createClass({
   handleSelection: function(e){
     var selected = e.target.selected;
     console.log(selected);
-    this.props.handleSelection(this.props.seatPost, selected);
+    this.props.handleSelection(this.props.seatpost, selected);
   },
   render: function(){
     return (
       <div className="checkbox col-md-6">
         <label className="add-frame-checkbox-labels">
-          <input type="checkbox" onChange={this.handleSelection} value={this.props.seatPost.id} />{this.props.seatPost.get("name")}
+          <input type="checkbox" onChange={this.handleSelection} value={this.props.seatpost.id} />{this.props.seatpost.get("name")}
         </label>
       </div>
     )

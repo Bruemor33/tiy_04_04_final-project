@@ -36,7 +36,7 @@ var HeadsetForm = React.createClass({
   },
   handleSubmit: function(e){
     e.preventDefault();
-    var Headset = Parse.Object.extend("headset");
+    var Headset = Parse.Object.extend("HeadSet");
     var headSet = new Headset();
     var newHeadsetData = {
       name: this.state.name,

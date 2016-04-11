@@ -38,9 +38,9 @@ var BottomBracketForm = React.createClass({
     var self = this;
     var BottomBracket = Parse.Object.extend("BottomBracket");
     var query = new Parse.Query( BottomBracket );
-    query.find().then(function(bottomBracket){
-      console.log(bottomBracket);
-      self.setState({"bottomBracket": bottomBracket});
+    query.find().then(function(BottomBracket){
+      console.log(BottomBracket);
+      self.setState({"BottomBracket": BottomBracket});
     }, function(error){
       console.log(error);
     });
@@ -48,7 +48,7 @@ var BottomBracketForm = React.createClass({
   },
   handleSubmit: function(e){
     e.preventDefault();
-    var BottomBracket = Parse.Object.extend("bottomBracket");
+    var BottomBracket = Parse.Object.extend("BottomBracket");
     var bb = new BottomBracket();
     var newBracketData = {
       name: this.state.name,

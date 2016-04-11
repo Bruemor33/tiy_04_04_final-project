@@ -39,21 +39,37 @@ var AdminFormComponent = React.createClass({
       seatTube: 0,
       color: "",
       url: "",
-      bottomBracket: [],
+      BottomBracket: [],
       addedBracket: [],
-      headset: [],
+      HeadSet: [],
       addedHeadset: [],
-      seatpost: [],
+      SeatPost: [],
       addedSeatpost: []
     }
   },
   componentWillMount: function(){
     var self = this;
-    var BottomBracket = Parse.Object.extend("bottomBracket");
+    var BottomBracket = Parse.Object.extend("BottomBracket");
     var query = new Parse.Query( BottomBracket );
-    query.find().then(function(bottomBracket){
-      console.log(bottomBracket);
-      self.setState({"bottomBracket": bottomBracket});
+    query.find().then(function(BottomBracket){
+      console.log(BottomBracket);
+      self.setState({"BottomBracket": BottomBracket});
+    }, function(error){
+      console.log(error);
+    });
+    var HeadSet = Parse.Object.extend("HeadSet");
+    var queryH = new Parse.Query( HeadSet );
+    queryH.find().then(function(HeadSet){
+      console.log(HeadSet);
+      self.setState({"HeadSet": HeadSet});
+    }, function(error){
+      console.log(error);
+    });
+    var SeatPost = Parse.Object.extend("SeatPost");
+    var querySeat = new Parse.Query( SeatPost );
+    querySeat.find().then(function(SeatPost){
+      console.log(SeatPost);
+      self.setState({"SeatPost": SeatPost});
     }, function(error){
       console.log(error);
     });
@@ -123,7 +139,7 @@ var AdminFormComponent = React.createClass({
       // bottomBracket: ,
     };
     var bracketRelation = "hello";
-    var relation = frames.relation("bottomBracket");
+    var relation = frames.relation("BottomBracket");
     relation.add();
     console.log(relation);
     frames.set(newFrameData);
@@ -157,21 +173,21 @@ var AdminFormComponent = React.createClass({
         </div>
       )
     }
-    var newHeadset = function(headSet){
+    var newHeadset = function(headset){
       return (
-        <div key={headSet.objectId}>
-          <HeadsetSelectionComponent addedHeadset={this.state.addedHeadset} handleCheck={this.handleCheck} headSet={headSet}/>
+        <div key={headset.objectId}>
+          <HeadsetSelectionComponent addedHeadset={this.state.addedHeadset} handleCheck={this.handleCheck} headset={headset}/>
         </div>
       )
     }
-    var newSeatpost = function(seatPost){
+    var newSeatpost = function(seatpost){
       return (
-        <div key={seatPost.objectId}>
-          <SeatpostSelectionComponent addedSeatpost={this.state.addedSeatpost} handleCheck={this.handleCheck} seatPost={seatPost}/>
+        <div key={seatpost.objectId}>
+          <SeatpostSelectionComponent addedSeatpost={this.state.addedSeatpost} handleCheck={this.handleCheck} seatpost={seatpost}/>
         </div>
       )
     }
-
+    console.log(this.state.HeadSet);
     return (
       <div className="container-fluid col-md-12">
         <h2 className="add-component-heading text-center">Add Comp Here</h2>
@@ -214,19 +230,19 @@ var AdminFormComponent = React.createClass({
             <fieldset className="form-group add-comp-form">
               <h3 className="component-title">Bottom Bracket</h3>
               <div className="col-md-12 add-comp-form-bottombracket-checklist">
-                {this.state.bottomBracket.map(newBottomBracket.bind(this))}
+                {this.state.BottomBracket.map(newBottomBracket.bind(this))}
               </div>
             </fieldset>
             <fieldset className="form-group add-comp-form">
               <h3 className="component-title">Headset</h3>
               <div className="col-md-12 add-comp-form-headset-checklist">
-                {this.state.headset.map(newHeadset.bind(this))}
+                {this.state.HeadSet.map(newHeadset.bind(this))}
               </div>
             </fieldset>
             <fieldset className="form-group add-comp-form">
               <h3 className="component-title">Seatpost</h3>
               <div className="col-md-12 add-comp-form-seatpost-checklist">
-                {this.state.seatpost.map(newSeatpost.bind(this))}
+                {this.state.SeatPost.map(newSeatpost.bind(this))}
               </div>
             </fieldset>
           </div>

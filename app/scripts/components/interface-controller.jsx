@@ -18,6 +18,13 @@ var BottomBracketForm = require('./partforms/bottombracket.jsx').BottomBracketFo
 var HeadsetForm = require('./partforms/headsetform.jsx').HeadsetForm;
 var SeatpostForm = require('./partforms/seatpost.jsx').SeatpostForm;
 var ChainFormComponent = require('./partforms/chain-form.jsx').ChainFormComponent;
+var ChainRingFormComponent = require('./partforms/chainring-form.jsx').ChainRingFormComponent;
+var HubFormComponent = require('./partforms/hub-form.jsx').HubFormComponent;
+var RimComponentForm = require('./partforms/rim-form.jsx').RimComponentForm;
+var TireComponentForm = require('./partforms/tire-form.jsx').TireComponentForm;
+var WheelSetFormComponent = require('./partforms/wheelset-form.jsx').WheelSetFormComponent;
+var ClipFormComponent = require('./partforms/clip-form.jsx').ClipFormComponent;
+var PedalFormComponent = require('./partforms/pedal-forms.jsx').PedalFormComponent;
 
 $(function(){
   Parse.initialize("bikebuilder");
@@ -71,6 +78,24 @@ var ControllerComponent = React.createClass({
     }
     if(this.state.router.current == "chain"){
       body = (<ChainFormComponent />)
+    }
+    if(this.state.router.current == "chainring"){
+      body = (<ChainRingFormComponent />)
+    }
+    if(this.state.router.current == "hub"){
+      body = (<HubFormComponent />)
+    }
+    if(this.state.router.current == "rim"){
+      body = (<RimComponentForm />)
+    }
+    if(this.state.router.current == "tire"){
+      body = (<TireComponentForm />)
+    }
+    if(this.state.router.current == "clip"){
+      body = (<ClipFormComponent />)
+    }
+    if(this.state.router.current == "pedal"){
+      body = (<PedalFormComponent />)
     }
     if(this.state.router.current == "notFound"){
       body = (<div><h1>404 Page Not Found!!</h1></div>)

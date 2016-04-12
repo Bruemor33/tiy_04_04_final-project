@@ -19,6 +19,7 @@ var Router = Backbone.Router.extend({
     "bb": "bb",
     "headset": "headset",
     "seatpost": "seatpost",
+    "chain": "chain",
     "*notFound": "notFound"
   },
   index: function(){
@@ -44,6 +45,9 @@ var Router = Backbone.Router.extend({
   },
   seatpost: function(){
     this.current = "seatpost"
+  },
+  chain: function(){
+    this.current = "chain"
   },
   notFound: function(){
     this.current = "notFound"

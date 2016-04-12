@@ -17,6 +17,7 @@ var AdminFormComponent = require('./admin.jsx').AdminFormComponent;
 var BottomBracketForm = require('./partforms/bottombracket.jsx').BottomBracketForm;
 var HeadsetForm = require('./partforms/headsetform.jsx').HeadsetForm;
 var SeatpostForm = require('./partforms/seatpost.jsx').SeatpostForm;
+var ChainFormComponent = require('./partforms/chain-form.jsx').ChainFormComponent;
 
 $(function(){
   Parse.initialize("bikebuilder");
@@ -67,6 +68,9 @@ var ControllerComponent = React.createClass({
     }
     if(this.state.router.current == "seatpost"){
       body = (<SeatpostForm />)
+    }
+    if(this.state.router.current == "chain"){
+      body = (<ChainFormComponent />)
     }
     if(this.state.router.current == "notFound"){
       body = (<div><h1>404 Page Not Found!!</h1></div>)

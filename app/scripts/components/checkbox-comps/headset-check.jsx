@@ -12,16 +12,10 @@ var LinkedStateMixin = require('react/lib/LinkedStateMixin');
 
 var HeadsetSelectionComponent = React.createClass({
   mixins: [Backbone.React.Component.mixin, LinkedStateMixin],
-
-  getInitialState: function(){
-    return {
-      addedHeadset: this.props.addedHeadset
-    }
-  },
   handleSelection: function(e){
-    var selected = e.target.selected;
-    // console.log(selected);
-    // this.props.handleSelection(this.props.headset, selected);
+    var selected = e.target.checked;
+    console.log(selected);
+    this.props.handleHeadsetSelection(this.props.headset, selected);
   },
   render: function(){
     return (

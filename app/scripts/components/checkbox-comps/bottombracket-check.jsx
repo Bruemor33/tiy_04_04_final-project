@@ -12,18 +12,14 @@ var LinkedStateMixin = require('react/lib/LinkedStateMixin');
 
 var BbSelectionComponent = React.createClass({
   mixins: [Backbone.React.Component.mixin, LinkedStateMixin],
-
-  getInitialState: function(){
-    return {
-      addedBracket: this.props.addedBracket
-    }
-  },
   handleSelection: function(e){
-    var selected = e.target.selected;
-    console.log(selected);
-    // this.props.handleSelection(this.props.bracket, selected);
+    var selected = e.target.checked;
+    console.log('bottom bracket input:', e.target);
+    console.log('bottom bracket checked:', e.target.checked);
+    this.props.handleBracketSelection(this.props.bracket, selected);
   },
   render: function(){
+    // console.log(this.props.bracket);
     return (
       <div className="checkbox col-md-6">
         <label className="add-frame-checkbox-labels">

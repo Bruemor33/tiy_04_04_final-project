@@ -12,16 +12,10 @@ var LinkedStateMixin = require('react/lib/LinkedStateMixin');
 
 var SeatpostSelectionComponent = React.createClass({
   mixins: [Backbone.React.Component.mixin, LinkedStateMixin],
-
-  getInitialState: function(){
-    return {
-      addedSeatpost: this.props.addedSeatpost
-    }
-  },
   handleSelection: function(e){
-    var selected = e.target.selected;
-    // console.log(selected);
-    this.props.handleSelection(this.props.seatpost, selected);
+    var selected = e.target.checked;
+    console.log(selected);
+    this.props.handleSeatpostSelection(this.props.seatpost, selected);
   },
   render: function(){
     return (

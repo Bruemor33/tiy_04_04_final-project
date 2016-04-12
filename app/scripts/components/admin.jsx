@@ -85,6 +85,7 @@ var AdminFormComponent = React.createClass({
         }
       }
     }
+    this.setState({addedBracket: addedBracket});
   },
   handleHeadsetSelection: function(headset, checked){
     var addedHeadset = this.state.addedHeadset;
@@ -97,6 +98,7 @@ var AdminFormComponent = React.createClass({
         }
       }
     }
+    this.setState({addedHeadset: addedHeadset});
   },
   handleSeatpostSelection: function(seatpost, checked){
     var addedSeatpost = this.state.addedSeatpost;
@@ -109,6 +111,7 @@ var AdminFormComponent = React.createClass({
         }
       }
     }
+    this.setState({addedSeatpost: addedSeatpost});
   },
   // handleFile: function(e){
   //   e.preventDefault();
@@ -124,28 +127,42 @@ var AdminFormComponent = React.createClass({
   // },
   handleSubmit: function(e){
     e.preventDefault();
+    console.log('handleSubmit');
     var Frames = Parse.Object.extend("frameSets");
     var frames = new Frames();
     var newFrameData = {
       name: this.state.name,
       price: parseInt(this.state.price),
       material: this.state.material,
-      headset: parseInt(this.state.headset),
-      seatTube: parseInt(this.state.seatTube),
       color: this.state.color,
       url: this.state.url,
       // bottomBracket: ,
     };
-    var bracketRelation = "hello";
-    var relation = frames.relation("BottomBracket");
-    relation.add();
-    console.log(relation);
+
+    var bottomBracketRelation = frames.relation("BottomBracket");
+    this.state.addedBracket.forEach(function(bracket){
+      bottomBracketRelation.add(bracket);
+      console.log(bracket);
+    });
+
+    var headSetRelation = frames.relation("HeadSet");
+    this.state.addedHeadset.forEach(function(headset){
+      headSetRelation.add(headset);
+      console.log(headset);
+    });
+
+    var seatPostRelation = frames.relation("SeatPost");
+    this.state.addedSeatpost.forEach(function(seatpost){
+      seatPostRelation.add(seatpost);
+      console.log(seatpost);
+    });
+
     frames.set(newFrameData);
     frames.save(null, {
-      success: function(user){
+      success: function(newFrame){
         console.log("You pushed successfully");
       },
-      error: function(user, error){
+      error: function(newFrame, error){
         alert("Error" + error.code + " " + error.message);
       }
     });
@@ -167,25 +184,25 @@ var AdminFormComponent = React.createClass({
     var newBottomBracket = function(bracket){
       return (
         <div key={bracket.objectId}>
-          <BbSelectionComponent addedBracket={this.state.addedBracket} handleBracketSelection={this.handleBracketSelection} bracket={bracket}/>
+          <BbSelectionComponent handleBracketSelection={this.handleBracketSelection} bracket={bracket}/>
         </div>
       )
     }
     var newHeadset = function(headset){
       return (
         <div key={headset.objectId}>
-          <HeadsetSelectionComponent addedHeadset={this.state.addedHeadset} handleHeadsetSelection={this.handleHeadsetSelection} headset={headset}/>
+          <HeadsetSelectionComponent handleHeadsetSelection={this.handleHeadsetSelection} headset={headset}/>
         </div>
       )
     }
     var newSeatpost = function(seatpost){
       return (
         <div key={seatpost.objectId}>
-          <SeatpostSelectionComponent addedSeatpost={this.state.addedSeatpost} handleSeatpostSelection={this.handleSeatpostSelection} seatpost={seatpost}/>
+          <SeatpostSelectionComponent handleSeatpostSelection={this.handleSeatpostSelection} seatpost={seatpost}/>
         </div>
       )
     }
-    
+
     return (
       <div className="container-fluid col-md-12">
         <h2 className="add-component-heading text-center">Add Comp Here</h2>

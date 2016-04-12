@@ -87,6 +87,7 @@ var AdminFormComponent = React.createClass({displayName: "AdminFormComponent",
         }
       }
     }
+    this.setState({addedBracket: addedBracket});
   },
   handleHeadsetSelection: function(headset, checked){
     var addedHeadset = this.state.addedHeadset;
@@ -99,6 +100,7 @@ var AdminFormComponent = React.createClass({displayName: "AdminFormComponent",
         }
       }
     }
+    this.setState({addedHeadset: addedHeadset});
   },
   handleSeatpostSelection: function(seatpost, checked){
     var addedSeatpost = this.state.addedSeatpost;
@@ -111,6 +113,7 @@ var AdminFormComponent = React.createClass({displayName: "AdminFormComponent",
         }
       }
     }
+    this.setState({addedSeatpost: addedSeatpost});
   },
   // handleFile: function(e){
   //   e.preventDefault();
@@ -126,28 +129,42 @@ var AdminFormComponent = React.createClass({displayName: "AdminFormComponent",
   // },
   handleSubmit: function(e){
     e.preventDefault();
+    console.log('handleSubmit');
     var Frames = Parse.Object.extend("frameSets");
     var frames = new Frames();
     var newFrameData = {
       name: this.state.name,
       price: parseInt(this.state.price),
       material: this.state.material,
-      headset: parseInt(this.state.headset),
-      seatTube: parseInt(this.state.seatTube),
       color: this.state.color,
       url: this.state.url,
       // bottomBracket: ,
     };
-    var bracketRelation = "hello";
-    var relation = frames.relation("BottomBracket");
-    relation.add();
-    console.log(relation);
+
+    var bottomBracketRelation = frames.relation("BottomBracket");
+    this.state.addedBracket.forEach(function(bracket){
+      bottomBracketRelation.add(bracket);
+      console.log(bracket);
+    });
+
+    var headSetRelation = frames.relation("HeadSet");
+    this.state.addedHeadset.forEach(function(headset){
+      headSetRelation.add(headset);
+      console.log(headset);
+    });
+
+    var seatPostRelation = frames.relation("SeatPost");
+    this.state.addedSeatpost.forEach(function(seatpost){
+      seatPostRelation.add(seatpost);
+      console.log(seatpost);
+    });
+
     frames.set(newFrameData);
     frames.save(null, {
-      success: function(user){
+      success: function(newFrame){
         console.log("You pushed successfully");
       },
-      error: function(user, error){
+      error: function(newFrame, error){
         alert("Error" + error.code + " " + error.message);
       }
     });
@@ -169,25 +186,25 @@ var AdminFormComponent = React.createClass({displayName: "AdminFormComponent",
     var newBottomBracket = function(bracket){
       return (
         React.createElement("div", {key: bracket.objectId}, 
-          React.createElement(BbSelectionComponent, {addedBracket: this.state.addedBracket, handleBracketSelection: this.handleBracketSelection, bracket: bracket})
+          React.createElement(BbSelectionComponent, {handleBracketSelection: this.handleBracketSelection, bracket: bracket})
         )
       )
     }
     var newHeadset = function(headset){
       return (
         React.createElement("div", {key: headset.objectId}, 
-          React.createElement(HeadsetSelectionComponent, {addedHeadset: this.state.addedHeadset, handleHeadsetSelection: this.handleHeadsetSelection, headset: headset})
+          React.createElement(HeadsetSelectionComponent, {handleHeadsetSelection: this.handleHeadsetSelection, headset: headset})
         )
       )
     }
     var newSeatpost = function(seatpost){
       return (
         React.createElement("div", {key: seatpost.objectId}, 
-          React.createElement(SeatpostSelectionComponent, {addedSeatpost: this.state.addedSeatpost, handleSeatpostSelection: this.handleSeatpostSelection, seatpost: seatpost})
+          React.createElement(SeatpostSelectionComponent, {handleSeatpostSelection: this.handleSeatpostSelection, seatpost: seatpost})
         )
       )
     }
-    
+
     return (
       React.createElement("div", {className: "container-fluid col-md-12"}, 
         React.createElement("h2", {className: "add-component-heading text-center"}, "Add Comp Here"), 
@@ -266,18 +283,14 @@ var LinkedStateMixin = require('react/lib/LinkedStateMixin');
 
 var BbSelectionComponent = React.createClass({displayName: "BbSelectionComponent",
   mixins: [Backbone.React.Component.mixin, LinkedStateMixin],
-
-  getInitialState: function(){
-    return {
-      addedBracket: this.props.addedBracket
-    }
-  },
   handleSelection: function(e){
-    var selected = e.target.selected;
-    console.log(selected);
-    // this.props.handleSelection(this.props.bracket, selected);
+    var selected = e.target.checked;
+    console.log('bottom bracket input:', e.target);
+    console.log('bottom bracket checked:', e.target.checked);
+    this.props.handleBracketSelection(this.props.bracket, selected);
   },
   render: function(){
+    // console.log(this.props.bracket);
     return (
       React.createElement("div", {className: "checkbox col-md-6"}, 
         React.createElement("label", {className: "add-frame-checkbox-labels"}, 
@@ -309,16 +322,10 @@ var LinkedStateMixin = require('react/lib/LinkedStateMixin');
 
 var HeadsetSelectionComponent = React.createClass({displayName: "HeadsetSelectionComponent",
   mixins: [Backbone.React.Component.mixin, LinkedStateMixin],
-
-  getInitialState: function(){
-    return {
-      addedHeadset: this.props.addedHeadset
-    }
-  },
   handleSelection: function(e){
-    var selected = e.target.selected;
-    // console.log(selected);
-    // this.props.handleSelection(this.props.headset, selected);
+    var selected = e.target.checked;
+    console.log(selected);
+    this.props.handleHeadsetSelection(this.props.headset, selected);
   },
   render: function(){
     return (
@@ -353,16 +360,10 @@ var LinkedStateMixin = require('react/lib/LinkedStateMixin');
 
 var SeatpostSelectionComponent = React.createClass({displayName: "SeatpostSelectionComponent",
   mixins: [Backbone.React.Component.mixin, LinkedStateMixin],
-
-  getInitialState: function(){
-    return {
-      addedSeatpost: this.props.addedSeatpost
-    }
-  },
   handleSelection: function(e){
-    var selected = e.target.selected;
-    // console.log(selected);
-    this.props.handleSelection(this.props.seatpost, selected);
+    var selected = e.target.checked;
+    console.log(selected);
+    this.props.handleSeatpostSelection(this.props.seatpost, selected);
   },
   render: function(){
     return (

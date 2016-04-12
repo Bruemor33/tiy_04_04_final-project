@@ -20,6 +20,12 @@ var Router = Backbone.Router.extend({
     "headset": "headset",
     "seatpost": "seatpost",
     "chain": "chain",
+    "chainring": "chainring",
+    "hub": "hub",
+    "rim": "rim",
+    "tire": "tire",
+    "clip": "clip",
+    "pedal": "pedal",
     "*notFound": "notFound"
   },
   index: function(){
@@ -48,6 +54,24 @@ var Router = Backbone.Router.extend({
   },
   chain: function(){
     this.current = "chain"
+  },
+  chainring: function(){
+    this.current = "chainring"
+  },
+  hub: function(){
+    this.current = "hub"
+  },
+  rim: function(){
+    this.current = "rim"
+  },
+  tire: function(){
+    this.current = "tire"
+  },
+  clip: function(){
+    this.current = "clip"
+  },
+  pedal: function(){
+    this.current = "pedal"
   },
   notFound: function(){
     this.current = "notFound"

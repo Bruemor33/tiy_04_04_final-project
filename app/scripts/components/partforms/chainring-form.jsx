@@ -31,23 +31,23 @@ var ChainRingFormComponent = React.createClass({
       name: "",
       price: 0,
       material: "",
-      chainSize: 0,
-      teeth: 0,
+      chainSize: [],
+      teeth: [],
       url: ""
     }
   },
-  componentWillMount: function(){
-    var self = this;
-    var BottomBracket = Parse.Object.extend("BottomBracket");
-    var query = new Parse.Query( BottomBracket );
-    query.find().then(function(BottomBracket){
-      console.log(BottomBracket);
-      self.setState({"BottomBracket": BottomBracket});
-    }, function(error){
-      console.log(error);
-    });
+  // componentWillMount: function(){
+  //   var self = this;
+  //   var BottomBracket = Parse.Object.extend("BottomBracket");
+  //   var query = new Parse.Query( BottomBracket );
+  //   query.find().then(function(BottomBracket){
+  //     console.log(BottomBracket);
+  //     self.setState({"BottomBracket": BottomBracket});
+  //   }, function(error){
+  //     console.log(error);
+  //   });
 
-  },
+  // },
   handleSubmit: function(e){
     e.preventDefault();
     var ChainRing = Parse.Object.extend("ChainRings");
@@ -56,8 +56,8 @@ var ChainRingFormComponent = React.createClass({
       name: this.state.name,
       price: parseInt(this.state.price),
       material: this.state.material,
-      chainSize: parseInt(this.state.chainSize),
-      teeth: parseInt(this.state.teeth),
+      chainSize: this.state.chainSize,
+      teeth: this.state.teeth,
       url: this.state.url
 
     };

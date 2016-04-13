@@ -79,7 +79,7 @@ var RimComponentForm = React.createClass({
         <form id="add-component-form" onSubmit={this.handleSubmit}>
           <div className="col-md-4">
             <fieldset className="form-group add-comp-form">
-              <label className="form-label" htmlFor="add-hub-name">Hub Name</label>
+              <label className="form-label" htmlFor="add-hub-name">Rim Name</label>
               <input valueLink={this.linkState('name')} type="text" className="form-control" id="add-hub-name" />
             </fieldset>
             <fieldset className="form-group add-comp-form">

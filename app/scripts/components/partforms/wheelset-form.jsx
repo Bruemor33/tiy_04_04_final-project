@@ -73,7 +73,7 @@ var WheelSetFormComponent = React.createClass({
         <form id="add-component-form" onSubmit={this.handleSubmit}>
           <div className="col-md-4">
             <fieldset className="form-group add-comp-form">
-              <label className="form-label" htmlFor="add-headset-name">Headset Name</label>
+              <label className="form-label" htmlFor="add-headset-name">Wheelset Name</label>
               <input valueLink={this.linkState('name')} type="text" className="form-control" id="add-headset-name" />
             </fieldset>
             <fieldset className="form-group add-comp-form">

@@ -11,15 +11,20 @@ var LinkedStateMixin = require('react/lib/LinkedStateMixin');
 Parse.initialize("bikebuilder");
 Parse.serverURL = "http://bikebuilders3.herokuapp.com/";
 
-var HeadsetForm = React.createClass({
+var HandlebarFormComponent = React.createClass({
   mixins: [Backbone.React.Component.mixin, LinkedStateMixin],
 
   getInitialState: function(){
     return{
       name: "",
       price: 0,
-      size: 0,
-      tube: 0,
+      material: "",
+      diameter: 0,
+      drop: 0,
+      reach: 0,
+      width: 0,
+      type: "",
+      url: ""
     }
   },
   componentWillMount: function(){
@@ -36,16 +41,21 @@ var HeadsetForm = React.createClass({
   },
   handleSubmit: function(e){
     e.preventDefault();
-    var Headset = Parse.Object.extend("HeadSet");
-    var headSet = new Headset();
-    var newHeadsetData = {
+    var HandleBars = Parse.Object.extend("HandleBars");
+    var handleBars = new HandleBars();
+    var newHandleBarData = {
       name: this.state.name,
       price: parseInt(this.state.price),
-      size: parseInt(this.state.size),
-      tube: parseInt(this.state.tube)
+      material: this.state.material,
+      diameter: parseInt(this.state.diameter),
+      drop: parseInt(this.state.drop),
+      reach: parseInt(this.state.reach),
+      width: parseInt(this.state.width),
+      type: this.state.type,
+      url: this.state.url
     };
-    headSet.set(newHeadsetData);
-    headSet.save(null, {
+    handleBars.set(newHandleBarData);
+    handleBars.save(null, {
       success: function(user){
         console.log("You pushed successfully");
       },
@@ -71,12 +81,32 @@ var HeadsetForm = React.createClass({
               <input valueLink={this.linkState('price')} type="text" className="form-control" id="add-headset-price" />
             </fieldset>
             <fieldset className="form-group add-comp-form">
-              <label className="form-label" htmlFor="add-headset-size">size</label>
-              <input valueLink={this.linkState('size')} type="text" className="form-control" id="add-headset-size" />
+              <label className="form-label" htmlFor="add-headset-material">material</label>
+              <input valueLink={this.linkState('material')} type="text" className="form-control" id="add-headset-material" />
             </fieldset>
             <fieldset className="form-group add-comp-form">
-              <label className="form-label" htmlFor="add-headset-tube">tube</label>
-              <input valueLink={this.linkState('tube')} type="text" className="form-control" id="add-headset-tube" />
+              <label className="form-label" htmlFor="add-headset-diameter">Diameter</label>
+              <input valueLink={this.linkState('diameter')} type="text" className="form-control" id="add-headset-diameter" />
+            </fieldset>
+            <fieldset className="form-group add-comp-form">
+              <label className="form-label" htmlFor="add-headset-drop">drop</label>
+              <input valueLink={this.linkState('drop')} type="text" className="form-control" id="add-headset-drop" />
+            </fieldset>
+            <fieldset className="form-group add-comp-form">
+              <label className="form-label" htmlFor="add-headset-reach">reach</label>
+              <input valueLink={this.linkState('reach')} type="text" className="form-control" id="add-headset-reach" />
+            </fieldset>
+            <fieldset className="form-group add-comp-form">
+              <label className="form-label" htmlFor="add-headset-width">width</label>
+              <input valueLink={this.linkState('width')} type="text" className="form-control" id="add-headset-width" />
+            </fieldset>
+            <fieldset className="form-group add-comp-form">
+              <label className="form-label" htmlFor="add-headset-type">type</label>
+              <input valueLink={this.linkState('type')} type="text" className="form-control" id="add-headset-type" />
+            </fieldset>
+            <fieldset className="form-group add-comp-form">
+              <label className="form-label" htmlFor="add-headset-url">url</label>
+              <input valueLink={this.linkState('url')} type="text" className="form-control" id="add-headset-url" />
             </fieldset>
           </div>
         </form>
@@ -88,5 +118,5 @@ var HeadsetForm = React.createClass({
 
 //Exports
 module.exports = {
-  'HeadsetForm': HeadsetForm
+  'HandlebarFormComponent': HandlebarFormComponent
 }

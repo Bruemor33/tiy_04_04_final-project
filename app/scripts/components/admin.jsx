@@ -42,7 +42,9 @@ var AdminFormComponent = React.createClass({
       HeadSet: [],
       addedHeadset: [],
       SeatPost: [],
-      addedSeatpost: []
+      addedSeatpost: [],
+      image: {},
+      imageCount: 1
     }
   },
   componentWillMount: function(){
@@ -115,15 +117,11 @@ var AdminFormComponent = React.createClass({
   },
   // handleFile: function(e){
   //   e.preventDefault();
-  //   var name = this.props.user.id + ".jpg" || ".png";
-  //   var file = new Parse.File(name, e.target.files[0] );
-  //   file.save().then(function(file){
-  //     console.log(file);
-  //     this.setState({image: file});
-  //   }.bind(this),
-  //   function(error){
-  //     console.log('error saving file' error);
-  //   });
+  //   var images = this.state.image;
+  //
+  //   var image = new Parse.File(null, file);
+  //   images.save(image);
+  //   this.setState({"images": images});
   // },
   handleSubmit: function(e){
     e.preventDefault();
@@ -230,7 +228,7 @@ var AdminFormComponent = React.createClass({
             </fieldset>
             <fieldset className="form-group add-comp-form">
               <label className="form-label" htmlFor="add-frame-image">image</label>
-              <input valueLink={this.handleFile} type="file" name="newpload" className="form-control" id="add-frame-image" />
+              <input onChange={this.handleFile} type="file" name="newpload" className="form-control" id="add-frame-image" />
             </fieldset>
           </div>
           <div className="col-md-4">

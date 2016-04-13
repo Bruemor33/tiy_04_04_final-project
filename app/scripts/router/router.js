@@ -28,6 +28,7 @@ var Router = Backbone.Router.extend({
     "pedal": "pedal",
     "stem": "stem",
     "handle": "handle",
+    "cranks": "cranks",
     "*notFound": "notFound"
   },
   index: function(){
@@ -80,6 +81,9 @@ var Router = Backbone.Router.extend({
   },
   handle: function(){
     this.current = "handle"
+  },
+  cranks: function(){
+    this.current = "cranks"
   },
   notFound: function(){
     this.current = "notFound"

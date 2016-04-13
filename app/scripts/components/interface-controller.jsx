@@ -27,6 +27,7 @@ var ClipFormComponent = require('./partforms/clip-form.jsx').ClipFormComponent;
 var PedalFormComponent = require('./partforms/pedal-forms.jsx').PedalFormComponent;
 var StemFormComponent = require('./partforms/stem-form.jsx').StemFormComponent;
 var HandlebarFormComponent = require('./partforms/handlebar-form.jsx').HandlebarFormComponent;
+var CranksetFormComponent = require('./partforms/crankset-form.jsx').CranksetFormComponent;
 
 $(function(){
   Parse.initialize("bikebuilder");
@@ -104,6 +105,9 @@ var ControllerComponent = React.createClass({
     }
     if(this.state.router.current == "handle"){
       body = (<HandlebarFormComponent />)
+    }
+    if(this.state.router.current == "cranks"){
+      body = (<CranksetFormComponent />)
     }
     if(this.state.router.current == "notFound"){
       body = (<div><h1>404 Page Not Found!!</h1></div>)

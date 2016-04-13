@@ -23,7 +23,7 @@ var StemFormComponent = React.createClass({
       name: "",
       price: 0,
       material: "",
-      length: 0,
+      length: [],
       rise: 0,
       clampDiameter: 0,
       url: "",
@@ -79,7 +79,7 @@ var StemFormComponent = React.createClass({
       }
     });
 
-    var handlebarsRelation = pedal.relation("HandleBars");
+    var handlebarsRelation = stem.relation("HandleBars");
     this.state.addedHandleBars.forEach(function(handlebars){
       handlebarsRelation.add(handlebars);
       console.log(handlebars);

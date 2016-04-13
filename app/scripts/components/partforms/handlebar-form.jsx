@@ -22,7 +22,7 @@ var HandlebarFormComponent = React.createClass({
       diameter: 0,
       drop: 0,
       reach: 0,
-      width: 0,
+      width: [],
       type: "",
       url: ""
     }
@@ -73,7 +73,7 @@ var HandlebarFormComponent = React.createClass({
         <form id="add-component-form" onSubmit={this.handleSubmit}>
           <div className="col-md-4">
             <fieldset className="form-group add-comp-form">
-              <label className="form-label" htmlFor="add-headset-name">Headset Name</label>
+              <label className="form-label" htmlFor="add-headset-name">Handlebar Name</label>
               <input valueLink={this.linkState('name')} type="text" className="form-control" id="add-headset-name" />
             </fieldset>
             <fieldset className="form-group add-comp-form">

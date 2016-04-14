@@ -14,7 +14,8 @@ var Router = Backbone.Router.extend({
     "": "index",
     "home": "home",
     "profile": "profile",
-    "builder": "builder",
+    "frameselection": "frameselection",
+    "bicycle": "bicycle",
     "admin": "admin",
     "bb": "bb",
     "headset": "headset",
@@ -42,8 +43,11 @@ var Router = Backbone.Router.extend({
   profile: function(){
     this.current = "profile";
   },
-  builder: function(){
-    this.current = "builder";
+  frameselection: function(){
+    this.current = "frameselection";
+  },
+  bicycle: function(){
+    this.current = "bicycle";
   },
   admin: function(){
     this.current = "admin";

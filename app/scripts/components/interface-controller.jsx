@@ -13,6 +13,7 @@ require('Backbone-React-Component');
 var Navigation = require('./header.jsx').Navigation;
 var HomePageComponent = require('./signup.jsx').HomePageComponent;
 var ProfileComponent = require('./profile.jsx').ProfileComponent;
+var BuilderComponent = require('./builder/builder.jsx').BuilderComponent;
 var AdminFormComponent = require('./admin.jsx').AdminFormComponent;
 var BottomBracketForm = require('./partforms/bottombracket.jsx').BottomBracketForm;
 var HeadsetForm = require('./partforms/headsetform.jsx').HeadsetForm;
@@ -67,6 +68,9 @@ var ControllerComponent = React.createClass({
     }
     if(this.state.router.current == "profile"){
       body = (<ProfileComponent setUser={this.setUser}/>)
+    }
+    if(this.state.router.current == "builder"){
+      body = (<BuilderComponent setUser={this.setUser} />)
     }
     if(this.state.router.current == "admin"){
       body = (<AdminFormComponent />)

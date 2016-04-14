@@ -11,6 +11,9 @@ var LinkedStateMixin = require('react/lib/LinkedStateMixin');
 Parse.initialize("bikebuilder");
 Parse.serverURL = "http://bikebuilders3.herokuapp.com/";
 
+//Local Imports
+var SaddleSelectionComponent = require('../checkbox-comps/saddle-check.jsx').SaddleSelectionComponent;
+
 var SeatpostForm = React.createClass({
   mixins: [Backbone.React.Component.mixin, LinkedStateMixin],
 
@@ -20,19 +23,34 @@ var SeatpostForm = React.createClass({
       price: 0,
       size: 0,
       url: "",
+      Saddles: [],
+      addedSaddles: []
     }
   },
   componentWillMount: function(){
     var self = this;
-    var BottomBracket = Parse.Object.extend("BottomBracket");
-    var query = new Parse.Query( BottomBracket );
-    query.find().then(function(bottomBracket){
-      console.log(bottomBracket);
-      self.setState({"bottomBracket": bottomBracket});
+    var Saddles = Parse.Object.extend("Saddles");
+    var querySaddles = new Parse.Query( Saddles );
+    querySaddles.find().then(function(Saddles){
+      console.log(Saddles);
+      self.setState({"Saddles": Saddles});
     }, function(error){
       console.log(error);
     });
 
+  },
+  handleSaddleSelection: function(saddles, checked){
+    var addedSaddles = this.state.addedSaddles;
+    if(checked){
+      addedSaddles.push(saddles);
+    }else{
+      for(var i = 0; i < addedSaddles.length; i++){
+        if(addedSaddles[i] == saddles){
+          addedSaddles.splice(i, 1);
+        }
+      }
+    }
+    this.setState({'addedSaddles': addedSaddles});
   },
   handleSubmit: function(e){
     e.preventDefault();
@@ -53,9 +71,23 @@ var SeatpostForm = React.createClass({
         alert("Error" + error.code + " " + error.message);
       }
     });
+
+    var saddleRelation = seatPost.relation("Saddles");
+    this.state.addedSaddles.forEach(function(saddles){
+      saddleRelation.add(saddles);
+      console.log(saddles);
+    });
   },
 
   render: function(){
+
+    var newSaddles = function(saddles){
+      return (
+        <div key={saddles.objectId}>
+          <SaddleSelectionComponent handleSaddleSelection={this.handleSaddleSelection} saddles={saddles}/>
+        </div>
+      )
+    }
 
     return (
       <div className="container-fluid col-md-12">
@@ -77,6 +109,14 @@ var SeatpostForm = React.createClass({
             <fieldset className="form-group add-comp-form">
               <label className="form-label" htmlFor="add-seatpost-tube">url</label>
               <input valueLink={this.linkState('url')} type="text" className="form-control" id="add-seatpost-tube" />
+            </fieldset>
+          </div>
+          <div className="col-md-4">
+            <fieldset className="form-group add-comp-form">
+              <h3 className="component-title">Chainrings</h3>
+              <div className="col-md-12 add-comp-form-bottombracket-checklist">
+                {this.state.Saddles.map(newSaddles.bind(this))}
+              </div>
             </fieldset>
           </div>
         </form>

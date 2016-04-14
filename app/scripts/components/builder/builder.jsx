@@ -17,7 +17,7 @@ var BuilderComponent = React.createClass({
 
   getInitialState: function(){
     return {
-      FrameSets: this.props.FrameSets
+      FrameSets: []
     }
   },
 
@@ -36,15 +36,15 @@ var BuilderComponent = React.createClass({
   render: function(){
 
 
-    var newFrameDisplay = function(framesets){
+    var newFrameDisplay = function(FrameSets){
       return (
-        <div key={framesets.objectId}>
-          <FrameDisplayComponent framesets={framesets}/>
+        <div key={FrameSets.objectId}>
+          <FrameDisplayComponent FrameSets={FrameSets}/>
         </div>
       )
     }
 
-    console.log(frames);
+    // console.log(frames);
 
     return (
       <div className="container-fluid">

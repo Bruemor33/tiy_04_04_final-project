@@ -20,20 +20,30 @@ var FrameDisplayComponent = React.createClass({
 
   // console.log(this.props.framesets);
 
+  handleSelection: function(e){
+    var selected = e.target.selection;
+    console.log(selected);
+
+    this.props.handleFrameSelection(this.props.selectedFrame, selected);
+    // Backbone.history.navigate("bicycle", {trigger: true})
+  },
+
   render: function(){
 
-    console.log(this.props.FrameSets);
+
     var FrameSets = this.props.FrameSets;
 
     var images = FrameSets.get("Image");
     var frameImage = images;
 
     return (
-      <div className="checkbox col-md-6">
-        <ul className="add-frame-checkbox-labels">
-          <img className="frame-image" src={frameImage.url()} alt="" />
-          <li value={this.props.FrameSets.id} />{this.props.FrameSets.get("name")}
-        </ul>
+      <div className="checkbox col-md-8">
+        <div className="add-frame-checkbox-labels">
+          <button type="button" className="frame-button" onClick={this.handleSelection}>
+            <img className="frame-image" src={frameImage.url()} alt="" />
+          </button>
+          <p value={this.props.FrameSets.id} />{this.props.FrameSets.get("name")}
+        </div>
       </div>
     )
   }

@@ -18,7 +18,7 @@ var TireComponentForm = React.createClass({
     return{
       name: "",
       price: 0,
-      size: "",
+      size: [],
       url: "",
     }
   },
@@ -44,8 +44,8 @@ var TireComponentForm = React.createClass({
       size: parseInt(this.state.size),
       tube: parseInt(this.state.tube)
     };
-    headSet.set(newTireData);
-    headSet.save(null, {
+    tire.set(newTireData);
+    tire.save(null, {
       success: function(user){
         console.log("You pushed successfully");
       },

@@ -54,8 +54,8 @@ var WheelSetFormComponent = React.createClass({
       frontHub: this.state.frontHub,
       url: this.state.url
     };
-    headSet.set(newWheelsetData);
-    headSet.save(null, {
+    wheelSet.set(newWheelsetData);
+    wheelSet.save(null, {
       success: function(user){
         console.log("You pushed successfully");
       },

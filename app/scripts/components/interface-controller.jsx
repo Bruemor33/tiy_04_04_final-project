@@ -28,6 +28,7 @@ var PedalFormComponent = require('./partforms/pedal-forms.jsx').PedalFormCompone
 var StemFormComponent = require('./partforms/stem-form.jsx').StemFormComponent;
 var HandlebarFormComponent = require('./partforms/handlebar-form.jsx').HandlebarFormComponent;
 var CranksetFormComponent = require('./partforms/crankset-form.jsx').CranksetFormComponent;
+var SaddleFormComponent = require('./partforms/saddle-form.jsx').SaddleFormComponent;
 
 $(function(){
   Parse.initialize("bikebuilder");
@@ -91,6 +92,9 @@ var ControllerComponent = React.createClass({
     if(this.state.router.current == "rim"){
       body = (<RimComponentForm />)
     }
+    if(this.state.router.current == "wheel"){
+      body = (<WheelSetFormComponent />)
+    }
     if(this.state.router.current == "tire"){
       body = (<TireComponentForm />)
     }
@@ -108,6 +112,9 @@ var ControllerComponent = React.createClass({
     }
     if(this.state.router.current == "cranks"){
       body = (<CranksetFormComponent />)
+    }
+    if(this.state.router.current == "saddle"){
+      body = (<SaddleFormComponent />)
     }
     if(this.state.router.current == "notFound"){
       body = (<div><h1>404 Page Not Found!!</h1></div>)

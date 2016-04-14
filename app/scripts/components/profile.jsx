@@ -15,9 +15,9 @@ var Backbone = require('backbone');
 var ProfileComponent = React.createClass({
   // mixins: [Backbone.React.Component.mixin],
 
-  handleBuild: function(e){
-    e.preventDefault();
-    Backbone.history.navigate("builder", {trigger: true});
+  handleBuild: function(event){
+    event.preventDefault();
+    Backbone.history.navigate("frameselection", {trigger: true});
   },
 
   render: function(){
@@ -25,7 +25,7 @@ var ProfileComponent = React.createClass({
       <div className="container-fluid">
         <div className="row">
           <div className="col-md-8">
-            <button type="button" onChange={this.handleBuild} className="btn btn-secondary">Build</button>
+            <button type="button" onClick={this.handleBuild} className="btn btn-secondary">Build</button>
           </div>
         </div>
       </div>

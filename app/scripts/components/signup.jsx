@@ -43,7 +43,7 @@ var HomePageComponent = React.createClass({
   },
   render: function(){
     return (
-      <div className="container">
+      <div className="container-fluid">
         <div className="row">
           <div className="col-md-6" id="signup-container">
             <SignupComponent createUser={this.createUser} />
@@ -81,7 +81,7 @@ var SignupComponent = React.createClass({
         <form onSubmit={this.handleSubmit} className="signup">
           <input name="email" onChange={this.handleEmail} value={this.state.email} id="email" placeholder="example@email.com" /><br/>
           <input name="password" onChange={this.handlePassword} value={this.state.password} id="password" placeholder="password" /><br/>
-          <input type="submit" value="Signup!" />
+          <input type="submit" className="enter-button" value="Signup!" />
         </form>
       </div>
     )
@@ -113,7 +113,7 @@ var LoginComponent = React.createClass({
         <form onSubmit={this.handleSubmit} className="login">
           <input name="username" onChange={this.handleUsername} value={this.state.username} id="username" placeholder="username" /><br/>
           <input type="password" name="password" onChange={this.handlePassword} value={this.state.password} id="login-password" placeholder="pw" /><br/>
-          <input type="submit" value="Login!" />
+          <input type="submit" className="enter-button" value="Login!" />
         </form>
       </div>
     )

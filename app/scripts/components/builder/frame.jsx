@@ -12,11 +12,6 @@ var LinkedStateMixin = require('react/lib/LinkedStateMixin');
 
 var FrameDisplayComponent = React.createClass({
   mixins: [Backbone.React.Component.mixin, LinkedStateMixin],
-  // handleSelection: function(e){
-  //   var selected = e.target.checked;
-  //   console.log(selected);
-  //   this.props.handleChainringSelection(this.props.chainrings, selected);
-  // },
 
   // console.log(this.props.framesets);
 
@@ -37,12 +32,12 @@ var FrameDisplayComponent = React.createClass({
     var frameImage = images;
 
     return (
-      <div className="checkbox col-md-8">
-        <div className="add-frame-checkbox-labels">
-          <button type="button" className="frame-button" onClick={this.handleSelection}>
+      <div className="frame-display-container col-md-6">
+        <div className="frame-button-and-caption">
+          <a  className="frame-button" href={"#bicycle/" + this.props.FrameSets.id}>
             <img className="frame-image" src={frameImage.url()} alt="" />
-          </button>
-          <p value={this.props.FrameSets.id} />{this.props.FrameSets.get("name")}
+          </a>
+          <p className="image-caption" value={this.props.FrameSets.id}>{this.props.FrameSets.get("name")}</p>
         </div>
       </div>
     )

@@ -62,7 +62,7 @@ var ControllerComponent = React.createClass({
     var body;
     console.log(this.state.router);
     if(this.state.router.current == "index"){
-      body = (<div>Index</div>);
+      body = (<HomePageComponent />);
     }
     if(this.state.router.current == "home"){
       body = (<HomePageComponent />)
@@ -74,7 +74,7 @@ var ControllerComponent = React.createClass({
       body = (<BuilderComponent setUser={this.setUser} />)
     }
     if(this.state.router.current == "bicycle"){
-      body = (<SelectedFrameComponent setUser={this.setUser} />)
+      body = (<SelectedFrameComponent setUser={this.setUser} framesetId={this.state.router.framesetId} />)
     }
     if(this.state.router.current == "admin"){
       body = (<AdminFormComponent />)

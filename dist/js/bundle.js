@@ -287,17 +287,25 @@ var SelectedFrameComponent = React.createClass({displayName: "SelectedFrameCompo
   mixins: [Backbone.React.Component.mixin, LinkedStateMixin],
 
 //I need to grab the initial state from the selection.
+  getInitialState: function(){
+    return {
+      // FrameSet: {}
+    }
+  },
 
 //So now we have a query into the actual framesets.
   componentWillMount: function(){
     //Possibly have to query the components I want to be choosing.
 
     //frame query
+    //use get() here in order to grab the single frame id.
     var self = this;
-    var FrameSets = Parse.Object.extend("frameSets");
-    var queryFrames = new Parse.Query( FrameSets );
-    queryFrames.find().then(function(FrameSets){
-      self.setState({'FrameSets': FrameSets})
+    var selectedFrame = this.props.framesetId;
+    var FrameSet = Parse.Object.extend("frameSets");
+    var queryFrames = new Parse.Query( FrameSet );
+    queryFrames.get(selectedFrame).then(function(FrameSet){
+      self.setState({'FrameSet': FrameSet})
+      console.log(FrameSet);
     }, function(error){
       console.log(error);
     });
@@ -332,15 +340,18 @@ var SelectedFrameComponent = React.createClass({displayName: "SelectedFrameCompo
 
   render: function(){
 
-    console.log(this.props.FrameSets);
-    console.log(this.props.BottomBrackets);
-    console.log(this.props.Headsets);
-    console.log(this.props.Seatpost);
+    // var FrameSet = this.props.framesetId;
 
-    var FrameSets = this.props.FrameSets;
+    console.log(this.state.FrameSet);
 
     // var images = FrameSets.get("Image");
     // var frameImage = images;
+    if(!this.state.FrameSet){
+      return (React.createElement("h1", null, "Loading"))
+    }
+
+    var image = this.state.FrameSet.get("Image");
+    var frameImage = image;
 
     //I have to grab the relation on the frame. So I think I should just start with the three parts that have a relation to the frame
     //Once those parts have beed selected they will have relations on them and we will have to grab the parts they relate to.
@@ -348,11 +359,11 @@ var SelectedFrameComponent = React.createClass({displayName: "SelectedFrameCompo
     return (
       React.createElement("div", {className: "checkbox col-md-8"}, 
         React.createElement("div", {className: "add-frame-checkbox-labels"}, 
-          React.createElement("img", {className: "frame-image", src: "", alt: ""}), 
-          React.createElement("p", null)
+          React.createElement("img", {className: "frame-image", src: frameImage.url(), alt: ""}), 
+          React.createElement("p", null, this.state.FrameSet.get("name"))
         ), 
         React.createElement("div", {className: "compatible-parts"}, 
-          React.createElement("p", {value: this.props.BottomBrackets})
+          React.createElement("p", null)
         )
       )
     )
@@ -398,7 +409,7 @@ var BuilderComponent = React.createClass({displayName: "BuilderComponent",
     var FrameSets = Parse.Object.extend("frameSets");
     var queryFrames = new Parse.Query( FrameSets );
     queryFrames.find().then(function(FrameSets){
-      // console.log(FrameSets);
+      console.log(FrameSets);
       self.setState({"FrameSets": FrameSets});
     }, function(error){
       console.log(error);
@@ -448,7 +459,7 @@ var BuilderComponent = React.createClass({displayName: "BuilderComponent",
     //   )
     // };
 
-    // console.log(selectedFrame);
+    // console.log(FrameSets);
 
     return (
       React.createElement("div", {className: "container-fluid"}, 
@@ -3033,7 +3044,7 @@ var SignupComponent = React.createClass({displayName: "SignupComponent",
       React.createElement("div", null, 
         React.createElement("form", {onSubmit: this.handleSubmit, className: "signup"}, 
           React.createElement("input", {name: "email", onChange: this.handleEmail, value: this.state.email, id: "email", placeholder: "example@email.com"}), React.createElement("br", null), 
-          React.createElement("input", {name: "password", onChange: this.handlePassword, value: this.state.password, id: "password", placeholder: "password"}), React.createElement("br", null), 
+          React.createElement("input", {name: "password", type: "password", onChange: this.handlePassword, value: this.state.password, id: "password", placeholder: "password"}), React.createElement("br", null), 
           React.createElement("input", {type: "submit", className: "enter-button", value: "Signup!"})
         )
       )

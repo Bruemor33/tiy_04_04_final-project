@@ -80,7 +80,7 @@ var SignupComponent = React.createClass({
       <div>
         <form onSubmit={this.handleSubmit} className="signup">
           <input name="email" onChange={this.handleEmail} value={this.state.email} id="email" placeholder="example@email.com" /><br/>
-          <input name="password" onChange={this.handlePassword} value={this.state.password} id="password" placeholder="password" /><br/>
+          <input name="password" type="password" onChange={this.handlePassword} value={this.state.password} id="password" placeholder="password" /><br/>
           <input type="submit" className="enter-button" value="Signup!" />
         </form>
       </div>

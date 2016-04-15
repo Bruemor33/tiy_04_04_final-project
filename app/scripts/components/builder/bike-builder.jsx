@@ -18,17 +18,25 @@ var SelectedFrameComponent = React.createClass({
   mixins: [Backbone.React.Component.mixin, LinkedStateMixin],
 
 //I need to grab the initial state from the selection.
+  getInitialState: function(){
+    return {
+      // FrameSet: {}
+    }
+  },
 
 //So now we have a query into the actual framesets.
   componentWillMount: function(){
     //Possibly have to query the components I want to be choosing.
 
     //frame query
+    //use get() here in order to grab the single frame id.
     var self = this;
-    var FrameSets = Parse.Object.extend("frameSets");
-    var queryFrames = new Parse.Query( FrameSets );
-    queryFrames.find().then(function(FrameSets){
-      self.setState({'FrameSets': FrameSets})
+    var selectedFrame = this.props.framesetId;
+    var FrameSet = Parse.Object.extend("frameSets");
+    var queryFrames = new Parse.Query( FrameSet );
+    queryFrames.get(selectedFrame).then(function(FrameSet){
+      self.setState({'FrameSet': FrameSet})
+      console.log(FrameSet);
     }, function(error){
       console.log(error);
     });
@@ -63,15 +71,18 @@ var SelectedFrameComponent = React.createClass({
 
   render: function(){
 
-    console.log(this.props.FrameSets);
-    console.log(this.props.BottomBrackets);
-    console.log(this.props.Headsets);
-    console.log(this.props.Seatpost);
+    // var FrameSet = this.props.framesetId;
 
-    var FrameSets = this.props.FrameSets;
+    console.log(this.state.FrameSet);
 
     // var images = FrameSets.get("Image");
     // var frameImage = images;
+    if(!this.state.FrameSet){
+      return (<h1>Loading</h1>)
+    }
+
+    var image = this.state.FrameSet.get("Image");
+    var frameImage = image;
 
     //I have to grab the relation on the frame. So I think I should just start with the three parts that have a relation to the frame
     //Once those parts have beed selected they will have relations on them and we will have to grab the parts they relate to.
@@ -79,11 +90,11 @@ var SelectedFrameComponent = React.createClass({
     return (
       <div className="checkbox col-md-8">
         <div className="add-frame-checkbox-labels">
-          <img className="frame-image" src="" alt="" />
-          <p />
+          <img className="frame-image" src={frameImage.url()} alt="" />
+          <p>{this.state.FrameSet.get("name")}</p>
         </div>
         <div className="compatible-parts">
-          <p value={this.props.BottomBrackets} />
+          <p></p>
         </div>
       </div>
     )

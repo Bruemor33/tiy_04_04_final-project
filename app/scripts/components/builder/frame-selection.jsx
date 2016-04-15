@@ -29,7 +29,7 @@ var BuilderComponent = React.createClass({
     var FrameSets = Parse.Object.extend("frameSets");
     var queryFrames = new Parse.Query( FrameSets );
     queryFrames.find().then(function(FrameSets){
-      // console.log(FrameSets);
+      console.log(FrameSets);
       self.setState({"FrameSets": FrameSets});
     }, function(error){
       console.log(error);
@@ -79,7 +79,7 @@ var BuilderComponent = React.createClass({
     //   )
     // };
 
-    // console.log(selectedFrame);
+    // console.log(FrameSets);
 
     return (
       <div className="container-fluid">

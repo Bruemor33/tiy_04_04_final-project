@@ -39,7 +39,8 @@ NAVIGATION
 
 .top-navigation {
   height: 80px;
-  background-color: #CCCCCC;
+  background-color: #2C3A44;
+  color: #FFFFFF;
 
   .logo img {
     height: 80px;
@@ -75,11 +76,102 @@ NAVIGATION
 MAIN
 *****************************************************************************************/
 
+body {
+  background-color: #DBDBDB;
+}
 
+#signup-container {
+  background-color: #68787F;
+  height: 300px;
+  margin-top: 70px;
+  padding-left: 150px;
 
+  #email {
+    width: 400px;
+    height: 35px;
+    border: 1px solid #EEEEEE;
+    border-radius: 3px;
+    margin-top: 40px;
+  }
 
+  #password {
+    width: 400px;
+    height: 35px;
+    border: 1px solid #EEEEEE;
+    border-radius: 3px;
+    margin-top: 40px;
+  }
 
+}
 
+.enter-button {
+  width: 400px;
+  height: 28px;
+  margin-top: 30px;
+  border: 1px solid #DBDBDB;
+  border-radius: 3px;
+  background-color: #2C3A44;
+  color: #94D181;
+
+  :after:hover{
+    background-color: #8DED87;
+  }
+}
+
+#login-container {
+  background-color: #68787F;
+  height: 300px;
+  margin-top: 70px;
+  padding-left: 70px;
+
+  #username {
+    width: 400px;
+    height: 35px;
+    border: 1px solid #EEEEEE;
+    border-radius: 3px;
+    margin-top: 40px;
+  }
+
+  #login-password {
+    width: 400px;
+    height: 35px;
+    border: 1px solid #EEEEEE;
+    border-radius: 3px;
+    margin-top: 40px;
+  }
+}
+
+.frames {
+  color: #2C3A44;
+  margin-left: 72px;
+  margin-top: 60px;
+  margin-bottom: 30px;
+}
+
+.frame-display {
+  margin-left: 60px;
+
+  .frame-button-and-caption {
+    color: #ffffff;
+  }
+
+  .frame-image {
+    width: 500px;
+    -webkit-box-shadow: 0px 4px 37px -5px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 4px 37px -5px rgba(0,0,0,0.75);
+    box-shadow: 0px 4px 37px -5px rgba(0,0,0,0.75);
+    margin-top: 30px;
+  }
+
+  .image-caption {
+    padding-bottom: 30px;
+    background-color: #68787F;
+    width: 500px;
+    height: 30px;
+    padding-left: 30px;
+    padding-top: 15px;
+  }
+}
 
 
 

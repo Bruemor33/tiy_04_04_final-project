@@ -37,8 +37,14 @@ var SelectedFrameComponent = React.createClass({
     queryFrames.get(selectedFrame).then(function(FrameSet){
       self.setState({'FrameSet': FrameSet})
       console.log(FrameSet);
-    }, function(error){
+    },function(error){
       console.log(error);
+    });
+    var relation = this.state.FrameSet.relation("BottomBrackets");
+    var queryBottomBracket = relation.queryBottomBracket()
+    queryBottomBracket.find().then(function(BottomBracket){
+      self.setState({'BottomBracket': BottomBracket})
+      console.log(relation);
     });
 
     //bottom bracket query
@@ -73,7 +79,8 @@ var SelectedFrameComponent = React.createClass({
 
     // var FrameSet = this.props.framesetId;
 
-    console.log(this.state.FrameSet);
+
+    console.log(this.state.FrameSet)
 
     // var images = FrameSets.get("Image");
     // var frameImage = images;
@@ -83,6 +90,10 @@ var SelectedFrameComponent = React.createClass({
 
     var image = this.state.FrameSet.get("Image");
     var frameImage = image;
+    var bottomBracketRelation = this.state.FrameSet.get("BottomBracket");
+    var frameBottomRelation = bottomBracketRelation;
+
+    console.log(frameBottomRelation);
 
     //I have to grab the relation on the frame. So I think I should just start with the three parts that have a relation to the frame
     //Once those parts have beed selected they will have relations on them and we will have to grab the parts they relate to.

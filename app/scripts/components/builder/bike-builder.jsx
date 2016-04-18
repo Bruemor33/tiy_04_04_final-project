@@ -18,6 +18,7 @@ var LinkedStateMixin = require('react/lib/LinkedStateMixin');
 var StemsDisplayComponent = require('./stem-render.jsx').StemsDisplayComponent;
 var WheelSetDisplayComponent = require('./wheelset-render.jsx').WheelSetDisplayComponent;
 var TireDisplayComponent = require('./tire-render.jsx').TireDisplayComponent;
+var BottomBracketDisplayComponent = require('./bottombracket-relation.jsx').BottomBracketDisplayComponent;
 
 var SelectedFrameComponent = React.createClass({
   mixins: [Backbone.React.Component.mixin, LinkedStateMixin],
@@ -27,6 +28,8 @@ var SelectedFrameComponent = React.createClass({
     return {
       // FrameSet: {}
       BottomBracket: [],
+      relatedBottomBrackets: [],
+      relatedHeadsets: [],
       Tires: []
     }
   },
@@ -43,7 +46,24 @@ var SelectedFrameComponent = React.createClass({
     var queryFrames = new Parse.Query( FrameSet );
     queryFrames.get(selectedFrame).then(function(FrameSet){
       self.setState({'FrameSet': FrameSet})
-      console.log(FrameSet);
+      var relation = FrameSet.relation("BottomBracket");
+      var query = relation.query();
+      query.find().then(function(BottomBracket){
+        self.setState({"relatedBottomBrackets": BottomBracket})
+        console.log(BottomBracket);
+      })
+      var headsetRelation = FrameSet.relation("HeadSet");
+      var headsetQuery = headsetRelation.query();
+      headsetQuery.find().then(function(HeadSet){
+        self.setState({"relatedHeadsets": HeadSet})
+        console.log(HeadSet);
+      })
+      var seatpostRelation = FrameSet.relation("SeatPost");
+      var seatpostQuery = seatpostRelation.query();
+      seatpostQuery.find().then(function(SeatPost){
+        self.setState({"relatedSeatposts": SeatPost})
+        console.log(SeatPost);
+      })
     },function(error){
       console.log(error);
     })
@@ -51,7 +71,7 @@ var SelectedFrameComponent = React.createClass({
     var Stems = Parse.Object.extend("Stems");
     var queryStem = new Parse.Query( Stems );
     queryStem.find().then(function(Stems){
-      console.log(Stems);
+      // console.log(Stems);
       self.setState({"Stems": Stems});
     }, function(error){
       console.log(error);
@@ -61,7 +81,7 @@ var SelectedFrameComponent = React.createClass({
     var BottomBracket = Parse.Object.extend("BottomBracket");
     var query = new Parse.Query( BottomBracket );
     query.find().then(function(BottomBracket){
-      console.log(BottomBracket);
+      // console.log(BottomBracket);
       self.setState({"BottomBracket": BottomBracket});
     }, function(error){
       console.log(error);
@@ -76,6 +96,8 @@ var SelectedFrameComponent = React.createClass({
       console.log(error);
     });
 
+    //headSet relation query
+
     //Seatpost query
     var Seatpost = Parse.Object.extend("SeatPost");
     var querySeatpost = new Parse.Query( Seatpost );
@@ -85,19 +107,24 @@ var SelectedFrameComponent = React.createClass({
       console.log(error);
     });
 
+    //seatpost relation query
+
+
+    //wheelset query
     var WheelSets = Parse.Object.extend("WheelSets");
     var queryWheels = new Parse.Query( WheelSets );
     queryWheels.find().then(function(WheelSets){
-      console.log(WheelSets);
+      // console.log(WheelSets);
       self.setState({"WheelSets": WheelSets});
     }, function(error){
       console.log(error);
     });
 
+    //tire query
     var Tires = Parse.Object.extend("Tires");
     var queryTires = new Parse.Query( Tires );
     queryTires.find().then(function(Tires){
-      console.log(Tires);
+      // console.log(Tires);
       self.setState({"Tires": Tires});
     }, function(error){
       console.log(error);
@@ -107,8 +134,6 @@ var SelectedFrameComponent = React.createClass({
   render: function(){
 
     // var FrameSet = this.props.framesetId;
-
-    console.log(this.state.WheelSets);
 
     // var images = FrameSets.get("Image");
     // var frameImage = images;
@@ -143,19 +168,28 @@ var SelectedFrameComponent = React.createClass({
       )
     }
 
+    var newBottombracketDisplay = function(BottomBracket){
+      return (
+        <div key={BottomBracket.objectId}>
+          <BottomBracketDisplayComponent BottomBracket={BottomBracket} />
+        </div>
+      )
+    }
+
     //I have to grab the relation on the frame. So I think I should just start with the three parts that have a relation to the frame
     //Once those parts have beed selected they will have relations on them and we will have to grab the parts they relate to.
     //Once all relational parts have been chosen the user will be allowed to choose global parts.
     return (
-      <div className="checkbox col-md-8">
-        <div className="add-frame-checkbox-labels">
+      <div className="builder col-md-12">
+        <div className="add-frame-checkbox-labels col-md-6">
           <img className="frame-image" src={frameImage.url()} alt="" />
-          <p>{this.state.FrameSet.get("name")}</p>
+          <p className="frame-name-caption">{this.state.FrameSet.get("name")}</p>
         </div>
-        <div className="compatible-parts">
+        <div className="compatible-parts col-md-6">
           {this.state.Stems.map(newStemDisplay.bind(this))}
           {this.state.WheelSets.map(newWheelSetDisplay.bind(this))}
           {this.state.Tires.map(newTireDisplay.bind(this))}
+          {this.state.relatedBottomBrackets.map(newTireDisplay.bind(this))}
         </div>
       </div>
     )

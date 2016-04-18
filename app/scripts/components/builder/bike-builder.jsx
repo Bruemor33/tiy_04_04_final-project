@@ -14,6 +14,11 @@ var LinkedStateMixin = require('react/lib/LinkedStateMixin');
 //This is where the selected frame will be displayed with the list of relational parts to the right.
 //When a relational part is selected it will update within a list under the frame.
 
+//Local Imports
+var StemsDisplayComponent = require('./stem-render.jsx').StemsDisplayComponent;
+var WheelSetDisplayComponent = require('./wheelset-render.jsx').WheelSetDisplayComponent;
+var TireDisplayComponent = require('./tire-render.jsx').TireDisplayComponent;
+
 var SelectedFrameComponent = React.createClass({
   mixins: [Backbone.React.Component.mixin, LinkedStateMixin],
 
@@ -21,6 +26,8 @@ var SelectedFrameComponent = React.createClass({
   getInitialState: function(){
     return {
       // FrameSet: {}
+      BottomBracket: [],
+      Tires: []
     }
   },
 
@@ -39,19 +46,23 @@ var SelectedFrameComponent = React.createClass({
       console.log(FrameSet);
     },function(error){
       console.log(error);
-    });
-    var relation = this.state.FrameSet.relation("BottomBrackets");
-    var queryBottomBracket = relation.queryBottomBracket()
-    queryBottomBracket.find().then(function(BottomBracket){
-      self.setState({'BottomBracket': BottomBracket})
-      console.log(relation);
+    })
+
+    var Stems = Parse.Object.extend("Stems");
+    var queryStem = new Parse.Query( Stems );
+    queryStem.find().then(function(Stems){
+      console.log(Stems);
+      self.setState({"Stems": Stems});
+    }, function(error){
+      console.log(error);
     });
 
     //bottom bracket query
-    var BottomBrackets = Parse.Object.extend("BottomBracket");
-    var queryBottomBracket = new Parse.Query( BottomBrackets );
-    queryBottomBracket.find().then(function(BottomBrackets){
-      self.setState({'BottomBrackets': BottomBrackets})
+    var BottomBracket = Parse.Object.extend("BottomBracket");
+    var query = new Parse.Query( BottomBracket );
+    query.find().then(function(BottomBracket){
+      console.log(BottomBracket);
+      self.setState({"BottomBracket": BottomBracket});
     }, function(error){
       console.log(error);
     });
@@ -73,14 +84,31 @@ var SelectedFrameComponent = React.createClass({
     }, function(error){
       console.log(error);
     });
+
+    var WheelSets = Parse.Object.extend("WheelSets");
+    var queryWheels = new Parse.Query( WheelSets );
+    queryWheels.find().then(function(WheelSets){
+      console.log(WheelSets);
+      self.setState({"WheelSets": WheelSets});
+    }, function(error){
+      console.log(error);
+    });
+
+    var Tires = Parse.Object.extend("Tires");
+    var queryTires = new Parse.Query( Tires );
+    queryTires.find().then(function(Tires){
+      console.log(Tires);
+      self.setState({"Tires": Tires});
+    }, function(error){
+      console.log(error);
+    });
   },
 
   render: function(){
 
     // var FrameSet = this.props.framesetId;
 
-
-    console.log(this.state.FrameSet)
+    console.log(this.state.WheelSets);
 
     // var images = FrameSets.get("Image");
     // var frameImage = images;
@@ -90,10 +118,30 @@ var SelectedFrameComponent = React.createClass({
 
     var image = this.state.FrameSet.get("Image");
     var frameImage = image;
-    var bottomBracketRelation = this.state.FrameSet.get("BottomBracket");
-    var frameBottomRelation = bottomBracketRelation;
 
-    console.log(frameBottomRelation);
+    var newStemDisplay = function(Stems){
+      return (
+        <div key={Stems.objectId}>
+          <StemsDisplayComponent Stems={Stems} />
+        </div>
+      )
+    }
+
+    var newWheelSetDisplay = function(WheelSets){
+      return (
+        <div key={WheelSets.objectId}>
+          <WheelSetDisplayComponent WheelSets={WheelSets} />
+        </div>
+      )
+    }
+
+    var newTireDisplay = function(Tires){
+      return (
+        <div key={Tires.objectId}>
+          <TireDisplayComponent Tires={Tires} />
+        </div>
+      )
+    }
 
     //I have to grab the relation on the frame. So I think I should just start with the three parts that have a relation to the frame
     //Once those parts have beed selected they will have relations on them and we will have to grab the parts they relate to.
@@ -105,7 +153,9 @@ var SelectedFrameComponent = React.createClass({
           <p>{this.state.FrameSet.get("name")}</p>
         </div>
         <div className="compatible-parts">
-          <p></p>
+          {this.state.Stems.map(newStemDisplay.bind(this))}
+          {this.state.WheelSets.map(newWheelSetDisplay.bind(this))}
+          {this.state.Tires.map(newTireDisplay.bind(this))}
         </div>
       </div>
     )

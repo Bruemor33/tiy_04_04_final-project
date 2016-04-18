@@ -9,30 +9,35 @@ require('Backbone-React-Component');
 var LinkedStateMixin = require('react/lib/LinkedStateMixin');
 
 
-
-var StemsDisplayComponent = React.createClass({
+var BaseDisplayComponent = React.createClass({
   mixins: [Backbone.React.Component.mixin, LinkedStateMixin],
 
   getInitialState: function(){
     return {
-      Stems: []
+      item: [],
+      selectedItem: []
     }
   },
 
   // console.log(this.props.framesets);
-
+  handleClick: function(e) {
+    e.preventDefault();
+    var selected = this.props.item;
+    this.props.grabSelection(selected)
+    console.log(selected);
+  },
   render: function(){
 
     // console.log("stems ", this.state.Stems);
 
-    if(!this.props.Stems){
+    if(!this.props.item){
       return (<h1>Loading</h1>)
     }
 
     return (
-      <div className="stem-display-container">
-        <div className="stem-caption">
-          <p className="image-caption" value={this.props.Stems.id}>{this.props.Stems.get("name")}</p>
+      <div className="item-display-container" >
+        <div className="item-caption">
+          <p className="item-name" onClick={this.handleClick} value={this.props.item.id}>{this.props.item.get("name")}</p>
         </div>
       </div>
     )
@@ -42,5 +47,5 @@ var StemsDisplayComponent = React.createClass({
 
 //Exports
 module.exports = {
-  'StemsDisplayComponent': StemsDisplayComponent
+  'BaseDisplayComponent': BaseDisplayComponent
 }

@@ -10,12 +10,12 @@ var LinkedStateMixin = require('react/lib/LinkedStateMixin');
 
 
 
-var TireDisplayComponent = React.createClass({
+var HeadsetDisplayComponent = React.createClass({
   mixins: [Backbone.React.Component.mixin, LinkedStateMixin],
 
   getInitialState: function(){
     return {
-      Tires: []
+      Headsets: []
     }
   },
 
@@ -23,16 +23,16 @@ var TireDisplayComponent = React.createClass({
 
   render: function(){
 
-    // console.log("wheelsets ", this.state.WheelSets);
+    // console.log("bottom ", this.props.BottomBracket);
 
-    if(!this.props.Tires){
+    if(!this.props.HeadSet){
       return (<h1>Loading</h1>)
     }
 
     return (
       <div className="stem-display-container">
-        <div className="stem-caption">
-          <p className="image-caption" value={this.props.Tires.id}>{this.props.Tires.get("name")}</p>
+        <div className="tire-caption">
+          <p className="tire-name" value={this.props.HeadSet.id}>{this.props.HeadSet.get("name")}</p>
         </div>
       </div>
     )
@@ -42,5 +42,5 @@ var TireDisplayComponent = React.createClass({
 
 //Exports
 module.exports = {
-  'TireDisplayComponent': TireDisplayComponent
+  'HeadsetDisplayComponent': HeadsetDisplayComponent
 }

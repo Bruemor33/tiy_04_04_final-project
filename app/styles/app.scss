@@ -80,6 +80,10 @@ body {
   background-color: #DBDBDB;
 }
 
+/******************************************
+Landing/Signup
+******************************************/
+
 #signup-container {
   background-color: #68787F;
   height: 300px;
@@ -141,6 +145,10 @@ body {
   }
 }
 
+/******************************************
+Frame Selection
+******************************************/
+
 .frames {
   color: #2C3A44;
   margin-left: 72px;
@@ -172,6 +180,44 @@ body {
     padding-top: 15px;
   }
 }
+
+/******************************************
+Building Page
+******************************************/
+
+.add-frame-checkbox-labels {
+  display: block;
+
+  .frame-image {
+    width: 300px;
+    display: block;
+  }
+
+  .frame-name-caption {
+    width: 300px;
+    display: block;
+  }
+
+  .current-build-list {
+    border: 1px solid black;
+    width: 400px;
+    height: 400px;
+    display: block;
+  }
+}
+
+.compatible-parts {
+  display: inline-block;
+  border-left: 1px solid black;
+  padding-left: 80px;
+  float: right;
+
+  .stem-caption {
+    display: inline-block;
+
+  }
+}
+
 
 
 

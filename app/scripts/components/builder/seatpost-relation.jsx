@@ -10,12 +10,12 @@ var LinkedStateMixin = require('react/lib/LinkedStateMixin');
 
 
 
-var WheelSetDisplayComponent = React.createClass({
+var SeatpostDisplayComponent = React.createClass({
   mixins: [Backbone.React.Component.mixin, LinkedStateMixin],
 
   getInitialState: function(){
     return {
-      WheelSets: []
+      SeatPosts: []
     }
   },
 
@@ -23,16 +23,16 @@ var WheelSetDisplayComponent = React.createClass({
 
   render: function(){
 
-    // console.log("wheelsets ", this.state.WheelSets);
+    // console.log("bottom ", this.props.BottomBracket);
 
-    if(!this.props.WheelSets){
+    if(!this.props.SeatPost){
       return (<h1>Loading</h1>)
     }
 
     return (
       <div className="stem-display-container">
-        <div className="stem-caption">
-          <p className="image-caption" value={this.props.WheelSets.id}>{this.props.WheelSets.get("name")}</p>
+        <div className="tire-caption">
+          <p className="tire-name" value={this.props.SeatPost.id}>{this.props.SeatPost.get("name")}</p>
         </div>
       </div>
     )
@@ -42,5 +42,5 @@ var WheelSetDisplayComponent = React.createClass({
 
 //Exports
 module.exports = {
-  'WheelSetDisplayComponent': WheelSetDisplayComponent
+  'SeatpostDisplayComponent': SeatpostDisplayComponent
 }

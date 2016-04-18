@@ -5848,6 +5848,9 @@ MAIN
 body {
   background-color: #DBDBDB; }
 
+/******************************************
+Landing/Signup
+******************************************/
 #signup-container {
   background-color: #68787F;
   height: 300px;
@@ -5895,6 +5898,9 @@ body {
     border-radius: 3px;
     margin-top: 40px; }
 
+/******************************************
+Frame Selection
+******************************************/
 .frames {
   color: #2C3A44;
   margin-left: 72px;
@@ -5918,6 +5924,31 @@ body {
     height: 30px;
     padding-left: 30px;
     padding-top: 15px; }
+
+/******************************************
+Building Page
+******************************************/
+.add-frame-checkbox-labels {
+  display: block; }
+  .add-frame-checkbox-labels .frame-image {
+    width: 300px;
+    display: block; }
+  .add-frame-checkbox-labels .frame-name-caption {
+    width: 300px;
+    display: block; }
+  .add-frame-checkbox-labels .current-build-list {
+    border: 1px solid black;
+    width: 400px;
+    height: 400px;
+    display: block; }
+
+.compatible-parts {
+  display: inline-block;
+  border-left: 1px solid black;
+  padding-left: 80px;
+  float: right; }
+  .compatible-parts .stem-caption {
+    display: inline-block; }
 
 /*****************************************************************************************
 FOOTER

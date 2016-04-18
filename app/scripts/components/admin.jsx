@@ -125,7 +125,7 @@ var AdminFormComponent = React.createClass({
   // },
   handleSubmit: function(e){
     e.preventDefault();
-    console.log('handleSubmit');
+    // console.log('handleSubmit');
     var Frames = Parse.Object.extend("frameSets");
     var frames = new Frames();
     var newFrameData = {

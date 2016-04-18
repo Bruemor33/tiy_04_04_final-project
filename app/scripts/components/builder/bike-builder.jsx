@@ -17,10 +17,6 @@ var LinkedStateMixin = require('react/lib/LinkedStateMixin');
 //Local Imports
 var BaseDisplayComponent = require('./base-display-render.jsx').BaseDisplayComponent;
 
-var BottomBracketDisplayComponent = require('./bottombracket-relation.jsx').BottomBracketDisplayComponent;
-var HeadsetDisplayComponent = require('./headset-relation.jsx').HeadsetDisplayComponent;
-var SeatpostDisplayComponent = require('./seatpost-relation.jsx').SeatpostDisplayComponent;
-
 var SelectedFrameComponent = React.createClass({
   mixins: [Backbone.React.Component.mixin, LinkedStateMixin],
 
@@ -32,7 +28,8 @@ var SelectedFrameComponent = React.createClass({
       relatedBottomBrackets: [],
       relatedHeadsets: [],
       relatedSeatposts: [],
-      Tires: []
+      Tires: [],
+      'selectedItem': []
     }
   },
 
@@ -72,10 +69,10 @@ var SelectedFrameComponent = React.createClass({
               "FrameSet": FrameSet,
               "Stems": results[3],
               "WheelSets": results[4],
-              "Tires": results[5]
+              "Tires": results[5],
             });
           } catch(e) {
-            console.log(e)
+            // console.log(e)
           }
           console.log("all promises fired!");
         });
@@ -85,13 +82,16 @@ var SelectedFrameComponent = React.createClass({
 
   },
 
+  grabSelection: function(selected){
+    console.log(this.state.selectedItem);
+    var selectedItem = this.state.selectedItem;
+    selectedItem.push(selected)
+    this.setState({"selectedItem": selectedItem});
+    console.log(this.state.selectedItem);
+  },
+
   render: function(){
 
-    // var FrameSet = this.props.framesetId;
-
-    // var images = FrameSets.get("Image");
-    // var frameImage = images;
-    console.log(this.state);
     if(!this.state.FrameSet){
       return (<h1>Loading</h1>)
     }
@@ -102,34 +102,16 @@ var SelectedFrameComponent = React.createClass({
     var baseDisplay = function(item){
       return (
         <div key={item.objectId}>
-          <BaseDisplayComponent item={item}/>
+          <BaseDisplayComponent grabSelection={this.grabSelection} item={item}/>
         </div>
       )
     }
 
-    var newBottombracketDisplay = function(BottomBracket){
+    var bikeComponents = this.state.selectedItem.map(function(item){
       return (
-        <div key={BottomBracket.objectId}>
-          <BottomBracketDisplayComponent BottomBracket={BottomBracket} />
-        </div>
+        <li>{item.get('name')}</li>
       )
-    }
-
-    var newHeadsetDisplay = function(HeadSet){
-      return (
-        <div key={HeadSet.objectId}>
-          <HeadsetDisplayComponent HeadSet={HeadSet} />
-        </div>
-      )
-    }
-
-    var newSeatpostDisplay = function(SeatPost){
-      return (
-        <div key={SeatPost.objectId}>
-          <SeatpostDisplayComponent SeatPost={SeatPost} />
-        </div>
-      )
-    }
+    });
 
     //I have to grab the relation on the frame. So I think I should just start with the three parts that have a relation to the frame
     //Once those parts have beed selected they will have relations on them and we will have to grab the parts they relate to.
@@ -139,14 +121,35 @@ var SelectedFrameComponent = React.createClass({
         <div className="add-frame-checkbox-labels col-md-6">
           <img className="frame-image" src={frameImage.url()} alt="" />
           <p className="frame-name-caption">{this.state.FrameSet.get("name")}</p>
+          <div id="build-list" className="current-build-list ">
+            <ul>{bikeComponents}</ul>
+          </div>
         </div>
         <div className="compatible-parts col-md-6">
-          {this.state.relatedBottomBrackets.map(newBottombracketDisplay.bind(this))}
-          {this.state.relatedHeadsets.map(newHeadsetDisplay.bind(this))}
-          {this.state.relatedSeatposts.map(newSeatpostDisplay.bind(this))}
-          {this.state.Stems.map(baseDisplay.bind(this))}
-          {this.state.WheelSets.map(baseDisplay.bind(this))}
-          {this.state.Tires.map(baseDisplay.bind(this))}
+          <div>
+            <h3>Bottom Brackets</h3>
+            {this.state.relatedBottomBrackets.map(baseDisplay.bind(this))}
+          </div>
+          <div>
+            <h3>Headsets</h3>
+            {this.state.relatedHeadsets.map(baseDisplay.bind(this))}
+          </div>
+          <div>
+            <h3>Seatposts</h3>
+            {this.state.relatedSeatposts.map(baseDisplay.bind(this))}
+          </div>
+          <div>
+            <h3>Stems</h3>
+            {this.state.Stems.map(baseDisplay.bind(this))}
+          </div>
+          <div>
+            <h3>Wheelsets</h3>
+            {this.state.WheelSets.map(baseDisplay.bind(this))}
+          </div>
+          <div>
+            <h3>Tires</h3>
+            {this.state.Tires.map(baseDisplay.bind(this))}
+          </div>
         </div>
       </div>
     )

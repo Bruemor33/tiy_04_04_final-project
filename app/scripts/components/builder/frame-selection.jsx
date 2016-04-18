@@ -29,7 +29,7 @@ var BuilderComponent = React.createClass({
     var FrameSets = Parse.Object.extend("frameSets");
     var queryFrames = new Parse.Query( FrameSets );
     queryFrames.find().then(function(FrameSets){
-      console.log(FrameSets);
+      // console.log(FrameSets);
       self.setState({"FrameSets": FrameSets});
     }, function(error){
       console.log(error);
@@ -55,29 +55,7 @@ var BuilderComponent = React.createClass({
         </div>
       )
     };
-    //
-    // var selectedFrameDisplay = function(selectedFrame){
-    //   return (
-    //     <div>
-    //       <SelectedFrameComponent selectedFrame={selectedFrame} />
-    //     </div>
-    //   )
-    // }
-    //
-    // var body;
-    // if(this.state.selectedFrame == null){
-    //   body = (
-    //     <div>
-    //       {this.state.FrameSets.map(newFrameDisplay.bind(this))}
-    //     </div>
-    //   )
-    // }else{
-    //   body = (
-    //     <div>
-    //       {this.props.selectedFrameDisplay}
-    //     </div>
-    //   )
-    // };
+
 
     // console.log(FrameSets);
 

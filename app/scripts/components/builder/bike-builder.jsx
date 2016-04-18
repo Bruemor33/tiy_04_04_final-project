@@ -15,10 +15,11 @@ var LinkedStateMixin = require('react/lib/LinkedStateMixin');
 //When a relational part is selected it will update within a list under the frame.
 
 //Local Imports
-var StemsDisplayComponent = require('./stem-render.jsx').StemsDisplayComponent;
-var WheelSetDisplayComponent = require('./wheelset-render.jsx').WheelSetDisplayComponent;
-var TireDisplayComponent = require('./tire-render.jsx').TireDisplayComponent;
+var BaseDisplayComponent = require('./base-display-render.jsx').BaseDisplayComponent;
+
 var BottomBracketDisplayComponent = require('./bottombracket-relation.jsx').BottomBracketDisplayComponent;
+var HeadsetDisplayComponent = require('./headset-relation.jsx').HeadsetDisplayComponent;
+var SeatpostDisplayComponent = require('./seatpost-relation.jsx').SeatpostDisplayComponent;
 
 var SelectedFrameComponent = React.createClass({
   mixins: [Backbone.React.Component.mixin, LinkedStateMixin],
@@ -30,6 +31,7 @@ var SelectedFrameComponent = React.createClass({
       BottomBracket: [],
       relatedBottomBrackets: [],
       relatedHeadsets: [],
+      relatedSeatposts: [],
       Tires: []
     }
   },
@@ -44,91 +46,43 @@ var SelectedFrameComponent = React.createClass({
     var selectedFrame = this.props.framesetId;
     var FrameSet = Parse.Object.extend("frameSets");
     var queryFrames = new Parse.Query( FrameSet );
+    //queryFrames.include("BottomBracket")
     queryFrames.get(selectedFrame).then(function(FrameSet){
-      self.setState({'FrameSet': FrameSet})
       var relation = FrameSet.relation("BottomBracket");
       var query = relation.query();
-      query.find().then(function(BottomBracket){
-        self.setState({"relatedBottomBrackets": BottomBracket})
-        console.log(BottomBracket);
-      })
       var headsetRelation = FrameSet.relation("HeadSet");
       var headsetQuery = headsetRelation.query();
-      headsetQuery.find().then(function(HeadSet){
-        self.setState({"relatedHeadsets": HeadSet})
-        console.log(HeadSet);
-      })
       var seatpostRelation = FrameSet.relation("SeatPost");
       var seatpostQuery = seatpostRelation.query();
-      seatpostQuery.find().then(function(SeatPost){
-        self.setState({"relatedSeatposts": SeatPost})
-        console.log(SeatPost);
-      })
+      var Stems = Parse.Object.extend("Stems");
+      var queryStem = new Parse.Query( Stems );
+      var WheelSets = Parse.Object.extend("WheelSets");
+      var queryWheels = new Parse.Query( WheelSets );
+      var Tires = Parse.Object.extend("Tires");
+      var queryTires = new Parse.Query( Tires );
+
+      var p1 = Parse.Promise.when([query.find(), headsetQuery.find(), seatpostQuery.find(),
+                                   queryStem.find(), queryWheels.find(), queryTires.find()])
+        .then(function(results){
+          try {
+            self.setState({
+              "relatedBottomBrackets": results[0],
+              "relatedHeadsets": results[1],
+              "relatedSeatposts": results[2],
+              "FrameSet": FrameSet,
+              "Stems": results[3],
+              "WheelSets": results[4],
+              "Tires": results[5]
+            });
+          } catch(e) {
+            console.log(e)
+          }
+          console.log("all promises fired!");
+        });
     },function(error){
       console.log(error);
     })
 
-    var Stems = Parse.Object.extend("Stems");
-    var queryStem = new Parse.Query( Stems );
-    queryStem.find().then(function(Stems){
-      // console.log(Stems);
-      self.setState({"Stems": Stems});
-    }, function(error){
-      console.log(error);
-    });
-
-    //bottom bracket query
-    var BottomBracket = Parse.Object.extend("BottomBracket");
-    var query = new Parse.Query( BottomBracket );
-    query.find().then(function(BottomBracket){
-      // console.log(BottomBracket);
-      self.setState({"BottomBracket": BottomBracket});
-    }, function(error){
-      console.log(error);
-    });
-
-    //headset query
-    var Headsets = Parse.Object.extend("HeadSet");
-    var queryHeadsets = new Parse.Query( Headsets );
-    queryHeadsets.find().then(function(Headsets){
-      self.setState({'Headsets': Headsets})
-    }, function(error){
-      console.log(error);
-    });
-
-    //headSet relation query
-
-    //Seatpost query
-    var Seatpost = Parse.Object.extend("SeatPost");
-    var querySeatpost = new Parse.Query( Seatpost );
-    querySeatpost.find().then(function(Seatpost){
-      self.setState({'Seatpost': Seatpost})
-    }, function(error){
-      console.log(error);
-    });
-
-    //seatpost relation query
-
-
-    //wheelset query
-    var WheelSets = Parse.Object.extend("WheelSets");
-    var queryWheels = new Parse.Query( WheelSets );
-    queryWheels.find().then(function(WheelSets){
-      // console.log(WheelSets);
-      self.setState({"WheelSets": WheelSets});
-    }, function(error){
-      console.log(error);
-    });
-
-    //tire query
-    var Tires = Parse.Object.extend("Tires");
-    var queryTires = new Parse.Query( Tires );
-    queryTires.find().then(function(Tires){
-      // console.log(Tires);
-      self.setState({"Tires": Tires});
-    }, function(error){
-      console.log(error);
-    });
   },
 
   render: function(){
@@ -137,6 +91,7 @@ var SelectedFrameComponent = React.createClass({
 
     // var images = FrameSets.get("Image");
     // var frameImage = images;
+    console.log(this.state);
     if(!this.state.FrameSet){
       return (<h1>Loading</h1>)
     }
@@ -144,26 +99,10 @@ var SelectedFrameComponent = React.createClass({
     var image = this.state.FrameSet.get("Image");
     var frameImage = image;
 
-    var newStemDisplay = function(Stems){
+    var baseDisplay = function(item){
       return (
-        <div key={Stems.objectId}>
-          <StemsDisplayComponent Stems={Stems} />
-        </div>
-      )
-    }
-
-    var newWheelSetDisplay = function(WheelSets){
-      return (
-        <div key={WheelSets.objectId}>
-          <WheelSetDisplayComponent WheelSets={WheelSets} />
-        </div>
-      )
-    }
-
-    var newTireDisplay = function(Tires){
-      return (
-        <div key={Tires.objectId}>
-          <TireDisplayComponent Tires={Tires} />
+        <div key={item.objectId}>
+          <BaseDisplayComponent item={item}/>
         </div>
       )
     }
@@ -172,6 +111,22 @@ var SelectedFrameComponent = React.createClass({
       return (
         <div key={BottomBracket.objectId}>
           <BottomBracketDisplayComponent BottomBracket={BottomBracket} />
+        </div>
+      )
+    }
+
+    var newHeadsetDisplay = function(HeadSet){
+      return (
+        <div key={HeadSet.objectId}>
+          <HeadsetDisplayComponent HeadSet={HeadSet} />
+        </div>
+      )
+    }
+
+    var newSeatpostDisplay = function(SeatPost){
+      return (
+        <div key={SeatPost.objectId}>
+          <SeatpostDisplayComponent SeatPost={SeatPost} />
         </div>
       )
     }
@@ -186,10 +141,12 @@ var SelectedFrameComponent = React.createClass({
           <p className="frame-name-caption">{this.state.FrameSet.get("name")}</p>
         </div>
         <div className="compatible-parts col-md-6">
-          {this.state.Stems.map(newStemDisplay.bind(this))}
-          {this.state.WheelSets.map(newWheelSetDisplay.bind(this))}
-          {this.state.Tires.map(newTireDisplay.bind(this))}
-          {this.state.relatedBottomBrackets.map(newTireDisplay.bind(this))}
+          {this.state.relatedBottomBrackets.map(newBottombracketDisplay.bind(this))}
+          {this.state.relatedHeadsets.map(newHeadsetDisplay.bind(this))}
+          {this.state.relatedSeatposts.map(newSeatpostDisplay.bind(this))}
+          {this.state.Stems.map(baseDisplay.bind(this))}
+          {this.state.WheelSets.map(baseDisplay.bind(this))}
+          {this.state.Tires.map(baseDisplay.bind(this))}
         </div>
       </div>
     )

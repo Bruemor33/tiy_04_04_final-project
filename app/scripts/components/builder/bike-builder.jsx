@@ -16,6 +16,7 @@ var LinkedStateMixin = require('react/lib/LinkedStateMixin');
 
 //Local Imports
 var BaseDisplayComponent = require('./base-display-render.jsx').BaseDisplayComponent;
+var BottomBracketDisplayComponent = require('./bottombracket-relation.jsx').BottomBracketDisplayComponent;
 
 var SelectedFrameComponent = React.createClass({
   mixins: [Backbone.React.Component.mixin, LinkedStateMixin],
@@ -29,6 +30,7 @@ var SelectedFrameComponent = React.createClass({
       relatedHeadsets: [],
       relatedSeatposts: [],
       Tires: [],
+      Pedals: [],
       'selectedItem': []
     }
   },
@@ -57,9 +59,20 @@ var SelectedFrameComponent = React.createClass({
       var queryWheels = new Parse.Query( WheelSets );
       var Tires = Parse.Object.extend("Tires");
       var queryTires = new Parse.Query( Tires );
+      var Pedals = Parse.Object.extend("Pedals");
+      var queryPedals = new Parse.Query( Pedals );
+      var Cranksets = Parse.Object.extend("Cranksets");
+      var queryCranks = new Parse.Query( Cranksets );
+      var Chainrings = Parse.Object.extend("ChainRings");
+      var queryChainrings = new Parse.Query( Chainrings );
+      var Handlebars = Parse.Object.extend("HandleBars");
+      var queryBars = new Parse.Query( Handlebars );
+      var Saddles = Parse.Object.extend("Saddles");
+      var querySaddles = new Parse.Query( Saddles );
 
       var p1 = Parse.Promise.when([query.find(), headsetQuery.find(), seatpostQuery.find(),
-                                   queryStem.find(), queryWheels.find(), queryTires.find()])
+      queryStem.find(), queryWheels.find(), queryTires.find(), queryPedals.find(), queryCranks.find(),
+      queryChainrings.find(), queryBars.find(), querySaddles.find()])
         .then(function(results){
           try {
             self.setState({
@@ -70,6 +83,11 @@ var SelectedFrameComponent = React.createClass({
               "Stems": results[3],
               "WheelSets": results[4],
               "Tires": results[5],
+              "Pedals": results[6],
+              "Cranksets": results[7],
+              "Chainrings": results[8],
+              "Handlebars": results[9],
+              "Saddles": results[10]
             });
           } catch(e) {
             // console.log(e)
@@ -79,6 +97,10 @@ var SelectedFrameComponent = React.createClass({
     },function(error){
       console.log(error);
     })
+
+  },
+
+  handleSubmit: function(){
 
   },
 
@@ -107,6 +129,16 @@ var SelectedFrameComponent = React.createClass({
       )
     }
 
+    var bracketRelationDisplay = function(Cranksets){
+      return (
+        <div key={Cranksets.objectId}>
+          <BottomBracketDisplayComponent Cranksets={Cranksets} />
+        </div>
+
+      )
+    }
+    console.log(this.state.Cranksets);
+
     var bikeComponents = this.state.selectedItem.map(function(item){
       return (
         <li>{item.get('name')}</li>
@@ -123,12 +155,21 @@ var SelectedFrameComponent = React.createClass({
           <p className="frame-name-caption">{this.state.FrameSet.get("name")}</p>
           <div id="build-list" className="current-build-list ">
             <ul>{bikeComponents}</ul>
+            <button type="submit" form="add-component-form" id="add-frame-form-button" className="btn btn-primary ">push</button>
           </div>
         </div>
         <div className="compatible-parts col-md-6">
           <div>
             <h3>Bottom Brackets</h3>
             {this.state.relatedBottomBrackets.map(baseDisplay.bind(this))}
+          </div>
+          <div>
+            <h3>Cranksets</h3>
+            {this.state.Cranksets.map(baseDisplay.bind(this))}
+          </div>
+          <div>
+            <h3>Chainrings</h3>
+            {this.state.Chainrings.map(baseDisplay.bind(this))}
           </div>
           <div>
             <h3>Headsets</h3>
@@ -139,8 +180,16 @@ var SelectedFrameComponent = React.createClass({
             {this.state.relatedSeatposts.map(baseDisplay.bind(this))}
           </div>
           <div>
+            <h3>Saddles</h3>
+            {this.state.Saddles.map(baseDisplay.bind(this))}
+          </div>
+          <div>
             <h3>Stems</h3>
             {this.state.Stems.map(baseDisplay.bind(this))}
+          </div>
+          <div>
+            <h3>Handlebars</h3>
+            {this.state.Handlebars.map(baseDisplay.bind(this))}
           </div>
           <div>
             <h3>Wheelsets</h3>
@@ -149,6 +198,10 @@ var SelectedFrameComponent = React.createClass({
           <div>
             <h3>Tires</h3>
             {this.state.Tires.map(baseDisplay.bind(this))}
+          </div>
+          <div>
+            <h3>Pedals</h3>
+            {this.state.Pedals.map(baseDisplay.bind(this))}
           </div>
         </div>
       </div>

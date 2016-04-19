@@ -15,15 +15,31 @@ var BottomBracketDisplayComponent = React.createClass({
 
   getInitialState: function(){
     return {
-      BottomBrackets: []
+      BottomBrackets: [],
+      Cranksets: []
     }
+  },
+
+  componentWillMount: function(){
+    var BottomBracket = Parse.Object.extend( "BottomBracket" );
+    var queryBracket = new Parse.Query();
+    queryBracket.find().then(function(BottomBracket){
+      var relation = BottomBracket.relation("Cranksets");
+      var query = relation.query();
+      var p1 = Parse.Promise.when(query.find()).then(function(results){
+        self.setState({
+          "Cranksets": results
+        })
+        console.log(this.state.Cranksets);
+      })
+    })
   },
 
   // console.log(this.props.framesets);
 
   render: function(){
 
-    // console.log("bottom ", this.props.BottomBracket);
+    console.log("cranks ", this.state.Cranksets);
 
     if(!this.props.BottomBracket){
       return (<h1>Loading</h1>)
@@ -32,7 +48,9 @@ var BottomBracketDisplayComponent = React.createClass({
     return (
       <div className="stem-display-container">
         <div className="tire-caption">
-          <p className="tire-name" value={this.props.BottomBracket.id}>{this.props.BottomBracket.get("name")}</p>
+          <select className="tire-name" value={this.props.BottomBracket.id} name={this.props.BottomBracket.get("name")}>
+            <option></option>
+          </select>
         </div>
       </div>
     )

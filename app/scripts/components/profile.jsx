@@ -24,14 +24,12 @@ var ProfileComponent = React.createClass({
 
   componentDidMount: function(){
     var self = this
-    var Bike = Parse.Object.extend("Bicycle");
-    var bikeQuery = new Parse.Query( Bike );
-    bikeQuery.include("frame");
-    bikeQuery.find().then(function(Bike){
-      self.setState({'Bike': Bike});
-      console.log(Bike[0].get("frame").get("Image"));
-      //bikeQuery.include(frame.Image);
-      console.log("success ", this.state.Bike);
+    var user = this.props.user;
+    var query = new Parse.Query( user );
+    query.include("userBikes");
+    // query.containedIn("userBikes", "frame");
+    query.find().then(function(user){
+      // console.log(user);
     }, function(error){
       console.log(error);
     })
@@ -50,8 +48,8 @@ var ProfileComponent = React.createClass({
   },
 
   render: function(){
-    console.log(this.state.Bike);
-
+    // console.log(user.current);
+    console.log(this.props.user);
 
     // var image = this.state.frameSet.get("Image");
     // var frameImage = image;

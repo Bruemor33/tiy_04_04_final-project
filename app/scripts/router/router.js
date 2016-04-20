@@ -46,7 +46,7 @@ var Router = Backbone.Router.extend({
   },
   components: function(){
     this.current = "components";
-  }
+  },
   frameselection: function(){
     this.current = "frameselection";
   },

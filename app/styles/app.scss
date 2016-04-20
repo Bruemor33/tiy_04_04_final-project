@@ -51,19 +51,12 @@ NAVIGATION
     display: inline-block;
   }
 
-  .blog {
-    display: inline-block;
+  a {
     float: right;
-  }
-
-  .about {
-    display: inline-block;
-    float: right;
-  }
-
-  .user-account {
-    display: inline-block;
-    float: right;
+    text-decoration: none;
+    color: #fff;
+    font-size: 30px;
+    margin-top: 18px;
   }
 
 }

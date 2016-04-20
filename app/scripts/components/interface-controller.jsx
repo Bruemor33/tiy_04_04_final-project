@@ -96,10 +96,10 @@ var ControllerComponent = React.createClass({
       navigation = (<Navigation logout={this.logout}/>)
       body = (<SelectedFrameComponent user={this.user} framesetId={this.state.router.framesetId} />)
     }
-    if(this.state.router.current == "admin"){
+    if(this.state.router.current == "frame"){
       body = (<AdminFormComponent />)
     }
-    if(this.state.router.current == "bb"){
+    if(this.state.router.current == "bottombracket"){
       body = (<BottomBracketForm />)
     }
     if(this.state.router.current == "headset"){

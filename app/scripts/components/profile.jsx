@@ -49,8 +49,8 @@ var ProfileComponent = React.createClass({
     console.log(this.state.frameSet);
 
 
-    var image = this.state.frameSet.get("Image");
-    var frameImage = image;
+    // var image = this.state.frameSet.get("Image");
+    // var frameImage = image;
 
     return (
       <div className="container-fluid">
@@ -64,7 +64,7 @@ var ProfileComponent = React.createClass({
 
             </div>
             <div className="col-md-8 bikes-built">
-              <img className="frame-image" src={frameImage.url()} alt="" />
+            
             </div>
           </div>
         </div>

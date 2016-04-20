@@ -3219,8 +3219,8 @@ var ProfileComponent = React.createClass({displayName: "ProfileComponent",
     console.log(this.state.frameSet);
 
 
-    var image = this.state.frameSet.get("Image");
-    var frameImage = image;
+    // var image = this.state.frameSet.get("Image");
+    // var frameImage = image;
 
     return (
       React.createElement("div", {className: "container-fluid"}, 
@@ -3233,8 +3233,8 @@ var ProfileComponent = React.createClass({displayName: "ProfileComponent",
             React.createElement("div", {className: "col-md-4 dummy-data"}
 
             ), 
-            React.createElement("div", {className: "col-md-8 bikes-built"}, 
-              React.createElement("img", {className: "frame-image", src: frameImage.url(), alt: ""})
+            React.createElement("div", {className: "col-md-8 bikes-built"}
+            
             )
           )
         )

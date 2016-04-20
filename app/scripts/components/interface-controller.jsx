@@ -15,6 +15,7 @@ var LandingPageComponent = require('./landing-page.jsx').LandingPageComponent;
 var HomePageComponent = require('./signup.jsx').HomePageComponent;
 var ProfileComponent = require('./profile.jsx').ProfileComponent;
 var BuilderComponent = require('./builder/frame-selection.jsx').BuilderComponent;
+var ComponentForms = require('./component-form-page.jsx').ComponentForms;
 var SelectedFrameComponent = require('./builder/bike-builder.jsx').SelectedFrameComponent;
 var AdminFormComponent = require('./admin.jsx').AdminFormComponent;
 var BottomBracketForm = require('./partforms/bottombracket.jsx').BottomBracketForm;
@@ -88,6 +89,10 @@ var ControllerComponent = React.createClass({
       navigation = (<Navigation logout={this.logout}/>)
       body = (<ProfileComponent user={this.state.user}/>)
     }
+    if(this.state.router.current == "components"){
+      navigation = (<Navigation />)
+      body = (<ComponentForms user={this.state.user} />)
+    }
     if(this.state.router.current == "frameselection"){
       navigation = (<Navigation logout={this.logout}/>)
       body = (<BuilderComponent user={this.user} />)
@@ -97,51 +102,67 @@ var ControllerComponent = React.createClass({
       body = (<SelectedFrameComponent user={this.user} framesetId={this.state.router.framesetId} />)
     }
     if(this.state.router.current == "frame"){
+      navigation = (<Navigation />)
       body = (<AdminFormComponent />)
     }
     if(this.state.router.current == "bottombracket"){
+      navigation = (<Navigation />)
       body = (<BottomBracketForm />)
     }
     if(this.state.router.current == "headset"){
+      navigation = (<Navigation />)
       body = (<HeadsetForm />)
     }
     if(this.state.router.current == "seatpost"){
+      navigation = (<Navigation />)
       body = (<SeatpostForm />)
     }
     if(this.state.router.current == "chain"){
+      navigation = (<Navigation />)
       body = (<ChainFormComponent />)
     }
     if(this.state.router.current == "chainring"){
+      navigation = (<Navigation />)
       body = (<ChainRingFormComponent />)
     }
     if(this.state.router.current == "hub"){
+      navigation = (<Navigation />)
       body = (<HubFormComponent />)
     }
     if(this.state.router.current == "rim"){
+      navigation = (<Navigation />)
       body = (<RimComponentForm />)
     }
     if(this.state.router.current == "wheel"){
+      navigation = (<Navigation />)
       body = (<WheelSetFormComponent />)
     }
     if(this.state.router.current == "tire"){
+      navigation = (<Navigation />)
       body = (<TireComponentForm />)
     }
     if(this.state.router.current == "clip"){
+      navigation = (<Navigation />)
       body = (<ClipFormComponent />)
     }
     if(this.state.router.current == "pedal"){
+      navigation = (<Navigation />)
       body = (<PedalFormComponent />)
     }
     if(this.state.router.current == "stem"){
+      navigation = (<Navigation />)
       body = (<StemFormComponent />)
     }
     if(this.state.router.current == "handle"){
+      navigation = (<Navigation />)
       body = (<HandlebarFormComponent />)
     }
     if(this.state.router.current == "cranks"){
+      navigation = (<Navigation />)
       body = (<CranksetFormComponent />)
     }
     if(this.state.router.current == "saddle"){
+      navigation = (<Navigation />)
       body = (<SaddleFormComponent />)
     }
     if(this.state.router.current == "notFound"){

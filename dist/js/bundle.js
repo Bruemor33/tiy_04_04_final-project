@@ -395,8 +395,9 @@ var SelectedFrameComponent = React.createClass({displayName: "SelectedFrameCompo
 
       var p1 = Parse.Promise.when([query.find(), headsetQuery.find(), seatpostQuery.find(),
       queryStem.find(), queryWheels.find(), queryTires.find(), queryPedals.find(), queryCranks.find(),
-      queryChainrings.find(), queryBars.find(), querySaddles.find()])
+      queryChainrings.find(), queryBars.find(), querySaddles.find(), queryFrames.get(selectedFrame)])
         .then(function(results){
+
           try {
             self.setState({
               "relatedBottomBrackets": results[0],
@@ -423,14 +424,39 @@ var SelectedFrameComponent = React.createClass({displayName: "SelectedFrameCompo
 
   },
 
-  handleSubmit: function(){
+  filterSelectedItems: function(){
+    var selectedResults = _find(selectedItem, function(item){
+      return item.selectedItem.id;
+    })
+  },
 
+  handleSubmit: function(e){
+    e.preventDefault();
+    console.log("clicked");
+    var Bicycle = Parse.Object.extend("Bicycle");
+    var newBicycle = new Bicycle();
+    newBicycle.set({
+      'frame': this.state.FrameSet,
+      'components': this.state.selectedItem
+    });
+    newBicycle.save(null, {
+      success: function(bicycles){
+        var user = Parse.User.current();
+        var userBikes = user.bycicles;
+        userBikes.push(newBicycle);
+        user.save();
+        console.log("You pushed successfully!");
+      },
+      error: function(user, error){
+        alert("Error" + error.code + " " + error.message);
+      }
+    })
   },
 
   grabSelection: function(selected){
     console.log(this.state.selectedItem);
     var selectedItem = this.state.selectedItem;
-    selectedItem.push(selected)
+    selectedItem.push(selected);
     this.setState({"selectedItem": selectedItem});
     console.log(this.state.selectedItem);
   },
@@ -440,6 +466,8 @@ var SelectedFrameComponent = React.createClass({displayName: "SelectedFrameCompo
     if(!this.state.FrameSet){
       return (React.createElement("h1", null, "Loading"))
     }
+
+    console.log(this.state.FrameSet);
 
     var image = this.state.FrameSet.get("Image");
     var frameImage = image;
@@ -460,11 +488,16 @@ var SelectedFrameComponent = React.createClass({displayName: "SelectedFrameCompo
 
       )
     }
-    console.log(this.state.Cranksets);
+
 
     var bikeComponents = this.state.selectedItem.map(function(item){
       return (
-        React.createElement("li", null, item.get('name'))
+        React.createElement("tbody", null, 
+          React.createElement("tr", {className: "build-table"}, 
+            React.createElement("td", {className: "build-item-name"}, item.get('name')), 
+            React.createElement("td", {className: "build-item-price"}, item.get('price'))
+          )
+        )
       )
     });
 
@@ -473,13 +506,15 @@ var SelectedFrameComponent = React.createClass({displayName: "SelectedFrameCompo
     //Once all relational parts have been chosen the user will be allowed to choose global parts.
     return (
       React.createElement("div", {className: "builder col-md-12"}, 
-        React.createElement("div", {className: "add-frame-checkbox-labels col-md-6"}, 
+        React.createElement("div", {className: "add-parts-form col-md-6"}, 
           React.createElement("img", {className: "frame-image", src: frameImage.url(), alt: ""}), 
           React.createElement("p", {className: "frame-name-caption"}, this.state.FrameSet.get("name")), 
           React.createElement("div", {id: "build-list", className: "current-build-list "}, 
-            React.createElement("ul", null, bikeComponents), 
-            React.createElement("button", {type: "submit", form: "add-component-form", id: "add-frame-form-button", className: "btn btn-primary "}, "push")
-          )
+            React.createElement("table", {id: "build-items-table-container"}, 
+              bikeComponents
+            )
+          ), 
+          React.createElement("button", {type: "submit", onClick: this.handleSubmit, form: "add-parts-form", id: "add-frame-form-button", className: "btn btn-primary "}, "push")
         ), 
         React.createElement("div", {className: "compatible-parts col-md-6"}, 
           React.createElement("div", null, 
@@ -1138,7 +1173,7 @@ var ControllerComponent = React.createClass({displayName: "ControllerComponent",
   getInitialState: function(){
     return {
       router: this.props.router,
-      userId: null
+      user: null
     };
   },
   componentWillMount: function(){
@@ -1146,14 +1181,21 @@ var ControllerComponent = React.createClass({displayName: "ControllerComponent",
       this.forceUpdate();
     }).bind(this);
     this.state.router.on('route', this.callback);
+
+    var currentUser = Parse.User.current();
+      if (currentUser){
+        this.setState({'user': currentUser})
+      }
   },
   componentWillUnmount: function(){
     this.state.router.off('route', this.callback);
   },
-  setUser: function(user){
-    this.setState({"userId": user.id});
-  },
+  // setUser: function(user){
+  //   this.setState({"userId": user.id});
+  // },
+
   render: function(){
+    console.log(this.state.user);
     var body;
     console.log(this.state.router);
     if(this.state.router.current == "index"){
@@ -1163,13 +1205,13 @@ var ControllerComponent = React.createClass({displayName: "ControllerComponent",
       body = (React.createElement(HomePageComponent, null))
     }
     if(this.state.router.current == "profile"){
-      body = (React.createElement(ProfileComponent, {setUser: this.setUser}))
+      body = (React.createElement(ProfileComponent, {user: this.state.user}))
     }
     if(this.state.router.current == "frameselection"){
-      body = (React.createElement(BuilderComponent, {setUser: this.setUser}))
+      body = (React.createElement(BuilderComponent, {user: this.user}))
     }
     if(this.state.router.current == "bicycle"){
-      body = (React.createElement(SelectedFrameComponent, {setUser: this.setUser, framesetId: this.state.router.framesetId}))
+      body = (React.createElement(SelectedFrameComponent, {user: this.user, framesetId: this.state.router.framesetId}))
     }
     if(this.state.router.current == "admin"){
       body = (React.createElement(AdminFormComponent, null))
@@ -3141,7 +3183,32 @@ var Backbone = require('backbone');
 
 
 var ProfileComponent = React.createClass({displayName: "ProfileComponent",
-  // mixins: [Backbone.React.Component.mixin],
+  mixins: [Backbone.React.Component.mixin],
+
+  getInitialState: function(){
+    return {
+      'frameSet': []
+    }
+  },
+
+  componentWillMount: function(){
+    var self = this
+    var Bike = Parse.Object.extend("Bicycle");
+    var bikeQuery = new Parse.Query( Bike );
+    bikeQuery.find().then(function(Bike){
+      bikeQuery.include(Bike.frame);
+      self.setState({'Bikes': Bike});
+    }, function(error){
+      console.log(error);
+    })
+
+    var frameSetId = "kyyH8a27q5"
+    var frameSet = Parse.Object.extend("frameSets");
+    var query = new Parse.Query( frameSet );
+    query.get(frameSetId).then(function(frameSet){
+      self.setState({'frameSet': frameSet});
+    })
+  },
 
   handleBuild: function(event){
     event.preventDefault();
@@ -3149,11 +3216,26 @@ var ProfileComponent = React.createClass({displayName: "ProfileComponent",
   },
 
   render: function(){
+    console.log(this.state.frameSet);
+
+
+    var image = this.state.frameSet.get("Image");
+    var frameImage = image;
+
     return (
       React.createElement("div", {className: "container-fluid"}, 
         React.createElement("div", {className: "row"}, 
-          React.createElement("div", {className: "col-md-8"}, 
-            React.createElement("button", {type: "button", onClick: this.handleBuild, className: "btn btn-secondary"}, "Build")
+          React.createElement("div", {className: "col-md-12"}, 
+            React.createElement("button", {type: "button", onClick: this.handleBuild, className: "btn btn-secondary"}, "Build"), 
+            React.createElement("div", {className: "col-md-4 profile-picture"}
+
+            ), 
+            React.createElement("div", {className: "col-md-4 dummy-data"}
+
+            ), 
+            React.createElement("div", {className: "col-md-8 bikes-built"}, 
+              React.createElement("img", {className: "frame-image", src: frameImage.url(), alt: ""})
+            )
           )
         )
       )

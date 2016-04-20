@@ -23,7 +23,7 @@ var Navigation = React.createClass({
         <nav className="row">
           <div className="top-navigation col-md-12">
             <span className="logo"><img src="images/preview.jpg" /></span><h3 className="title">Bikes</h3>
-            <a>Add Components</a>
+            <a href={"#components"}>Add Components</a>
           </div>
         </nav>
       </div>

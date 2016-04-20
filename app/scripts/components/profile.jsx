@@ -17,27 +17,31 @@ var ProfileComponent = React.createClass({
 
   getInitialState: function(){
     return {
-      'frameSet': []
+      'frameSet': [],
+      'Bikes': []
     }
   },
 
-  componentWillMount: function(){
+  componentDidMount: function(){
     var self = this
     var Bike = Parse.Object.extend("Bicycle");
     var bikeQuery = new Parse.Query( Bike );
+    bikeQuery.include("frame");
     bikeQuery.find().then(function(Bike){
-      bikeQuery.include(Bike.frame);
-      self.setState({'Bikes': Bike});
+      self.setState({'Bike': Bike});
+      console.log(Bike[0].get("frame").get("Image"));
+      //bikeQuery.include(frame.Image);
+      console.log("success ", this.state.Bike);
     }, function(error){
       console.log(error);
     })
 
-    var frameSetId = "kyyH8a27q5"
-    var frameSet = Parse.Object.extend("frameSets");
-    var query = new Parse.Query( frameSet );
-    query.get(frameSetId).then(function(frameSet){
-      self.setState({'frameSet': frameSet});
-    })
+    // var frameSetId = "kyyH8a27q5"
+    // var frameSet = Parse.Object.extend("frameSets");
+    // var query = new Parse.Query( frameSet );
+    // query.get(frameSetId).then(function(frameSet){
+    //   self.setState({'frameSet': frameSet});
+    // })
   },
 
   handleBuild: function(event){
@@ -46,7 +50,7 @@ var ProfileComponent = React.createClass({
   },
 
   render: function(){
-    console.log(this.state.frameSet);
+    console.log(this.state.Bike);
 
 
     // var image = this.state.frameSet.get("Image");
@@ -64,7 +68,7 @@ var ProfileComponent = React.createClass({
 
             </div>
             <div className="col-md-8 bikes-built">
-            
+
             </div>
           </div>
         </div>

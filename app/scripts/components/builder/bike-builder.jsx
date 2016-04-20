@@ -72,8 +72,9 @@ var SelectedFrameComponent = React.createClass({
 
       var p1 = Parse.Promise.when([query.find(), headsetQuery.find(), seatpostQuery.find(),
       queryStem.find(), queryWheels.find(), queryTires.find(), queryPedals.find(), queryCranks.find(),
-      queryChainrings.find(), queryBars.find(), querySaddles.find()])
+      queryChainrings.find(), queryBars.find(), querySaddles.find(), queryFrames.get(selectedFrame)])
         .then(function(results){
+
           try {
             self.setState({
               "relatedBottomBrackets": results[0],
@@ -100,14 +101,39 @@ var SelectedFrameComponent = React.createClass({
 
   },
 
-  handleSubmit: function(){
+  filterSelectedItems: function(){
+    var selectedResults = _find(selectedItem, function(item){
+      return item.selectedItem.id;
+    })
+  },
 
+  handleSubmit: function(e){
+    e.preventDefault();
+    console.log("clicked");
+    var Bicycle = Parse.Object.extend("Bicycle");
+    var newBicycle = new Bicycle();
+    newBicycle.set({
+      'frame': this.state.FrameSet,
+      'components': this.state.selectedItem
+    });
+    newBicycle.save(null, {
+      success: function(bicycles){
+        var user = Parse.User.current();
+        var userBikes = user.bycicles;
+        userBikes.push(newBicycle);
+        user.save();
+        console.log("You pushed successfully!");
+      },
+      error: function(user, error){
+        alert("Error" + error.code + " " + error.message);
+      }
+    })
   },
 
   grabSelection: function(selected){
     console.log(this.state.selectedItem);
     var selectedItem = this.state.selectedItem;
-    selectedItem.push(selected)
+    selectedItem.push(selected);
     this.setState({"selectedItem": selectedItem});
     console.log(this.state.selectedItem);
   },
@@ -117,6 +143,8 @@ var SelectedFrameComponent = React.createClass({
     if(!this.state.FrameSet){
       return (<h1>Loading</h1>)
     }
+
+    console.log(this.state.FrameSet);
 
     var image = this.state.FrameSet.get("Image");
     var frameImage = image;
@@ -137,11 +165,16 @@ var SelectedFrameComponent = React.createClass({
 
       )
     }
-    console.log(this.state.Cranksets);
+
 
     var bikeComponents = this.state.selectedItem.map(function(item){
       return (
-        <li>{item.get('name')}</li>
+        <tbody>
+          <tr className="build-table">
+            <td className="build-item-name">{item.get('name')}</td>
+            <td className="build-item-price">{item.get('price')}</td>
+          </tr>
+        </tbody>
       )
     });
 
@@ -150,13 +183,15 @@ var SelectedFrameComponent = React.createClass({
     //Once all relational parts have been chosen the user will be allowed to choose global parts.
     return (
       <div className="builder col-md-12">
-        <div className="add-frame-checkbox-labels col-md-6">
+        <div className="add-parts-form col-md-6">
           <img className="frame-image" src={frameImage.url()} alt="" />
           <p className="frame-name-caption">{this.state.FrameSet.get("name")}</p>
           <div id="build-list" className="current-build-list ">
-            <ul>{bikeComponents}</ul>
-            <button type="submit" form="add-component-form" id="add-frame-form-button" className="btn btn-primary ">push</button>
+            <table id="build-items-table-container">
+              {bikeComponents}
+            </table>
           </div>
+          <button type="submit" onClick={this.handleSubmit} form="add-parts-form" id="add-frame-form-button" className="btn btn-primary ">push</button>
         </div>
         <div className="compatible-parts col-md-6">
           <div>

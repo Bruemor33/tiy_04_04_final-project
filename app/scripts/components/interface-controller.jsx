@@ -43,7 +43,7 @@ var ControllerComponent = React.createClass({
   getInitialState: function(){
     return {
       router: this.props.router,
-      userId: null
+      user: null
     };
   },
   componentWillMount: function(){
@@ -51,14 +51,21 @@ var ControllerComponent = React.createClass({
       this.forceUpdate();
     }).bind(this);
     this.state.router.on('route', this.callback);
+
+    var currentUser = Parse.User.current();
+      if (currentUser){
+        this.setState({'user': currentUser})
+      }
   },
   componentWillUnmount: function(){
     this.state.router.off('route', this.callback);
   },
-  setUser: function(user){
-    this.setState({"userId": user.id});
-  },
+  // setUser: function(user){
+  //   this.setState({"userId": user.id});
+  // },
+
   render: function(){
+    console.log(this.state.user);
     var body;
     console.log(this.state.router);
     if(this.state.router.current == "index"){
@@ -68,13 +75,13 @@ var ControllerComponent = React.createClass({
       body = (<HomePageComponent />)
     }
     if(this.state.router.current == "profile"){
-      body = (<ProfileComponent setUser={this.setUser}/>)
+      body = (<ProfileComponent user={this.state.user}/>)
     }
     if(this.state.router.current == "frameselection"){
-      body = (<BuilderComponent setUser={this.setUser} />)
+      body = (<BuilderComponent user={this.user} />)
     }
     if(this.state.router.current == "bicycle"){
-      body = (<SelectedFrameComponent setUser={this.setUser} framesetId={this.state.router.framesetId} />)
+      body = (<SelectedFrameComponent user={this.user} framesetId={this.state.router.framesetId} />)
     }
     if(this.state.router.current == "admin"){
       body = (<AdminFormComponent />)

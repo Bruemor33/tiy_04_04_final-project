@@ -5832,15 +5832,12 @@ NAVIGATION
     width: 80px; }
   .top-navigation .title {
     display: inline-block; }
-  .top-navigation .blog {
-    display: inline-block;
-    float: right; }
-  .top-navigation .about {
-    display: inline-block;
-    float: right; }
-  .top-navigation .user-account {
-    display: inline-block;
-    float: right; }
+  .top-navigation a {
+    float: right;
+    text-decoration: none;
+    color: #fff;
+    font-size: 30px;
+    margin-top: 18px; }
 
 /*****************************************************************************************
 MAIN

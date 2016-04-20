@@ -36,9 +36,7 @@ var BaseDisplayComponent = React.createClass({
 
     return (
       <div className="item-display-container" >
-        <div className="item-caption">
-          <p className="item-name" onClick={this.handleClick} value={this.props.item.id}>{this.props.item.get("name")}</p>
-        </div>
+        <li className="item-name" onClick={this.handleClick} value={this.props.item.id}>{this.props.item.get("name")}</li>      
       </div>
     )
   }

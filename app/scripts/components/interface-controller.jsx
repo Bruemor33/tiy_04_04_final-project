@@ -11,6 +11,7 @@ require('Backbone-React-Component');
 
 //Local Inports
 var Navigation = require('./header.jsx').Navigation;
+var LandingPageComponent = require('./landing-page.jsx').LandingPageComponent;
 var HomePageComponent = require('./signup.jsx').HomePageComponent;
 var ProfileComponent = require('./profile.jsx').ProfileComponent;
 var BuilderComponent = require('./builder/frame-selection.jsx').BuilderComponent;
@@ -60,27 +61,39 @@ var ControllerComponent = React.createClass({
   componentWillUnmount: function(){
     this.state.router.off('route', this.callback);
   },
+  logout: function(e){
+    e.preventDefault();
+    Parse.User.logOut().then(function(data, code, xhr){
+      this.setState({'user': null});
+    }.bind(this));
+    Backbone.history.navigate('', {trigger: true});
+  },
   // setUser: function(user){
   //   this.setState({"userId": user.id});
   // },
 
   render: function(){
-    console.log(this.state.user);
+    // console.log(this.state.user);
     var body;
+    var navigation;
     console.log(this.state.router);
+
     if(this.state.router.current == "index"){
-      body = (<HomePageComponent />);
+      body = (<LandingPageComponent />);
     }
     if(this.state.router.current == "home"){
       body = (<HomePageComponent />)
     }
     if(this.state.router.current == "profile"){
+      navigation = (<Navigation logout={this.logout}/>)
       body = (<ProfileComponent user={this.state.user}/>)
     }
     if(this.state.router.current == "frameselection"){
+      navigation = (<Navigation logout={this.logout}/>)
       body = (<BuilderComponent user={this.user} />)
     }
     if(this.state.router.current == "bicycle"){
+      navigation = (<Navigation logout={this.logout}/>)
       body = (<SelectedFrameComponent user={this.user} framesetId={this.state.router.framesetId} />)
     }
     if(this.state.router.current == "admin"){
@@ -136,7 +149,7 @@ var ControllerComponent = React.createClass({
     }
     return(
       <div>
-        <Navigation />
+        {navigation}
         {body}
       </div>
     )

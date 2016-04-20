@@ -117,11 +117,22 @@ var SelectedFrameComponent = React.createClass({
       'components': this.state.selectedItem
     });
     newBicycle.save(null, {
-      success: function(bicycles){
+      success: function(bicycle){
         var user = Parse.User.current();
-        var userBikes = user.bycicles;
-        userBikes.push(newBicycle);
-        user.save();
+        var userBikes = user.get("userBikes");
+        if(userBikes === undefined){
+          userBikes = []
+        }
+        userBikes.push(bicycle);
+        user.set("userBikes", userBikes);
+        // userBikes.push(["joel", "likes", "potatoes"]);
+        user.save().then(function(savedUser){
+          console.log(savedUser);
+        });
+        setTimeout(function() {
+          Backbone.history.navigate("profile", {trigger: true});
+        }, 5000);
+
         console.log("You pushed successfully!");
       },
       error: function(user, error){

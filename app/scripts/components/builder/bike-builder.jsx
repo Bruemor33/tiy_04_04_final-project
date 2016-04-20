@@ -131,7 +131,7 @@ var SelectedFrameComponent = React.createClass({
         });
         setTimeout(function() {
           Backbone.history.navigate("profile", {trigger: true});
-        }, 5000);
+        }, 3000);
 
         console.log("You pushed successfully!");
       },
@@ -155,6 +155,13 @@ var SelectedFrameComponent = React.createClass({
       return (<h1>Loading</h1>)
     }
 
+    var allPanels = $('.accordian li').hide();
+
+    $('.accordian ul h2').click(function(){
+      allPanels.slideUp();
+      $(this).nextAll().slideDown();
+    });
+
     console.log(this.state.FrameSet);
 
     var image = this.state.FrameSet.get("Image");
@@ -163,7 +170,9 @@ var SelectedFrameComponent = React.createClass({
     var baseDisplay = function(item){
       return (
         <div key={item.objectId}>
-          <BaseDisplayComponent grabSelection={this.grabSelection} item={item}/>
+          <ul>
+            <BaseDisplayComponent grabSelection={this.grabSelection} item={item}/>
+          </ul>
         </div>
       )
     }
@@ -204,7 +213,7 @@ var SelectedFrameComponent = React.createClass({
           </div>
           <button type="submit" onClick={this.handleSubmit} form="add-parts-form" id="add-frame-form-button" className="btn btn-primary ">push</button>
         </div>
-        <div className="compatible-parts col-md-6">
+        <div className="col-md-6 accordian">
           <div>
             <h3>Bottom Brackets</h3>
             {this.state.relatedBottomBrackets.map(baseDisplay.bind(this))}

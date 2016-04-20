@@ -5845,12 +5845,17 @@ NAVIGATION
 /*****************************************************************************************
 MAIN
 *****************************************************************************************/
-body {
-  background-color: #DBDBDB; }
-
 /******************************************
 Landing/Signup
 ******************************************/
+#landing {
+  background-image: url("../images/sunset-desktop-wp.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 800px;
+  width: 100%; }
+
 #signup-container {
   background-color: #68787F;
   height: 300px;

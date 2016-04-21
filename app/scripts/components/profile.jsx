@@ -58,13 +58,10 @@ var ProfileComponent = React.createClass({
       <div className="container-fluid">
         <div className="row">
           <div className="col-md-12">
-            <button type="button" onClick={this.handleBuild} className="btn btn-secondary">Build</button>
-            <div className="col-md-4 profile-picture">
-
-            </div>
-            <div className="col-md-4 dummy-data">
-
-            </div>
+            <a href={"#frameselection"}>
+              <h3 className="build-title">Build</h3>
+              <img src="images/mechanic1.jpg" onClick={this.handleBuild} className="build-image" />
+            </a>
             <div className="col-md-8 bikes-built">
 
             </div>

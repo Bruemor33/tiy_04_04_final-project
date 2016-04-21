@@ -30,9 +30,30 @@ var ProfileComponent = React.createClass({
     // query.containedIn("userBikes", "frame");
     query.find().then(function(user){
       // console.log(user);
+      self.setState({"Bikes": user})
     }, function(error){
       console.log(error);
     })
+
+
+    var bikes = this.props.user.get('userBikes');
+    if (bikes == undefined){
+      bikes = []
+    }else{
+      console.log(bikes);
+      var bikeArray = bikes.map(function(bike){
+        console.log("bike, ", bike);
+        var frames = bike.get('frame');
+        console.log("frames, ", frames);
+        // frames.map(function(frames){
+        //   console.log(frames);
+        // })
+        var Image = frame.get('Image');
+        console.log(Image);
+        var url = Image.url();
+        console.log(url);
+      });
+    }
 
     // var frameSetId = "kyyH8a27q5"
     // var frameSet = Parse.Object.extend("frameSets");
@@ -51,8 +72,11 @@ var ProfileComponent = React.createClass({
     // console.log(user.current);
     console.log(this.props.user);
 
-    // var image = this.state.frameSet.get("Image");
+    // var bikes = this.props.Bikes;
+    // var image = bikes.get("Image");
     // var frameImage = image;
+
+
 
     return (
       <div className="container-fluid">

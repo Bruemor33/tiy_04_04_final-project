@@ -105,14 +105,17 @@ var AdminFormComponent = React.createClass({
     }
     this.setState({addedSeatpost: addedSeatpost});
   },
-  // handleFile: function(e){
-  //   e.preventDefault();
-  //   var images = this.state.image;
-  //
-  //   var image = new Parse.File(null, file);
-  //   images.save(image);
-  //   this.setState({"images": images});
-  // },
+  handleFile: function(e){
+    e.preventDefault();
+    var self = this;
+    var file = e.target.files[0];
+    var name = "frameset" + Date.now() + ".jpg";
+    var image = new Parse.File(name, file);
+    image.save().then(function(file){
+      self.setState({"image": file});
+    });
+
+  },
   handleSubmit: function(e){
     e.preventDefault();
     // console.log('handleSubmit');
@@ -124,6 +127,7 @@ var AdminFormComponent = React.createClass({
       material: this.state.material,
       color: this.state.color,
       url: this.state.url,
+      Image: this.state.image
       // bottomBracket: ,
     };
 

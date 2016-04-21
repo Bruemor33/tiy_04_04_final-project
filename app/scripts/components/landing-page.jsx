@@ -22,10 +22,28 @@ var LandingPageComponent = React.createClass({
       <div className="container-fluid" id="landing" handleClick={this.handleClick}>
         <a href={"#home"}>
           <div>
-            <h1 className="app-title">Fancy App Name</h1>
-            <h5 className="landing-caption">Click anywhere to enter..</h5>
+            <h1 className="app-title">Rapport</h1>
+            <h5 className="landing-caption">Click Here to Enter</h5>
           </div>
         </a>
+        <div className="information-one">
+          <div className="catagory-icon"></div>
+          <div className="catagory-container">
+            <h3 className="catagory-title">Building</h3>
+          </div>
+        </div>
+        <div className="information-two">
+          <div className="catagory-icon"></div>
+          <div className="catagory-container">
+            <h3 className="catagory-title">Compatibility</h3>
+          </div>
+        </div>
+        <div className="information-three">
+          <div className="catagory-icon"></div>
+          <div className="catagory-container">
+            <h3 className="catagory-title">Adding</h3>
+          </div>
+        </div>
       </div>
     )
   }

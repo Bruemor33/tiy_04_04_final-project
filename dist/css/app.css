@@ -5962,16 +5962,15 @@ Signup
 /******************************************
 Profile
 ******************************************/
-.profile-picture {
-  height: 200px;
-  width: 200px;
-  border: 1px solid black;
-  border-radius: 100px; }
+.build-title {
+  position: absolute;
+  left: 490px; }
 
-.dummy-data {
-  width: 300px;
-  height: 400px;
-  border: 1px solid black; }
+.build-image::before {
+  background-color: rgba(0, 0, 0, 0.5); }
+
+.build-image {
+  height: 300px; }
 
 .bikes-built {
   width: 400px;
@@ -6020,6 +6019,20 @@ Building Page
     width: 400px;
     height: 400px;
     display: block; }
+
+.component-title {
+  width: 458px;
+  height: 40px;
+  background-color: black;
+  color: #fff;
+  padding-left: 15px;
+  padding-top: 6px; }
+
+.item-display-container li {
+  list-style: none; }
+
+.item-name {
+  padding-left: 7px; }
 
 .compatible-parts {
   display: inline-block;

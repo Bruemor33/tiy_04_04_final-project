@@ -452,6 +452,11 @@ var SelectedFrameComponent = React.createClass({displayName: "SelectedFrameCompo
     })
   },
 
+  componentDidMount: function(){
+    var panels = $('.accordian li');
+    panels.hide();
+  },
+
   grabSelection: function(selected){
     console.log(this.state.selectedItem);
     var selectedItem = this.state.selectedItem;
@@ -460,15 +465,23 @@ var SelectedFrameComponent = React.createClass({displayName: "SelectedFrameCompo
     console.log(this.state.selectedItem);
   },
 
+  handleClick: function(){
+    console.log("clicked!");
+    var allPanels = $('.accordian ul h3');
+    var panelContent = $('.accordian li');
+    allPanels.slideDown();
+    panelContent.colapse();
+  },
+
   render: function(){
 
     if(!this.state.FrameSet){
       return (React.createElement("h1", null, "Loading"))
     }
 
-    var allPanels = $('.accordian li').hide();
+    var allPanels = $('.accordian ul');
 
-    $('.accordian ul h2').click(function(){
+    $('.accordian li').click(function(){
       allPanels.slideUp();
       $(this).nextAll().slideDown();
     });
@@ -481,9 +494,7 @@ var SelectedFrameComponent = React.createClass({displayName: "SelectedFrameCompo
     var baseDisplay = function(item){
       return (
         React.createElement("div", {key: item.objectId}, 
-          React.createElement("ul", null, 
-            React.createElement(BaseDisplayComponent, {grabSelection: this.grabSelection, item: item})
-          )
+          React.createElement(BaseDisplayComponent, {grabSelection: this.grabSelection, item: item})
         )
       )
     }
@@ -526,48 +537,70 @@ var SelectedFrameComponent = React.createClass({displayName: "SelectedFrameCompo
         ), 
         React.createElement("div", {className: "col-md-6 accordian"}, 
           React.createElement("div", null, 
-            React.createElement("h3", null, "Bottom Brackets"), 
-            this.state.relatedBottomBrackets.map(baseDisplay.bind(this))
+            React.createElement("ul", null, 
+              React.createElement("h3", {className: "component-title", onClick: this.handleClick}, "Bottom Brackets"), 
+              this.state.relatedBottomBrackets.map(baseDisplay.bind(this))
+            )
           ), 
           React.createElement("div", null, 
-            React.createElement("h3", null, "Cranksets"), 
-            this.state.Cranksets.map(baseDisplay.bind(this))
+            React.createElement("ul", null, 
+              React.createElement("h3", {className: "component-title", onClick: this.handleClick}, "Cranksets"), 
+              this.state.Cranksets.map(baseDisplay.bind(this))
+            )
           ), 
           React.createElement("div", null, 
-            React.createElement("h3", null, "Chainrings"), 
-            this.state.Chainrings.map(baseDisplay.bind(this))
+            React.createElement("ul", null, 
+              React.createElement("h3", {className: "component-title", onClick: this.handleClick}, "Chainrings"), 
+              this.state.Chainrings.map(baseDisplay.bind(this))
+            )
           ), 
           React.createElement("div", null, 
-            React.createElement("h3", null, "Headsets"), 
-            this.state.relatedHeadsets.map(baseDisplay.bind(this))
+            React.createElement("ul", null, 
+              React.createElement("h3", {className: "component-title", onClick: this.handleClick}, "Headsets"), 
+              this.state.relatedHeadsets.map(baseDisplay.bind(this))
+            )
           ), 
           React.createElement("div", null, 
-            React.createElement("h3", null, "Seatposts"), 
-            this.state.relatedSeatposts.map(baseDisplay.bind(this))
+            React.createElement("ul", null, 
+              React.createElement("h3", {className: "component-title", onClick: this.handleClick}, "Seatposts"), 
+              this.state.relatedSeatposts.map(baseDisplay.bind(this))
+            )
           ), 
           React.createElement("div", null, 
-            React.createElement("h3", null, "Saddles"), 
-            this.state.Saddles.map(baseDisplay.bind(this))
+            React.createElement("ul", null, 
+              React.createElement("h3", {className: "component-title", onClick: this.handleClick}, "Saddles"), 
+              this.state.Saddles.map(baseDisplay.bind(this))
+            )
           ), 
           React.createElement("div", null, 
-            React.createElement("h3", null, "Stems"), 
-            this.state.Stems.map(baseDisplay.bind(this))
+            React.createElement("ul", null, 
+              React.createElement("h3", {className: "component-title", onClick: this.handleClick}, "Stems"), 
+              this.state.Stems.map(baseDisplay.bind(this))
+            )
           ), 
           React.createElement("div", null, 
-            React.createElement("h3", null, "Handlebars"), 
-            this.state.Handlebars.map(baseDisplay.bind(this))
+            React.createElement("ul", null, 
+              React.createElement("h3", {className: "component-title", onClick: this.handleClick}, "Handlebars"), 
+              this.state.Handlebars.map(baseDisplay.bind(this))
+            )
           ), 
           React.createElement("div", null, 
-            React.createElement("h3", null, "Wheelsets"), 
-            this.state.WheelSets.map(baseDisplay.bind(this))
+            React.createElement("ul", null, 
+              React.createElement("h3", {className: "component-title", onClick: this.handleClick}, "Wheelsets"), 
+              this.state.WheelSets.map(baseDisplay.bind(this))
+            )
           ), 
           React.createElement("div", null, 
-            React.createElement("h3", null, "Tires"), 
-            this.state.Tires.map(baseDisplay.bind(this))
+            React.createElement("ul", null, 
+              React.createElement("h3", {className: "component-title", onClick: this.handleClick}, "Tires"), 
+              this.state.Tires.map(baseDisplay.bind(this))
+            )
           ), 
           React.createElement("div", null, 
-            React.createElement("h3", null, "Pedals"), 
-            this.state.Pedals.map(baseDisplay.bind(this))
+            React.createElement("ul", null, 
+              React.createElement("h3", {className: "component-title", onClick: this.handleClick}, "Pedals"), 
+              this.state.Pedals.map(baseDisplay.bind(this))
+            )
           )
         )
       )
@@ -3374,12 +3407,9 @@ var ProfileComponent = React.createClass({displayName: "ProfileComponent",
       React.createElement("div", {className: "container-fluid"}, 
         React.createElement("div", {className: "row"}, 
           React.createElement("div", {className: "col-md-12"}, 
-            React.createElement("button", {type: "button", onClick: this.handleBuild, className: "btn btn-secondary"}, "Build"), 
-            React.createElement("div", {className: "col-md-4 profile-picture"}
-
-            ), 
-            React.createElement("div", {className: "col-md-4 dummy-data"}
-
+            React.createElement("a", {href: "#frameselection"}, 
+              React.createElement("h3", {className: "build-title"}, "Build"), 
+              React.createElement("img", {src: "images/mechanic1.jpg", onClick: this.handleBuild, className: "build-image"})
             ), 
             React.createElement("div", {className: "col-md-8 bikes-built"}
 

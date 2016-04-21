@@ -141,6 +141,11 @@ var SelectedFrameComponent = React.createClass({
     })
   },
 
+  componentDidMount: function(){
+    var panels = $('.accordian li');
+    panels.hide();
+  },
+
   grabSelection: function(selected){
     console.log(this.state.selectedItem);
     var selectedItem = this.state.selectedItem;
@@ -149,15 +154,23 @@ var SelectedFrameComponent = React.createClass({
     console.log(this.state.selectedItem);
   },
 
+  handleClick: function(){
+    console.log("clicked!");
+    var allPanels = $('.accordian ul h3');
+    var panelContent = $('.accordian li');
+    allPanels.slideDown();
+    panelContent.colapse();
+  },
+
   render: function(){
 
     if(!this.state.FrameSet){
       return (<h1>Loading</h1>)
     }
 
-    var allPanels = $('.accordian li').hide();
+    var allPanels = $('.accordian ul');
 
-    $('.accordian ul h2').click(function(){
+    $('.accordian li').click(function(){
       allPanels.slideUp();
       $(this).nextAll().slideDown();
     });
@@ -170,9 +183,7 @@ var SelectedFrameComponent = React.createClass({
     var baseDisplay = function(item){
       return (
         <div key={item.objectId}>
-          <ul>
-            <BaseDisplayComponent grabSelection={this.grabSelection} item={item}/>
-          </ul>
+          <BaseDisplayComponent grabSelection={this.grabSelection} item={item}/>
         </div>
       )
     }
@@ -215,48 +226,70 @@ var SelectedFrameComponent = React.createClass({
         </div>
         <div className="col-md-6 accordian">
           <div>
-            <h3>Bottom Brackets</h3>
-            {this.state.relatedBottomBrackets.map(baseDisplay.bind(this))}
+            <ul>
+              <h3 className="component-title" onClick={this.handleClick}>Bottom Brackets</h3>
+              {this.state.relatedBottomBrackets.map(baseDisplay.bind(this))}
+            </ul>
           </div>
           <div>
-            <h3>Cranksets</h3>
-            {this.state.Cranksets.map(baseDisplay.bind(this))}
+            <ul>
+              <h3 className="component-title" onClick={this.handleClick}>Cranksets</h3>
+              {this.state.Cranksets.map(baseDisplay.bind(this))}
+            </ul>
           </div>
           <div>
-            <h3>Chainrings</h3>
-            {this.state.Chainrings.map(baseDisplay.bind(this))}
+            <ul>
+              <h3 className="component-title" onClick={this.handleClick}>Chainrings</h3>
+              {this.state.Chainrings.map(baseDisplay.bind(this))}
+            </ul>
           </div>
           <div>
-            <h3>Headsets</h3>
-            {this.state.relatedHeadsets.map(baseDisplay.bind(this))}
+            <ul>
+              <h3 className="component-title" onClick={this.handleClick}>Headsets</h3>
+              {this.state.relatedHeadsets.map(baseDisplay.bind(this))}
+            </ul>
           </div>
           <div>
-            <h3>Seatposts</h3>
-            {this.state.relatedSeatposts.map(baseDisplay.bind(this))}
+            <ul>
+              <h3 className="component-title" onClick={this.handleClick}>Seatposts</h3>
+              {this.state.relatedSeatposts.map(baseDisplay.bind(this))}
+            </ul>
           </div>
           <div>
-            <h3>Saddles</h3>
-            {this.state.Saddles.map(baseDisplay.bind(this))}
+            <ul>
+              <h3 className="component-title" onClick={this.handleClick}>Saddles</h3>
+              {this.state.Saddles.map(baseDisplay.bind(this))}
+            </ul>
           </div>
           <div>
-            <h3>Stems</h3>
-            {this.state.Stems.map(baseDisplay.bind(this))}
+            <ul>
+              <h3 className="component-title" onClick={this.handleClick}>Stems</h3>
+              {this.state.Stems.map(baseDisplay.bind(this))}
+            </ul>
           </div>
           <div>
-            <h3>Handlebars</h3>
-            {this.state.Handlebars.map(baseDisplay.bind(this))}
+            <ul>
+              <h3 className="component-title" onClick={this.handleClick}>Handlebars</h3>
+              {this.state.Handlebars.map(baseDisplay.bind(this))}
+            </ul>
           </div>
           <div>
-            <h3>Wheelsets</h3>
-            {this.state.WheelSets.map(baseDisplay.bind(this))}
+            <ul>
+              <h3 className="component-title" onClick={this.handleClick}>Wheelsets</h3>
+              {this.state.WheelSets.map(baseDisplay.bind(this))}
+            </ul>
           </div>
           <div>
-            <h3>Tires</h3>
-            {this.state.Tires.map(baseDisplay.bind(this))}
+            <ul>
+              <h3 className="component-title" onClick={this.handleClick}>Tires</h3>
+              {this.state.Tires.map(baseDisplay.bind(this))}
+            </ul>
           </div>
           <div>
-            <h3>Pedals</h3>
-            {this.state.Pedals.map(baseDisplay.bind(this))}
+            <ul>
+              <h3 className="component-title" onClick={this.handleClick}>Pedals</h3>
+              {this.state.Pedals.map(baseDisplay.bind(this))}
+            </ul>
           </div>
         </div>
       </div>

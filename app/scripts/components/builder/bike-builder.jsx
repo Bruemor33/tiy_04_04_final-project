@@ -117,7 +117,8 @@ var SelectedFrameComponent = React.createClass({
     newBicycle.set({
       'name': this.state.bikeName,
       'frame': this.state.FrameSet,
-      'components': this.state.selectedItem
+      'components': this.state.selectedItem,
+      'user': Parse.User.current()
     });
 
     newBicycle.save(null, {
@@ -125,16 +126,26 @@ var SelectedFrameComponent = React.createClass({
         var user = Parse.User.current();
         var userBikes = user.get("userBikes") || [];
 
-        userBikes.push(bicycle);
-
+        userBikes.push(newBicycle);
         user.set("userBikes", userBikes);
 
-        user.save().then(function(savedUser){
-          Backbone.history.navigate("profile", {trigger: true});
-        });
+        // Parse is attempting to do a "batch" save which throws a 206 error code
+        // By adding the user save call to the call stack, it prevents this (unexplained) behavior
+        // DO NOT REMOVE!!
+        window.setTimeout(function(){
 
+          user.save().then(function(savedUser){
+            Backbone.history.navigate("profile", {trigger: true});
+          }, function(error){
+            $('#add-frame-form-button').show();
+            console.log(error);
+            alert("There was an error. Please try again.")
+          });
+
+        }, 0);
       },
       error: function(user, error){
+        $('#add-frame-form-button').show();
         alert("Error" + error.code + " " + error.message);
       }
     })
@@ -151,13 +162,13 @@ var SelectedFrameComponent = React.createClass({
     this.setState({"selectedItem": selectedItem});
   },
 
-  // handleClick: function(){
-  //   console.log("clicked!");
-  //   var allPanels = $('.accordian ul h3');
-  //   var panelContent = $('.accordian li');
-  //   allPanels.slideDown();
-  //   panelContent.colapse();
-  // },
+  handleClick: function(){
+    console.log("clicked!");
+    // var allPanels = $('.accordian ul h3');
+    // var panelContent = $('.accordian li');
+    // allPanels.slideDown();
+    // panelContent.colapse();
+  },
 
   render: function(){
 
@@ -179,14 +190,6 @@ var SelectedFrameComponent = React.createClass({
       return (
         <div key={item.objectId}>
           <BaseDisplayComponent grabSelection={this.grabSelection} item={item}/>
-        </div>
-      )
-    }
-
-    var bracketRelationDisplay = function(Cranksets){
-      return (
-        <div key={Cranksets.objectId}>
-          <BottomBracketDisplayComponent Cranksets={Cranksets} />
         </div>
       )
     }

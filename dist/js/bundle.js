@@ -13,16 +13,6 @@ var LinkedStateMixin = require('react/lib/LinkedStateMixin');
 Parse.initialize("bikebuilder");
 Parse.serverURL = "http://bikebuilders3.herokuapp.com/";
 
-//Testing Parse Data.
-// var Frames = Parse.Object.extend("Frames");
-// var frameSet = new Parse.Query( Frames );
-// frameSet.find().then(function(mod){
-//   console.log(mod);
-//   self.setState({"frameSet": mod});
-// }, function(error){
-//   console.log(error);
-// });
-
 //Local Imports
 var BbSelectionComponent = require('./checkbox-comps/bottombracket-check.jsx').BbSelectionComponent;
 var HeadsetSelectionComponent = require('./checkbox-comps/headset-check.jsx').HeadsetSelectionComponent;
@@ -1402,8 +1392,26 @@ var LandingPageComponent = React.createClass({displayName: "LandingPageComponent
       React.createElement("div", {className: "container-fluid", id: "landing", handleClick: this.handleClick}, 
         React.createElement("a", {href: "#home"}, 
           React.createElement("div", null, 
-            React.createElement("h1", {className: "app-title"}, "Fancy App Name"), 
-            React.createElement("h5", {className: "landing-caption"}, "Click anywhere to enter..")
+            React.createElement("h1", {className: "app-title"}, "Rapport"), 
+            React.createElement("h5", {className: "landing-caption"}, "Click Here to Enter")
+          )
+        ), 
+        React.createElement("div", {className: "information-one"}, 
+          React.createElement("div", {className: "catagory-icon"}), 
+          React.createElement("div", {className: "catagory-container"}, 
+            React.createElement("h3", {className: "catagory-title"}, "Building")
+          )
+        ), 
+        React.createElement("div", {className: "information-two"}, 
+          React.createElement("div", {className: "catagory-icon"}), 
+          React.createElement("div", {className: "catagory-container"}, 
+            React.createElement("h3", {className: "catagory-title"}, "Compatibility")
+          )
+        ), 
+        React.createElement("div", {className: "information-three"}, 
+          React.createElement("div", {className: "catagory-icon"}), 
+          React.createElement("div", {className: "catagory-container"}, 
+            React.createElement("h3", {className: "catagory-title"}, "Adding")
           )
         )
       )

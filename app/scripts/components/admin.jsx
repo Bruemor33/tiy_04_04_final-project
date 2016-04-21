@@ -153,6 +153,7 @@ var AdminFormComponent = React.createClass({
     frames.save(null, {
       success: function(newFrame){
         console.log("You pushed successfully");
+        Backbone.history.navigate("components", {trigger: true});
       },
       error: function(newFrame, error){
         alert("Error" + error.code + " " + error.message);
@@ -224,6 +225,8 @@ var AdminFormComponent = React.createClass({
               <label className="form-label" htmlFor="add-frame-image">image</label>
               <input onChange={this.handleFile} type="file" name="newpload" className="form-control" id="add-frame-image" />
             </fieldset>
+            <button type="submit" form="add-component-form" id="add-frame-form-button" className="btn btn-primary ">Add</button>
+
           </div>
           <div className="col-md-4">
             <fieldset className="form-group add-comp-form">
@@ -244,9 +247,9 @@ var AdminFormComponent = React.createClass({
                 {this.state.SeatPost.map(newSeatpost.bind(this))}
               </div>
             </fieldset>
+
           </div>
         </form>
-        <button type="submit" form="add-component-form" id="add-frame-form-button" className="btn btn-primary ">Add</button>
       </div>
     )
   }

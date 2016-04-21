@@ -39,27 +39,30 @@ NAVIGATION
 
 .top-navigation {
   height: 80px;
-  background-color: #2C3A44;
+  background-color: #000;
   color: #FFFFFF;
 
-  .logo img {
-    height: 80px;
-    width: 80px;
-  }
-
-  .title {
+  #profile-nav {
     display: inline-block;
+
+    h3 {
+      display: inline-block;
+      margin-right: 80px;
+      margin-left: 10px;
+      font-size: 30px;
+    }
   }
 
   a {
-    float: right;
+    display: inline;
     text-decoration: none;
     color: #fff;
     font-size: 30px;
-    margin-top: 18px;
+    margin-top: 3px;
   }
 
 }
+
 
 
 
@@ -344,6 +347,7 @@ Building Page
 
 #add-frame-form-button {
   display: inline-block;
+
 }
 
 

@@ -14,90 +14,65 @@ var Backbone = require('backbone');
 
 var ProfileComponent = React.createClass({
   mixins: [Backbone.React.Component.mixin],
-
   getInitialState: function(){
     return {
       'frameSet': [],
-      'Bikes': []
+      'bikes': []
     }
   },
-
   componentDidMount: function(){
-    var self = this
-    var user = this.props.user;
-    var query = new Parse.Query( user );
-    query.include("userBikes");
-    // query.containedIn("userBikes", "frame");
-    query.find().then(function(user){
-      // console.log(user);
-      self.setState({"Bikes": user})
+    var self = this;
+    var query = new Parse.Query(Parse.User);
+
+    query.include("userBikes").include('userBikes.frame');
+
+    query.get(Parse.User.current().id).then(function(user){
+      self.setState({"bikes": user.get('userBikes').reverse()})
     }, function(error){
       console.log(error);
-    })
-
-
-    // var bikes = this.props.user.get('userBikes');
-    // if (bikes == undefined){
-    //   bikes = []
-    // }else{
-    //   console.log(bikes);
-    //   var bikeArray = bikes.map(function(bike){
-    //     console.log("bike, ", bike);
-    //     var frames = bike.get('frame');
-    //     console.log("frames, ", frames);
-    //     // frames.map(function(frames){
-    //     //   console.log(frames);
-    //     // })
-    //     var Image = frame.get('Image');
-    //     console.log(Image);
-    //     var url = Image.url();
-    //     console.log(url);
-    //   });
-    // }
-
-    // var frameSetId = "kyyH8a27q5"
-    // var frameSet = Parse.Object.extend("frameSets");
-    // var query = new Parse.Query( frameSet );
-    // query.get(frameSetId).then(function(frameSet){
-    //   self.setState({'frameSet': frameSet});
-    // })
+    });
   },
-
   handleBuild: function(event){
     event.preventDefault();
     Backbone.history.navigate("frameselection", {trigger: true});
   },
-
   render: function(){
-    // console.log(user.current);
-    console.log(this.props.user);
+    var bikes = this.state.bikes;
 
-    // var bikes = this.props.Bikes;
-    // var image = bikes.get("Image");
-    // var frameImage = image;
+    var builtBikes = bikes.map(function(bike, index){
+      var frame = bike.get('frame');
+      var frameImage = frame.get('Image');
+      var picUrl = frameImage.url();
 
-    var bikes = this.props.user.get('userBikes');
-    console.log(bikes);
-    var single = bikes[0];
-    console.log(single);
-    var frame = single.get('frame');
-    console.log(frame);
-    var image = frame.get('Image');
-    console.log(image);
-    var url = image.url();
-    console.log(url);
+      return (
+        <li key={bike.id}>
+          <h4>{bike.get('name')}</h4>
+          <img src={picUrl}/>
+        </li>
+      );
+    });
+
+    if(builtBikes.length == 0){
+      builtBikes = (<li>You Don&quot;t Have Any Bikes Yet</li>);
+    }
 
     return (
       <div className="container-fluid">
         <div className="row">
           <div className="col-md-12">
+
             <a href={"#frameselection"}>
               <h3 className="build-title">Build</h3>
               <img src="images/mechanic1.jpg" onClick={this.handleBuild} className="build-image" />
             </a>
+
             <div className="col-md-8 bikes-built">
-              <img src={url} />
+              <h3>Your Built Bikes</h3>
+              <ul>
+                {builtBikes}
+              </ul>
             </div>
+
           </div>
         </div>
       </div>

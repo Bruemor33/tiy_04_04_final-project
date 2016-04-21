@@ -12,7 +12,8 @@ require('Backbone-React-Component')
 var Router = Backbone.Router.extend({
   routes: {
     "": "index",
-    "home": "home",
+    "login": "home",
+    "logout": "logout",
     "profile": "profile",
     "components": "components",
     "frameselection": "frameselection",
@@ -35,6 +36,20 @@ var Router = Backbone.Router.extend({
     "saddle": "saddle",
     "*notFound": "notFound"
   },
+  initialize: function(){
+    Parse.initialize("bikebuilder");
+    Parse.serverURL = "http://bikebuilders3.herokuapp.com/";
+  },
+  logout: function(){
+    var self = this;
+
+    Parse.User.logOut().then(function(){
+        localStorage.removeItem('Parse/bikebuilder/currentUser');
+        window.location = '/';
+    }, function(error){
+      console.log(error);
+    });
+  },
   index: function(){
     this.current = "index";
   },
@@ -51,7 +66,6 @@ var Router = Backbone.Router.extend({
     this.current = "frameselection";
   },
   bicycle: function(id){
-    console.log(id);
     this.current = "bicycle";
     this.framesetId = id;
   },

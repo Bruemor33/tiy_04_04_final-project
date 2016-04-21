@@ -34,10 +34,6 @@ var HandlebarFormComponent = require('./partforms/handlebar-form.jsx').Handlebar
 var CranksetFormComponent = require('./partforms/crankset-form.jsx').CranksetFormComponent;
 var SaddleFormComponent = require('./partforms/saddle-form.jsx').SaddleFormComponent;
 
-$(function(){
-  Parse.initialize("bikebuilder");
-  Parse.serverURL = "http://bikebuilders3.herokuapp.com/";
-});
 
 var ControllerComponent = React.createClass({
   mixins: [Backbone.React.Component.mixin],
@@ -47,6 +43,15 @@ var ControllerComponent = React.createClass({
       router: this.props.router,
       user: null
     };
+  },
+  checkUserLoggedIn: function(){
+    var router = this.props.router;
+
+    console.log('checkUserLoggedIn', Parse.User.current());
+
+    if(Parse.User.current()){
+        router.navigate('profile', {trigger: true})
+    }
   },
   componentWillMount: function(){
     this.callback = (function(){
@@ -62,13 +67,7 @@ var ControllerComponent = React.createClass({
   componentWillUnmount: function(){
     this.state.router.off('route', this.callback);
   },
-  logout: function(e){
-    e.preventDefault();
-    Parse.User.logOut().then(function(data, code, xhr){
-      this.setState({'user': null});
-    }.bind(this));
-    Backbone.history.navigate('', {trigger: true});
-  },
+
   // setUser: function(user){
   //   this.setState({"userId": user.id});
   // },
@@ -77,22 +76,27 @@ var ControllerComponent = React.createClass({
     // console.log(this.state.user);
     var body;
     var navigation;
-    console.log(this.state.router);
 
     if(this.state.router.current == "index"){
       body = (<LandingPageComponent />);
     }
+
+    // Login Screen
     if(this.state.router.current == "home"){
+      this.checkUserLoggedIn();
       body = (<HomePageComponent />)
     }
+
     if(this.state.router.current == "profile"){
       navigation = (<Navigation logout={this.logout}/>)
       body = (<ProfileComponent user={this.state.user}/>)
     }
+
     if(this.state.router.current == "components"){
       navigation = (<Navigation />)
       body = (<ComponentForms user={this.state.user} />)
     }
+
     if(this.state.router.current == "frameselection"){
       navigation = (<Navigation logout={this.logout}/>)
       body = (<BuilderComponent user={this.user} />)

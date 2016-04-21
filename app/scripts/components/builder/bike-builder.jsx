@@ -24,7 +24,7 @@ var SelectedFrameComponent = React.createClass({
 //I need to grab the initial state from the selection.
   getInitialState: function(){
     return {
-      // FrameSet: {}
+      bikeName: "",
       BottomBracket: [],
       relatedBottomBrackets: [],
       relatedHeadsets: [],
@@ -109,32 +109,30 @@ var SelectedFrameComponent = React.createClass({
 
   handleSubmit: function(e){
     e.preventDefault();
-    console.log("clicked");
+    $('#add-frame-form-button').hide();
+
     var Bicycle = Parse.Object.extend("Bicycle");
     var newBicycle = new Bicycle();
+
     newBicycle.set({
-      // 'bikeName': this.state.bikeName,
+      'name': this.state.bikeName,
       'frame': this.state.FrameSet,
       'components': this.state.selectedItem
     });
+
     newBicycle.save(null, {
       success: function(bicycle){
         var user = Parse.User.current();
-        var userBikes = user.get("userBikes");
-        if(userBikes === undefined){
-          userBikes = []
-        }
-        userBikes.push(bicycle);
-        user.set("userBikes", userBikes);
-        // userBikes.push(["joel", "likes", "potatoes"]);
-        user.save().then(function(savedUser){
-          console.log(savedUser);
-        });
-        setTimeout(function() {
-          Backbone.history.navigate("profile", {trigger: true});
-        }, 3000);
+        var userBikes = user.get("userBikes") || [];
 
-        console.log("You pushed successfully!");
+        userBikes.push(bicycle);
+
+        user.set("userBikes", userBikes);
+
+        user.save().then(function(savedUser){
+          Backbone.history.navigate("profile", {trigger: true});
+        });
+
       },
       error: function(user, error){
         alert("Error" + error.code + " " + error.message);
@@ -148,11 +146,9 @@ var SelectedFrameComponent = React.createClass({
   },
 
   grabSelection: function(selected){
-    console.log(this.state.selectedItem);
     var selectedItem = this.state.selectedItem;
     selectedItem.push(selected);
     this.setState({"selectedItem": selectedItem});
-    console.log(this.state.selectedItem);
   },
 
   // handleClick: function(){
@@ -176,8 +172,6 @@ var SelectedFrameComponent = React.createClass({
     //   $(this).nextAll().slideDown();
     // });
 
-    console.log(this.state.FrameSet);
-
     var image = this.state.FrameSet.get("Image");
     var frameImage = image;
 
@@ -194,19 +188,15 @@ var SelectedFrameComponent = React.createClass({
         <div key={Cranksets.objectId}>
           <BottomBracketDisplayComponent Cranksets={Cranksets} />
         </div>
-
       )
     }
 
-
     var bikeComponents = this.state.selectedItem.map(function(item){
       return (
-        <tbody>
-          <tr className="build-table">
-            <td className="build-item-name">{item.get('name')}</td>
-            <td className="build-item-price">{item.get('price')}</td>
-          </tr>
-        </tbody>
+        <tr className="build-table" key={item.id}>
+          <td className="build-item-name">{item.get('name')}</td>
+          <td className="build-item-price">{item.get('price')}</td>
+        </tr>
       )
     });
 
@@ -220,11 +210,13 @@ var SelectedFrameComponent = React.createClass({
           <p className="frame-name-caption">{this.state.FrameSet.get("name")}</p>
           <fieldset className="form-name-build">
             <label className="form-label" htmlFor="add-build-name">Build Name</label>
-            <input type="text" className="form-control" id="add-build-name"></input>
+            <input type="text" className="form-control" id="add-build-name" valueLink={this.linkState('bikeName')}></input>
           </fieldset>
           <div id="build-list" className="current-build-list ">
             <table id="build-items-table-container">
-              {bikeComponents}
+              <tbody>
+                {bikeComponents}
+              </tbody>
             </table>
           </div>
           <button type="submit" onClick={this.handleSubmit} form="add-parts-form" id="add-frame-form-button" className="btn btn-primary ">push</button>

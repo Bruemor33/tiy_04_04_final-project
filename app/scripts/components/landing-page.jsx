@@ -12,17 +12,12 @@ require('Backbone-React-Component');
 var LandingPageComponent = React.createClass({
   mixins: [Backbone.React.Component.mixin],
 
-  handleClick: function(e){
-    e.preventDefault();
-    Backbone.history.navigate("home", {trigger: true});
-  },
-
   render: function(){
     return (
-      <div className="container-fluid" id="landing" handleClick={this.handleClick}>
-        <a href={"#home"}>
+      <div className="container-fluid" id="landing">
+        <a href="#login">
           <div>
-            <h1 className="app-title">Rapport</h1>
+            <h1 className="app-title">Cycle Compatibility</h1>
             <h5 className="landing-caption">Click Here to Enter</h5>
           </div>
         </a>

@@ -22,8 +22,12 @@ var Navigation = React.createClass({
       <div className="container-fluid">
         <nav className="row">
           <div className="top-navigation col-md-12">
-            <span className="logo"><img src="images/preview.jpg" /></span><h3 className="title">Bikes</h3>
-            <a href={"#components"}>Add Components</a>
+            <span className="logo"></span>
+            <a id="profile-nav" href={"#profile"}>
+              <h3 className="title">Cycle</h3>
+            </a>
+            <a id="form-nav" href={"#components"}>Add Components</a>
+            <a href="#logout">Logout</a>
           </div>
         </nav>
       </div>

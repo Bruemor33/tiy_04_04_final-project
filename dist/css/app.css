@@ -5825,19 +5825,21 @@ NAVIGATION
 *****************************************************************************************/
 .top-navigation {
   height: 80px;
-  background-color: #2C3A44;
+  background-color: #000;
   color: #FFFFFF; }
-  .top-navigation .logo img {
-    height: 80px;
-    width: 80px; }
-  .top-navigation .title {
+  .top-navigation #profile-nav {
     display: inline-block; }
+    .top-navigation #profile-nav h3 {
+      display: inline-block;
+      margin-right: 80px;
+      margin-left: 10px;
+      font-size: 30px; }
   .top-navigation a {
-    float: right;
+    display: inline;
     text-decoration: none;
     color: #fff;
     font-size: 30px;
-    margin-top: 18px; }
+    margin-top: 3px; }
 
 /*****************************************************************************************
 MAIN

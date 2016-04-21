@@ -155,6 +155,7 @@ var AdminFormComponent = React.createClass({displayName: "AdminFormComponent",
     frames.save(null, {
       success: function(newFrame){
         console.log("You pushed successfully");
+        Backbone.history.navigate("components", {trigger: true});
       },
       error: function(newFrame, error){
         alert("Error" + error.code + " " + error.message);
@@ -225,7 +226,9 @@ var AdminFormComponent = React.createClass({displayName: "AdminFormComponent",
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
               React.createElement("label", {className: "form-label", htmlFor: "add-frame-image"}, "image"), 
               React.createElement("input", {onChange: this.handleFile, type: "file", name: "newpload", className: "form-control", id: "add-frame-image"})
-            )
+            ), 
+            React.createElement("button", {type: "submit", form: "add-component-form", id: "add-frame-form-button", className: "btn btn-primary "}, "Add")
+
           ), 
           React.createElement("div", {className: "col-md-4"}, 
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
@@ -246,9 +249,9 @@ var AdminFormComponent = React.createClass({displayName: "AdminFormComponent",
                 this.state.SeatPost.map(newSeatpost.bind(this))
               )
             )
+
           )
-        ), 
-        React.createElement("button", {type: "submit", form: "add-component-form", id: "add-frame-form-button", className: "btn btn-primary "}, "Add")
+        )
       )
     )
   }
@@ -339,7 +342,7 @@ var SelectedFrameComponent = React.createClass({displayName: "SelectedFrameCompo
 //I need to grab the initial state from the selection.
   getInitialState: function(){
     return {
-      // FrameSet: {}
+      bikeName: "",
       BottomBracket: [],
       relatedBottomBrackets: [],
       relatedHeadsets: [],
@@ -424,32 +427,30 @@ var SelectedFrameComponent = React.createClass({displayName: "SelectedFrameCompo
 
   handleSubmit: function(e){
     e.preventDefault();
-    console.log("clicked");
+    $('#add-frame-form-button').hide();
+
     var Bicycle = Parse.Object.extend("Bicycle");
     var newBicycle = new Bicycle();
+
     newBicycle.set({
-      // 'bikeName': this.state.bikeName,
+      'name': this.state.bikeName,
       'frame': this.state.FrameSet,
       'components': this.state.selectedItem
     });
+
     newBicycle.save(null, {
       success: function(bicycle){
         var user = Parse.User.current();
-        var userBikes = user.get("userBikes");
-        if(userBikes === undefined){
-          userBikes = []
-        }
-        userBikes.push(bicycle);
-        user.set("userBikes", userBikes);
-        // userBikes.push(["joel", "likes", "potatoes"]);
-        user.save().then(function(savedUser){
-          console.log(savedUser);
-        });
-        setTimeout(function() {
-          Backbone.history.navigate("profile", {trigger: true});
-        }, 3000);
+        var userBikes = user.get("userBikes") || [];
 
-        console.log("You pushed successfully!");
+        userBikes.push(bicycle);
+
+        user.set("userBikes", userBikes);
+
+        user.save().then(function(savedUser){
+          Backbone.history.navigate("profile", {trigger: true});
+        });
+
       },
       error: function(user, error){
         alert("Error" + error.code + " " + error.message);
@@ -463,11 +464,9 @@ var SelectedFrameComponent = React.createClass({displayName: "SelectedFrameCompo
   },
 
   grabSelection: function(selected){
-    console.log(this.state.selectedItem);
     var selectedItem = this.state.selectedItem;
     selectedItem.push(selected);
     this.setState({"selectedItem": selectedItem});
-    console.log(this.state.selectedItem);
   },
 
   // handleClick: function(){
@@ -491,8 +490,6 @@ var SelectedFrameComponent = React.createClass({displayName: "SelectedFrameCompo
     //   $(this).nextAll().slideDown();
     // });
 
-    console.log(this.state.FrameSet);
-
     var image = this.state.FrameSet.get("Image");
     var frameImage = image;
 
@@ -509,18 +506,14 @@ var SelectedFrameComponent = React.createClass({displayName: "SelectedFrameCompo
         React.createElement("div", {key: Cranksets.objectId}, 
           React.createElement(BottomBracketDisplayComponent, {Cranksets: Cranksets})
         )
-
       )
     }
 
-
     var bikeComponents = this.state.selectedItem.map(function(item){
       return (
-        React.createElement("tbody", null, 
-          React.createElement("tr", {className: "build-table"}, 
-            React.createElement("td", {className: "build-item-name"}, item.get('name')), 
-            React.createElement("td", {className: "build-item-price"}, item.get('price'))
-          )
+        React.createElement("tr", {className: "build-table", key: item.id}, 
+          React.createElement("td", {className: "build-item-name"}, item.get('name')), 
+          React.createElement("td", {className: "build-item-price"}, item.get('price'))
         )
       )
     });
@@ -535,11 +528,13 @@ var SelectedFrameComponent = React.createClass({displayName: "SelectedFrameCompo
           React.createElement("p", {className: "frame-name-caption"}, this.state.FrameSet.get("name")), 
           React.createElement("fieldset", {className: "form-name-build"}, 
             React.createElement("label", {className: "form-label", htmlFor: "add-build-name"}, "Build Name"), 
-            React.createElement("input", {type: "text", className: "form-control", id: "add-build-name"})
+            React.createElement("input", {type: "text", className: "form-control", id: "add-build-name", valueLink: this.linkState('bikeName')})
           ), 
           React.createElement("div", {id: "build-list", className: "current-build-list "}, 
             React.createElement("table", {id: "build-items-table-container"}, 
-              bikeComponents
+              React.createElement("tbody", null, 
+                bikeComponents
+              )
             )
           ), 
           React.createElement("button", {type: "submit", onClick: this.handleSubmit, form: "add-parts-form", id: "add-frame-form-button", className: "btn btn-primary "}, "push")
@@ -1208,8 +1203,12 @@ var Navigation = React.createClass({displayName: "Navigation",
       React.createElement("div", {className: "container-fluid"}, 
         React.createElement("nav", {className: "row"}, 
           React.createElement("div", {className: "top-navigation col-md-12"}, 
-            React.createElement("span", {className: "logo"}, React.createElement("img", {src: "images/preview.jpg"})), React.createElement("h3", {className: "title"}, "Bikes"), 
-            React.createElement("a", {href: "#components"}, "Add Components")
+            React.createElement("span", {className: "logo"}), 
+            React.createElement("a", {id: "profile-nav", href: "#profile"}, 
+              React.createElement("h3", {className: "title"}, "Cycle")
+            ), 
+            React.createElement("a", {id: "form-nav", href: "#components"}, "Add Components"), 
+            React.createElement("a", {href: "#logout"}, "Logout")
           )
         )
       )
@@ -1260,10 +1259,6 @@ var HandlebarFormComponent = require('./partforms/handlebar-form.jsx').Handlebar
 var CranksetFormComponent = require('./partforms/crankset-form.jsx').CranksetFormComponent;
 var SaddleFormComponent = require('./partforms/saddle-form.jsx').SaddleFormComponent;
 
-$(function(){
-  Parse.initialize("bikebuilder");
-  Parse.serverURL = "http://bikebuilders3.herokuapp.com/";
-});
 
 var ControllerComponent = React.createClass({displayName: "ControllerComponent",
   mixins: [Backbone.React.Component.mixin],
@@ -1273,6 +1268,15 @@ var ControllerComponent = React.createClass({displayName: "ControllerComponent",
       router: this.props.router,
       user: null
     };
+  },
+  checkUserLoggedIn: function(){
+    var router = this.props.router;
+
+    console.log('checkUserLoggedIn', Parse.User.current());
+
+    if(Parse.User.current()){
+        router.navigate('profile', {trigger: true})
+    }
   },
   componentWillMount: function(){
     this.callback = (function(){
@@ -1288,13 +1292,7 @@ var ControllerComponent = React.createClass({displayName: "ControllerComponent",
   componentWillUnmount: function(){
     this.state.router.off('route', this.callback);
   },
-  logout: function(e){
-    e.preventDefault();
-    Parse.User.logOut().then(function(data, code, xhr){
-      this.setState({'user': null});
-    }.bind(this));
-    Backbone.history.navigate('', {trigger: true});
-  },
+
   // setUser: function(user){
   //   this.setState({"userId": user.id});
   // },
@@ -1303,22 +1301,27 @@ var ControllerComponent = React.createClass({displayName: "ControllerComponent",
     // console.log(this.state.user);
     var body;
     var navigation;
-    console.log(this.state.router);
 
     if(this.state.router.current == "index"){
       body = (React.createElement(LandingPageComponent, null));
     }
+
+    // Login Screen
     if(this.state.router.current == "home"){
+      this.checkUserLoggedIn();
       body = (React.createElement(HomePageComponent, null))
     }
+
     if(this.state.router.current == "profile"){
       navigation = (React.createElement(Navigation, {logout: this.logout}))
       body = (React.createElement(ProfileComponent, {user: this.state.user}))
     }
+
     if(this.state.router.current == "components"){
       navigation = (React.createElement(Navigation, null))
       body = (React.createElement(ComponentForms, {user: this.state.user}))
     }
+
     if(this.state.router.current == "frameselection"){
       navigation = (React.createElement(Navigation, {logout: this.logout}))
       body = (React.createElement(BuilderComponent, {user: this.user}))
@@ -1424,17 +1427,12 @@ require('Backbone-React-Component');
 var LandingPageComponent = React.createClass({displayName: "LandingPageComponent",
   mixins: [Backbone.React.Component.mixin],
 
-  handleClick: function(e){
-    e.preventDefault();
-    Backbone.history.navigate("home", {trigger: true});
-  },
-
   render: function(){
     return (
-      React.createElement("div", {className: "container-fluid", id: "landing", handleClick: this.handleClick}, 
-        React.createElement("a", {href: "#home"}, 
+      React.createElement("div", {className: "container-fluid", id: "landing"}, 
+        React.createElement("a", {href: "#login"}, 
           React.createElement("div", null, 
-            React.createElement("h1", {className: "app-title"}, "Rapport"), 
+            React.createElement("h1", {className: "app-title"}, "Cycle Compatibility"), 
             React.createElement("h5", {className: "landing-caption"}, "Click Here to Enter")
           )
         ), 
@@ -1548,6 +1546,7 @@ var BottomBracketForm = React.createClass({displayName: "BottomBracketForm",
     bb.save(null, {
       success: function(user){
         console.log("You pushed successfully");
+        Backbone.history.navigate("components", {trigger: true});
       },
       error: function(user, error){
         alert("Error" + error.code + " " + error.message);
@@ -1575,8 +1574,10 @@ var BottomBracketForm = React.createClass({displayName: "BottomBracketForm",
 
     return (
       React.createElement("div", {className: "container-fluid col-md-12"}, 
-        React.createElement("h2", {className: "add-component-heading text-center"}, "Add Comp Here"), 
+        React.createElement("h2", {className: "add-component-heading text-center"}, "Add a Bottom Bracket"), 
+
         React.createElement("form", {id: "add-component-form", onSubmit: this.handleSubmit}, 
+
           React.createElement("div", {className: "col-md-4"}, 
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
               React.createElement("label", {className: "form-label", htmlFor: "add-bb-name"}, "Bracket name"), 
@@ -1597,8 +1598,12 @@ var BottomBracketForm = React.createClass({displayName: "BottomBracketForm",
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
               React.createElement("label", {className: "form-label", htmlFor: "add-bb-url"}, "Url"), 
               React.createElement("input", {valueLink: this.linkState('url'), type: "text", className: "form-control", id: "add-bb-url"})
-            )
+            ), 
+
+            React.createElement("button", {type: "submit", form: "add-component-form", id: "add-frame-form-button", className: "btn btn-primary "}, "Add")
+
           ), 
+
           React.createElement("div", {className: "col-md-4"}, 
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
               React.createElement("h3", {className: "component-title"}, "CrankSets"), 
@@ -1607,8 +1612,8 @@ var BottomBracketForm = React.createClass({displayName: "BottomBracketForm",
               )
             )
           )
-        ), 
-        React.createElement("button", {type: "submit", form: "add-component-form", id: "add-frame-form-button", className: "btn btn-primary "}, "Add")
+
+        )
       )
     )
   }
@@ -1692,6 +1697,7 @@ var ChainFormComponent = React.createClass({displayName: "ChainFormComponent",
     chain.save(null, {
       success: function(user){
         console.log("You pushed successfully");
+        Backbone.history.navigate("components", {trigger: true});
       },
       error: function(user, error){
         alert("Error" + error.code + " " + error.message);
@@ -1703,7 +1709,7 @@ var ChainFormComponent = React.createClass({displayName: "ChainFormComponent",
 
     return (
       React.createElement("div", {className: "container-fluid col-md-12"}, 
-        React.createElement("h2", {className: "add-component-heading text-center"}, "Add Comp Here"), 
+        React.createElement("h2", {className: "add-component-heading text-center"}, "Add Chain"), 
         React.createElement("form", {id: "add-component-form", onSubmit: this.handleSubmit}, 
           React.createElement("div", {className: "col-md-4"}, 
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
@@ -1737,10 +1743,11 @@ var ChainFormComponent = React.createClass({displayName: "ChainFormComponent",
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
               React.createElement("label", {className: "form-label", htmlFor: "add-chain-url"}, "url"), 
               React.createElement("input", {valueLink: this.linkState('url'), type: "text", className: "form-control", id: "add-chain-url"})
-            )
+            ), 
+            React.createElement("button", {type: "submit", form: "add-component-form", id: "add-frame-form-button", className: "btn btn-primary "}, "Add")
+
           )
-        ), 
-        React.createElement("button", {type: "submit", form: "add-component-form", id: "add-frame-form-button", className: "btn btn-primary "}, "Add")
+        )
       )
     )
   }
@@ -1820,6 +1827,7 @@ var ChainRingFormComponent = React.createClass({displayName: "ChainRingFormCompo
     chainRing.save(null, {
       success: function(user){
         console.log("You pushed successfully");
+        Backbone.history.navigate("components", {trigger: true});
       },
       error: function(user, error){
         alert("Error" + error.code + " " + error.message);
@@ -1831,7 +1839,7 @@ var ChainRingFormComponent = React.createClass({displayName: "ChainRingFormCompo
 
     return (
       React.createElement("div", {className: "container-fluid col-md-12"}, 
-        React.createElement("h2", {className: "add-component-heading text-center"}, "Add Comp Here"), 
+        React.createElement("h2", {className: "add-component-heading text-center"}, "Add a Chainring"), 
         React.createElement("form", {id: "add-component-form", onSubmit: this.handleSubmit}, 
           React.createElement("div", {className: "col-md-4"}, 
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
@@ -1857,10 +1865,11 @@ var ChainRingFormComponent = React.createClass({displayName: "ChainRingFormCompo
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
               React.createElement("label", {className: "form-label", htmlFor: "add-chainring-url"}, "url"), 
               React.createElement("input", {valueLink: this.linkState('url'), type: "text", className: "form-control", id: "add-chainring-url"})
-            )
+            ), 
+            React.createElement("button", {type: "submit", form: "add-component-form", id: "add-frame-form-button", className: "btn btn-primary "}, "Add")
+
           )
-        ), 
-        React.createElement("button", {type: "submit", form: "add-component-form", id: "add-frame-form-button", className: "btn btn-primary "}, "Add")
+        )
       )
     )
   }
@@ -1925,6 +1934,7 @@ var ClipFormComponent = React.createClass({displayName: "ClipFormComponent",
     clip.save(null, {
       success: function(user){
         console.log("You pushed successfully");
+        Backbone.history.navigate("components", {trigger: true});
       },
       error: function(user, error){
         alert("Error" + error.code + " " + error.message);
@@ -1936,7 +1946,7 @@ var ClipFormComponent = React.createClass({displayName: "ClipFormComponent",
 
     return (
       React.createElement("div", {className: "container-fluid col-md-12"}, 
-        React.createElement("h2", {className: "add-component-heading text-center"}, "Add Comp Here"), 
+        React.createElement("h2", {className: "add-component-heading text-center"}, "Add Foot Retention"), 
         React.createElement("form", {id: "add-component-form", onSubmit: this.handleSubmit}, 
           React.createElement("div", {className: "col-md-4"}, 
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
@@ -1954,10 +1964,11 @@ var ClipFormComponent = React.createClass({displayName: "ClipFormComponent",
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
               React.createElement("label", {className: "form-label", htmlFor: "add-headset-url"}, "url"), 
               React.createElement("input", {valueLink: this.linkState('url'), type: "text", className: "form-control", id: "add-headset-url"})
-            )
+            ), 
+            React.createElement("button", {type: "submit", form: "add-component-form", id: "add-frame-form-button", className: "btn btn-primary "}, "Add")
+
           )
-        ), 
-        React.createElement("button", {type: "submit", form: "add-component-form", id: "add-frame-form-button", className: "btn btn-primary "}, "Add")
+        )
       )
     )
   }
@@ -2040,6 +2051,7 @@ var CranksetFormComponent = React.createClass({displayName: "CranksetFormCompone
     crankSets.save(null, {
       success: function(user){
         console.log("You pushed successfully");
+        Backbone.history.navigate("components", {trigger: true});
       },
       error: function(user, error){
         alert("Error" + error.code + " " + error.message);
@@ -2067,7 +2079,7 @@ var CranksetFormComponent = React.createClass({displayName: "CranksetFormCompone
 
     return (
       React.createElement("div", {className: "container-fluid col-md-12"}, 
-        React.createElement("h2", {className: "add-component-heading text-center"}, "Add Comp Here"), 
+        React.createElement("h2", {className: "add-component-heading text-center"}, "Add a Crankset"), 
         React.createElement("form", {id: "add-component-form", onSubmit: this.handleSubmit}, 
           React.createElement("div", {className: "col-md-4"}, 
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
@@ -2089,7 +2101,9 @@ var CranksetFormComponent = React.createClass({displayName: "CranksetFormCompone
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
               React.createElement("label", {className: "form-label", htmlFor: "add-headset-url"}, "url"), 
               React.createElement("input", {valueLink: this.linkState('url'), type: "text", className: "form-control", id: "add-headset-url"})
-            )
+            ), 
+            React.createElement("button", {type: "submit", form: "add-component-form", id: "add-frame-form-button", className: "btn btn-primary "}, "Add")
+
           ), 
           React.createElement("div", {className: "col-md-4"}, 
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
@@ -2098,9 +2112,9 @@ var CranksetFormComponent = React.createClass({displayName: "CranksetFormCompone
                 this.state.ChainRings.map(newChainrings.bind(this))
               )
             )
+
           )
-        ), 
-        React.createElement("button", {type: "submit", form: "add-component-form", id: "add-frame-form-button", className: "btn btn-primary "}, "Add")
+        )
       )
     )
   }
@@ -2173,6 +2187,7 @@ var HandlebarFormComponent = React.createClass({displayName: "HandlebarFormCompo
     handleBars.save(null, {
       success: function(user){
         console.log("You pushed successfully");
+        Backbone.history.navigate("components", {trigger: true});
       },
       error: function(user, error){
         alert("Error" + error.code + " " + error.message);
@@ -2184,7 +2199,7 @@ var HandlebarFormComponent = React.createClass({displayName: "HandlebarFormCompo
 
     return (
       React.createElement("div", {className: "container-fluid col-md-12"}, 
-        React.createElement("h2", {className: "add-component-heading text-center"}, "Add Comp Here"), 
+        React.createElement("h2", {className: "add-component-heading text-center"}, "Add Handlebars"), 
         React.createElement("form", {id: "add-component-form", onSubmit: this.handleSubmit}, 
           React.createElement("div", {className: "col-md-4"}, 
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
@@ -2222,10 +2237,11 @@ var HandlebarFormComponent = React.createClass({displayName: "HandlebarFormCompo
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
               React.createElement("label", {className: "form-label", htmlFor: "add-headset-url"}, "url"), 
               React.createElement("input", {valueLink: this.linkState('url'), type: "text", className: "form-control", id: "add-headset-url"})
-            )
+            ), 
+            React.createElement("button", {type: "submit", form: "add-component-form", id: "add-frame-form-button", className: "btn btn-primary "}, "Add")
+
           )
-        ), 
-        React.createElement("button", {type: "submit", form: "add-component-form", id: "add-frame-form-button", className: "btn btn-primary "}, "Add")
+        )
       )
     )
   }
@@ -2288,6 +2304,7 @@ var HeadsetForm = React.createClass({displayName: "HeadsetForm",
     headSet.save(null, {
       success: function(user){
         console.log("You pushed successfully");
+        Backbone.history.navigate("components", {trigger: true});
       },
       error: function(user, error){
         alert("Error" + error.code + " " + error.message);
@@ -2299,7 +2316,7 @@ var HeadsetForm = React.createClass({displayName: "HeadsetForm",
 
     return (
       React.createElement("div", {className: "container-fluid col-md-12"}, 
-        React.createElement("h2", {className: "add-component-heading text-center"}, "Add Comp Here"), 
+        React.createElement("h2", {className: "add-component-heading text-center"}, "Add a Headset"), 
         React.createElement("form", {id: "add-component-form", onSubmit: this.handleSubmit}, 
           React.createElement("div", {className: "col-md-4"}, 
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
@@ -2317,10 +2334,11 @@ var HeadsetForm = React.createClass({displayName: "HeadsetForm",
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
               React.createElement("label", {className: "form-label", htmlFor: "add-headset-tube"}, "tube"), 
               React.createElement("input", {valueLink: this.linkState('tube'), type: "text", className: "form-control", id: "add-headset-tube"})
-            )
+            ), 
+            React.createElement("button", {type: "submit", form: "add-component-form", id: "add-frame-form-button", className: "btn btn-primary "}, "Add")
+
           )
-        ), 
-        React.createElement("button", {type: "submit", form: "add-component-form", id: "add-frame-form-button", className: "btn btn-primary "}, "Add")
+        )
       )
     )
   }
@@ -2387,6 +2405,7 @@ var HubFormComponent = React.createClass({displayName: "HubFormComponent",
     hub.save(null, {
       success: function(user){
         console.log("You pushed successfully");
+        Backbone.history.navigate("components", {trigger: true});
       },
       error: function(user, error){
         alert("Error" + error.code + " " + error.message);
@@ -2398,7 +2417,7 @@ var HubFormComponent = React.createClass({displayName: "HubFormComponent",
 
     return (
       React.createElement("div", {className: "container-fluid col-md-12"}, 
-        React.createElement("h2", {className: "add-component-heading text-center"}, "Add Comp Here"), 
+        React.createElement("h2", {className: "add-component-heading text-center"}, "Add a Hub"), 
         React.createElement("form", {id: "add-component-form", onSubmit: this.handleSubmit}, 
           React.createElement("div", {className: "col-md-4"}, 
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
@@ -2424,10 +2443,11 @@ var HubFormComponent = React.createClass({displayName: "HubFormComponent",
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
               React.createElement("label", {className: "form-label", htmlFor: "add-hub-url"}, "url"), 
               React.createElement("input", {valueLink: this.linkState('url'), type: "text", className: "form-control", id: "add-hub-url"})
-            )
+            ), 
+            React.createElement("button", {type: "submit", form: "add-component-form", id: "add-frame-form-button", className: "btn btn-primary "}, "Add")
+
           )
-        ), 
-        React.createElement("button", {type: "submit", form: "add-component-form", id: "add-frame-form-button", className: "btn btn-primary "}, "Add")
+        )
       )
     )
   }
@@ -2511,6 +2531,7 @@ var PedalFormComponent = React.createClass({displayName: "PedalFormComponent",
     pedal.save(null, {
       success: function(user){
         console.log("You pushed successfully");
+        Backbone.history.navigate("components", {trigger: true});
       },
       error: function(user, error){
         alert("Error" + error.code + " " + error.message);
@@ -2538,7 +2559,7 @@ var PedalFormComponent = React.createClass({displayName: "PedalFormComponent",
 
     return (
       React.createElement("div", {className: "container-fluid col-md-12"}, 
-        React.createElement("h2", {className: "add-component-heading text-center"}, "Add Comp Here"), 
+        React.createElement("h2", {className: "add-component-heading text-center"}, "Add Pedals"), 
         React.createElement("form", {id: "add-component-form", onSubmit: this.handleSubmit}, 
           React.createElement("div", {className: "col-md-4"}, 
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
@@ -2560,7 +2581,9 @@ var PedalFormComponent = React.createClass({displayName: "PedalFormComponent",
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
               React.createElement("label", {className: "form-label", htmlFor: "add-headset-url"}, "url"), 
               React.createElement("input", {valueLink: this.linkState('url'), type: "text", className: "form-control", id: "add-headset-url"})
-            )
+            ), 
+            React.createElement("button", {type: "submit", form: "add-component-form", id: "add-frame-form-button", className: "btn btn-primary "}, "Add")
+
           ), 
           React.createElement("div", {className: "col-md-4"}, 
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
@@ -2570,8 +2593,7 @@ var PedalFormComponent = React.createClass({displayName: "PedalFormComponent",
               )
             )
           )
-        ), 
-        React.createElement("button", {type: "submit", form: "add-component-form", id: "add-frame-form-button", className: "btn btn-primary "}, "Add")
+        )
       )
     )
   }
@@ -2650,6 +2672,7 @@ var RimComponentForm = React.createClass({displayName: "RimComponentForm",
     headSet.save(null, {
       success: function(user){
         console.log("You pushed successfully");
+        Backbone.history.navigate("components", {trigger: true});
       },
       error: function(user, error){
         alert("Error" + error.code + " " + error.message);
@@ -2661,7 +2684,7 @@ var RimComponentForm = React.createClass({displayName: "RimComponentForm",
 
     return (
       React.createElement("div", {className: "container-fluid col-md-12"}, 
-        React.createElement("h2", {className: "add-component-heading text-center"}, "Add Comp Here"), 
+        React.createElement("h2", {className: "add-component-heading text-center"}, "Add Rims"), 
         React.createElement("form", {id: "add-component-form", onSubmit: this.handleSubmit}, 
           React.createElement("div", {className: "col-md-4"}, 
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
@@ -2711,10 +2734,11 @@ var RimComponentForm = React.createClass({displayName: "RimComponentForm",
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
               React.createElement("label", {className: "form-label", htmlFor: "add-hub-url"}, "url"), 
               React.createElement("input", {valueLink: this.linkState('url'), type: "text", className: "form-control", id: "add-hub-url"})
-            )
+            ), 
+            React.createElement("button", {type: "submit", form: "add-component-form", id: "add-frame-form-button", className: "btn btn-primary "}, "Add")
+
           )
-        ), 
-        React.createElement("button", {type: "submit", form: "add-component-form", id: "add-frame-form-button", className: "btn btn-primary "}, "Add")
+        )
       )
     )
   }
@@ -2785,6 +2809,7 @@ var SaddleFormComponent = React.createClass({displayName: "SaddleFormComponent",
     saddle.save(null, {
       success: function(user){
         console.log("You pushed successfully");
+        Backbone.history.navigate("components", {trigger: true});
       },
       error: function(user, error){
         alert("Error" + error.code + " " + error.message);
@@ -2799,7 +2824,7 @@ var SaddleFormComponent = React.createClass({displayName: "SaddleFormComponent",
 
     return (
       React.createElement("div", {className: "container-fluid col-md-12"}, 
-        React.createElement("h2", {className: "add-component-heading text-center"}, "Add Comp Here"), 
+        React.createElement("h2", {className: "add-component-heading text-center"}, "Add a Saddle"), 
         React.createElement("form", {id: "add-component-form", onSubmit: this.handleSubmit}, 
           React.createElement("div", {className: "col-md-4"}, 
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
@@ -2829,10 +2854,11 @@ var SaddleFormComponent = React.createClass({displayName: "SaddleFormComponent",
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
               React.createElement("label", {className: "form-label", htmlFor: "add-headset-url"}, "url"), 
               React.createElement("input", {valueLink: this.linkState('url'), type: "text", className: "form-control", id: "add-headset-url"})
-            )
+            ), 
+            React.createElement("button", {type: "submit", form: "add-component-form", id: "add-frame-form-button", className: "btn btn-primary "}, "Add")
+
           )
-        ), 
-        React.createElement("button", {type: "submit", form: "add-component-form", id: "add-frame-form-button", className: "btn btn-primary "}, "Add")
+        )
       )
     )
   }
@@ -2913,6 +2939,7 @@ var SeatpostForm = React.createClass({displayName: "SeatpostForm",
     seatPost.save(null, {
       success: function(user){
         console.log("You pushed successfully");
+        Backbone.history.navigate("components", {trigger: true});
       },
       error: function(user, error){
         alert("Error" + error.code + " " + error.message);
@@ -2956,7 +2983,9 @@ var SeatpostForm = React.createClass({displayName: "SeatpostForm",
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
               React.createElement("label", {className: "form-label", htmlFor: "add-seatpost-tube"}, "url"), 
               React.createElement("input", {valueLink: this.linkState('url'), type: "text", className: "form-control", id: "add-seatpost-tube"})
-            )
+            ), 
+            React.createElement("button", {type: "submit", form: "add-component-form", id: "add-frame-form-button", className: "btn btn-primary"}, "Add")
+
           ), 
           React.createElement("div", {className: "col-md-4"}, 
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
@@ -2966,8 +2995,7 @@ var SeatpostForm = React.createClass({displayName: "SeatpostForm",
               )
             )
           )
-        ), 
-        React.createElement("button", {type: "submit", form: "add-component-form", id: "add-frame-form-button", className: "btn btn-primary"}, "Add")
+        )
       )
     )
   }
@@ -3055,6 +3083,7 @@ var StemFormComponent = React.createClass({displayName: "StemFormComponent",
     stem.save(null, {
       success: function(user){
         console.log("You pushed successfully");
+        Backbone.history.navigate("components", {trigger: true});
       },
       error: function(user, error){
         alert("Error" + error.code + " " + error.message);
@@ -3082,7 +3111,7 @@ var StemFormComponent = React.createClass({displayName: "StemFormComponent",
 
     return (
       React.createElement("div", {className: "container-fluid col-md-12"}, 
-        React.createElement("h2", {className: "add-component-heading text-center"}, "Add Comp Here"), 
+        React.createElement("h2", {className: "add-component-heading text-center"}, "Add a Stem"), 
         React.createElement("form", {id: "add-component-form", onSubmit: this.handleSubmit}, 
           React.createElement("div", {className: "col-md-4"}, 
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
@@ -3112,7 +3141,9 @@ var StemFormComponent = React.createClass({displayName: "StemFormComponent",
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
               React.createElement("label", {className: "form-label", htmlFor: "add-headset-url"}, "url"), 
               React.createElement("input", {valueLink: this.linkState('url'), type: "text", className: "form-control", id: "add-headset-url"})
-            )
+            ), 
+            React.createElement("button", {type: "submit", form: "add-component-form", id: "add-frame-form-button", className: "btn btn-primary "}, "Add")
+
           ), 
           React.createElement("div", {className: "col-md-4"}, 
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
@@ -3122,8 +3153,7 @@ var StemFormComponent = React.createClass({displayName: "StemFormComponent",
               )
             )
           )
-        ), 
-        React.createElement("button", {type: "submit", form: "add-component-form", id: "add-frame-form-button", className: "btn btn-primary "}, "Add")
+        )
       )
     )
   }
@@ -3186,6 +3216,7 @@ var TireComponentForm = React.createClass({displayName: "TireComponentForm",
     tire.save(null, {
       success: function(user){
         console.log("You pushed successfully");
+        Backbone.history.navigate("components", {trigger: true});
       },
       error: function(user, error){
         alert("Error" + error.code + " " + error.message);
@@ -3197,7 +3228,7 @@ var TireComponentForm = React.createClass({displayName: "TireComponentForm",
 
     return (
       React.createElement("div", {className: "container-fluid col-md-12"}, 
-        React.createElement("h2", {className: "add-component-heading text-center"}, "Add Comp Here"), 
+        React.createElement("h2", {className: "add-component-heading text-center"}, "Add a Tireset"), 
         React.createElement("form", {id: "add-component-form", onSubmit: this.handleSubmit}, 
           React.createElement("div", {className: "col-md-4"}, 
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
@@ -3215,10 +3246,11 @@ var TireComponentForm = React.createClass({displayName: "TireComponentForm",
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
               React.createElement("label", {className: "form-label", htmlFor: "add-headset-url"}, "url"), 
               React.createElement("input", {valueLink: this.linkState('url'), type: "text", className: "form-control", id: "add-headset-url"})
-            )
+            ), 
+            React.createElement("button", {type: "submit", form: "add-component-form", id: "add-frame-form-button", className: "btn btn-primary "}, "Add")
+
           )
-        ), 
-        React.createElement("button", {type: "submit", form: "add-component-form", id: "add-frame-form-button", className: "btn btn-primary "}, "Add")
+        )
       )
     )
   }
@@ -3291,6 +3323,7 @@ var WheelSetFormComponent = React.createClass({displayName: "WheelSetFormCompone
     wheelSet.save(null, {
       success: function(user){
         console.log("You pushed successfully");
+        Backbone.history.navigate("components", {trigger: true});
       },
       error: function(user, error){
         alert("Error" + error.code + " " + error.message);
@@ -3302,7 +3335,7 @@ var WheelSetFormComponent = React.createClass({displayName: "WheelSetFormCompone
 
     return (
       React.createElement("div", {className: "container-fluid col-md-12"}, 
-        React.createElement("h2", {className: "add-component-heading text-center"}, "Add Comp Here"), 
+        React.createElement("h2", {className: "add-component-heading text-center"}, "Add a Wheelset"), 
         React.createElement("form", {id: "add-component-form", onSubmit: this.handleSubmit}, 
           React.createElement("div", {className: "col-md-4"}, 
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
@@ -3340,10 +3373,11 @@ var WheelSetFormComponent = React.createClass({displayName: "WheelSetFormCompone
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
               React.createElement("label", {className: "form-label", htmlFor: "add-headset-url"}, "url"), 
               React.createElement("input", {valueLink: this.linkState('url'), type: "text", className: "form-control", id: "add-headset-url"})
-            )
+            ), 
+            React.createElement("button", {type: "submit", form: "add-component-form", id: "add-frame-form-button", className: "btn btn-primary "}, "Add")
+
           )
-        ), 
-        React.createElement("button", {type: "submit", form: "add-component-form", id: "add-frame-form-button", className: "btn btn-primary "}, "Add")
+        )
       )
     )
   }
@@ -3372,90 +3406,65 @@ var Backbone = require('backbone');
 
 var ProfileComponent = React.createClass({displayName: "ProfileComponent",
   mixins: [Backbone.React.Component.mixin],
-
   getInitialState: function(){
     return {
       'frameSet': [],
-      'Bikes': []
+      'bikes': []
     }
   },
-
   componentDidMount: function(){
-    var self = this
-    var user = this.props.user;
-    var query = new Parse.Query( user );
-    query.include("userBikes");
-    // query.containedIn("userBikes", "frame");
-    query.find().then(function(user){
-      // console.log(user);
-      self.setState({"Bikes": user})
+    var self = this;
+    var query = new Parse.Query(Parse.User);
+
+    query.include("userBikes").include('userBikes.frame');
+
+    query.get(Parse.User.current().id).then(function(user){
+      self.setState({"bikes": user.get('userBikes').reverse()})
     }, function(error){
       console.log(error);
-    })
-
-
-    // var bikes = this.props.user.get('userBikes');
-    // if (bikes == undefined){
-    //   bikes = []
-    // }else{
-    //   console.log(bikes);
-    //   var bikeArray = bikes.map(function(bike){
-    //     console.log("bike, ", bike);
-    //     var frames = bike.get('frame');
-    //     console.log("frames, ", frames);
-    //     // frames.map(function(frames){
-    //     //   console.log(frames);
-    //     // })
-    //     var Image = frame.get('Image');
-    //     console.log(Image);
-    //     var url = Image.url();
-    //     console.log(url);
-    //   });
-    // }
-
-    // var frameSetId = "kyyH8a27q5"
-    // var frameSet = Parse.Object.extend("frameSets");
-    // var query = new Parse.Query( frameSet );
-    // query.get(frameSetId).then(function(frameSet){
-    //   self.setState({'frameSet': frameSet});
-    // })
+    });
   },
-
   handleBuild: function(event){
     event.preventDefault();
     Backbone.history.navigate("frameselection", {trigger: true});
   },
-
   render: function(){
-    // console.log(user.current);
-    console.log(this.props.user);
+    var bikes = this.state.bikes;
 
-    // var bikes = this.props.Bikes;
-    // var image = bikes.get("Image");
-    // var frameImage = image;
+    var builtBikes = bikes.map(function(bike, index){
+      var frame = bike.get('frame');
+      var frameImage = frame.get('Image');
+      var picUrl = frameImage.url();
 
-    var bikes = this.props.user.get('userBikes');
-    console.log(bikes);
-    var single = bikes[0];
-    console.log(single);
-    var frame = single.get('frame');
-    console.log(frame);
-    var image = frame.get('Image');
-    console.log(image);
-    var url = image.url();
-    console.log(url);
+      return (
+        React.createElement("li", {key: bike.id}, 
+          React.createElement("h4", null, bike.get('name')), 
+          React.createElement("img", {src: picUrl})
+        )
+      );
+    });
+
+    if(builtBikes.length == 0){
+      builtBikes = (React.createElement("li", null, "You Don\"t Have Any Bikes Yet"));
+    }
 
     return (
       React.createElement("div", {className: "container-fluid"}, 
         React.createElement("div", {className: "row"}, 
           React.createElement("div", {className: "col-md-12"}, 
+
             React.createElement("a", {href: "#frameselection"}, 
               React.createElement("h3", {className: "build-title"}, "Build"), 
               React.createElement("img", {src: "images/mechanic1.jpg", onClick: this.handleBuild, className: "build-image"})
             ), 
+
             React.createElement("div", {className: "col-md-8 bikes-built"}, 
-              React.createElement("img", {src: url})
+              React.createElement("h3", null, "Your Built Bikes"), 
+              React.createElement("ul", null, 
+                builtBikes
+              )
             )
+
           )
         )
       )
@@ -3609,31 +3618,21 @@ var ReactDOM = require('react-dom');
 var Parse = require('parse');
 var ParseReact = require('parse-react');
 
-console.log("Hello World!");
-
 var router = require('./router/router.js');
-var HomePageComponent = require('./components/signup.jsx').HomePageComponent;
-var ProfileComponent = require('./components/profile.jsx').ProfileComponent;
 var Interface = require('./components/interface-controller.jsx').ControllerComponent;
+
 $(function(){
   Backbone.history.start();
-  // console.log(router);
+
   ReactDOM.render(
     React.createElement(Interface, {
       router: router
     }),
     document.getElementById('main-container')
   );
-  // ReactDOM.render(
-  //   React.createElement(ProfileComponent, {
-  //     router: router
-  //   }),
-  //   document.getElementById('main-container')
-  // );
-
 });
 
-},{"./components/interface-controller.jsx":17,"./components/profile.jsx":34,"./components/signup.jsx":35,"./router/router.js":37,"backbone":55,"jquery":154,"parse":175,"parse-react":155,"react":350,"react-dom":218,"underscore":351}],37:[function(require,module,exports){
+},{"./components/interface-controller.jsx":17,"./router/router.js":37,"backbone":55,"jquery":154,"parse":175,"parse-react":155,"react":350,"react-dom":218,"underscore":351}],37:[function(require,module,exports){
 "use strict";
 var $ = require('jquery');
 var _ = require('underscore');
@@ -3649,7 +3648,8 @@ require('Backbone-React-Component')
 var Router = Backbone.Router.extend({
   routes: {
     "": "index",
-    "home": "home",
+    "login": "home",
+    "logout": "logout",
     "profile": "profile",
     "components": "components",
     "frameselection": "frameselection",
@@ -3672,6 +3672,20 @@ var Router = Backbone.Router.extend({
     "saddle": "saddle",
     "*notFound": "notFound"
   },
+  initialize: function(){
+    Parse.initialize("bikebuilder");
+    Parse.serverURL = "http://bikebuilders3.herokuapp.com/";
+  },
+  logout: function(){
+    var self = this;
+
+    Parse.User.logOut().then(function(){
+        localStorage.removeItem('Parse/bikebuilder/currentUser');
+        window.location = '/';
+    }, function(error){
+      console.log(error);
+    });
+  },
   index: function(){
     this.current = "index";
   },
@@ -3688,7 +3702,6 @@ var Router = Backbone.Router.extend({
     this.current = "frameselection";
   },
   bicycle: function(id){
-    console.log(id);
     this.current = "bicycle";
     this.framesetId = id;
   },

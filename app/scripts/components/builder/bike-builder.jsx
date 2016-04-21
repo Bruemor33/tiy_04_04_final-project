@@ -113,6 +113,7 @@ var SelectedFrameComponent = React.createClass({
     var Bicycle = Parse.Object.extend("Bicycle");
     var newBicycle = new Bicycle();
     newBicycle.set({
+      // 'bikeName': this.state.bikeName,
       'frame': this.state.FrameSet,
       'components': this.state.selectedItem
     });
@@ -154,13 +155,13 @@ var SelectedFrameComponent = React.createClass({
     console.log(this.state.selectedItem);
   },
 
-  handleClick: function(){
-    console.log("clicked!");
-    var allPanels = $('.accordian ul h3');
-    var panelContent = $('.accordian li');
-    allPanels.slideDown();
-    panelContent.colapse();
-  },
+  // handleClick: function(){
+  //   console.log("clicked!");
+  //   var allPanels = $('.accordian ul h3');
+  //   var panelContent = $('.accordian li');
+  //   allPanels.slideDown();
+  //   panelContent.colapse();
+  // },
 
   render: function(){
 
@@ -168,12 +169,12 @@ var SelectedFrameComponent = React.createClass({
       return (<h1>Loading</h1>)
     }
 
-    var allPanels = $('.accordian ul');
-
-    $('.accordian li').click(function(){
-      allPanels.slideUp();
-      $(this).nextAll().slideDown();
-    });
+    // var allPanels = $('.accordian ul');
+    //
+    // $('.accordian li').click(function(){
+    //   allPanels.slideUp();
+    //   $(this).nextAll().slideDown();
+    // });
 
     console.log(this.state.FrameSet);
 
@@ -217,6 +218,10 @@ var SelectedFrameComponent = React.createClass({
         <div className="add-parts-form col-md-6">
           <img className="frame-image" src={frameImage.url()} alt="" />
           <p className="frame-name-caption">{this.state.FrameSet.get("name")}</p>
+          <fieldset className="form-name-build">
+            <label className="form-label" htmlFor="add-build-name">Build Name</label>
+            <input type="text" className="form-control" id="add-build-name"></input>
+          </fieldset>
           <div id="build-list" className="current-build-list ">
             <table id="build-items-table-container">
               {bikeComponents}

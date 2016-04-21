@@ -17,7 +17,9 @@ var Router = Backbone.Router.extend({
     "profile": "profile",
     "components": "components",
     "frameselection": "frameselection",
-    "bicycle/:id": "bicycle",
+    "bicycle": "bicycleList",
+    "bicycledetail/:id": "bicycledetail",
+    "bicycle/:id/add": "bicycle", // Add/Create a bike build
     "frame": "frame",
     "bottombracket": "bottombracket",
     "headset": "headset",
@@ -58,6 +60,13 @@ var Router = Backbone.Router.extend({
   },
   profile: function(){
     this.current = "profile";
+  },
+  bicycleList: function(){
+    this.current = "bicycleList";
+  },
+  bicycleDetail: function(id){
+    this.current = "bicycledetail";
+    this.framesetId = id;
   },
   components: function(){
     this.current = "components";

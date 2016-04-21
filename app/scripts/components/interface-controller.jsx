@@ -14,6 +14,8 @@ var Navigation = require('./header.jsx').Navigation;
 var LandingPageComponent = require('./landing-page.jsx').LandingPageComponent;
 var HomePageComponent = require('./signup.jsx').HomePageComponent;
 var ProfileComponent = require('./profile.jsx').ProfileComponent;
+var BicycleListComponent = require('./bicycleList.jsx').BicycleListComponent;
+var BuildDetailComponent = require('./build-detail.jsx').BuildDetailComponent;
 var BuilderComponent = require('./builder/frame-selection.jsx').BuilderComponent;
 var ComponentForms = require('./component-form-page.jsx').ComponentForms;
 var SelectedFrameComponent = require('./builder/bike-builder.jsx').SelectedFrameComponent;
@@ -105,6 +107,17 @@ var ControllerComponent = React.createClass({
       navigation = (<Navigation logout={this.logout}/>)
       body = (<SelectedFrameComponent user={this.user} framesetId={this.state.router.framesetId} />)
     }
+
+    if(this.state.router.current == "bicycleList"){
+      navigation = (<Navigation logout={this.logout}/>)
+      body = (<BicycleListComponent user={this.user} />)
+    }
+
+    if(this.state.router.current == "bicycledetail"){
+      navigation = (<Navigation logout={this.logout}/>)
+      body = (<BicycleListComponent user={this.user} framesetId={this.state.router.framesetId} />)
+    }
+
     if(this.state.router.current == "frame"){
       navigation = (<Navigation />)
       body = (<AdminFormComponent />)

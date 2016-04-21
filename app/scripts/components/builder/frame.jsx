@@ -34,7 +34,7 @@ var FrameDisplayComponent = React.createClass({
     return (
       <div className="frame-display-container col-md-6">
         <div className="frame-button-and-caption">
-          <a  className="frame-button" href={"#bicycle/" + this.props.FrameSets.id}>
+          <a  className="frame-button" href={"#bicycle/" + this.props.FrameSets.id + '/add'}>
             <img className="frame-image" src={frameImage.url()} alt="" />
           </a>
           <p className="image-caption" value={this.props.FrameSets.id}>{this.props.FrameSets.get("name")}</p>

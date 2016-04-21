@@ -16,9 +16,20 @@ var ProfileComponent = React.createClass({
   mixins: [Backbone.React.Component.mixin],
   getInitialState: function(){
     return {
-      'frameSet': [],
+      'frameSets': [],
       'bikes': []
     }
+  },
+  componentWillMount: function(){
+    var self = this;
+    var FrameSets = Parse.Object.extend("frameSets");
+    var queryFrames = new Parse.Query( FrameSets );
+    queryFrames.find().then(function(FrameSets){
+      // console.log(FrameSets);
+      self.setState({"frameSets": FrameSets});
+    }, function(error){
+      console.log(error);
+    });
   },
   componentDidMount: function(){
     var self = this;
@@ -38,23 +49,23 @@ var ProfileComponent = React.createClass({
   },
   render: function(){
     var bikes = this.state.bikes;
-
-    var builtBikes = bikes.map(function(bike, index){
-      var frame = bike.get('frame');
-      var frameImage = frame.get('Image');
-      var picUrl = frameImage.url();
+    var frames = this.state.frameSets;
+    var currentFrames = frames.map(function(frame, index){
+      var images = frame.get("Image");
+      var frameName = frame.get("name");
+      var frameImage = images
 
       return (
-        <li key={bike.id}>
-          <h4>{bike.get('name')}</h4>
-          <img src={picUrl}/>
-        </li>
-      );
-    });
+        <div className="col-md-6">
+          <a><img src={frameImage.url()} /></a>
+          <p>{frameName}</p>
+        </div>
+      )
+    })
+    console.log("framsets", frames);
 
-    if(builtBikes.length == 0){
-      builtBikes = (<li>You Don&quot;t Have Any Bikes Yet</li>);
-    }
+    //  var images = frames.get("Image");
+    // var frameImage = images;
 
     return (
       <div className="container-fluid">
@@ -68,11 +79,18 @@ var ProfileComponent = React.createClass({
 
             <div className="col-md-8 bikes-built">
               <h3>Your Built Bikes</h3>
-              <ul>
-                {builtBikes}
-              </ul>
+              <a href="#bicycle">See Builds - {bikes.length}</a>
             </div>
 
+          </div>
+          <div className="row">
+            <div className="col-md-12">
+              <div className="bike-box"></div>
+              <h1 className="frames">Frame Catalog</h1>
+              <div className="frame-display">
+                {currentFrames}
+              </div>
+            </div>
           </div>
         </div>
       </div>

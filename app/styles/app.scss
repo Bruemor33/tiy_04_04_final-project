@@ -74,7 +74,7 @@ body {
 }
 
 /******************************************
-Landing/Signup
+Landing
 ******************************************/
 
 #landing {
@@ -85,6 +85,82 @@ Landing/Signup
   height: 800px;
   width: 100%;
 }
+
+a {
+  text-decoration: none;
+  height: 500px;
+
+  .app-title {
+    color: #fff;
+    width: 100%;
+    text-align: center;
+    font-size: 56px;
+    margin-top: 100px;
+  }
+
+  .landing-caption {
+    color: #fff;
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+  }
+}
+
+a:hover {
+  text-decoration: none;
+
+}
+
+.information-one {
+  display: inline-block;
+  margin-left: 90px;
+}
+
+.information-two {
+  display: inline-block;
+  margin-left: 160px;
+  margin-right: 160px;
+}
+
+.information-three {
+  display: inline-block;
+}
+
+.catagory-icon {
+  border: 1px solid #fff;
+  height: 90px;
+  width: 90px;
+  border-radius: 45px;
+  display: inline-block;
+  background-color: black;
+  margin-top: 100px;
+  margin-left: 78px;
+}
+
+.catagory-container {
+  width: 250px;
+  height: 300px;
+  background-color: rgba(202, 195, 189, 0.8);
+  -webkit-box-shadow: 0px 0px 35px -6px rgba(0,0,0,0.75);
+  -moz-box-shadow: 0px 0px 35px -6px rgba(0,0,0,0.75);
+  box-shadow: 0px 0px 35px -6px rgba(0,0,0,0.75);
+
+  .catagory-title {
+    color: black;
+    text-align: center;
+    padding-top: 15px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #727076;
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+}
+
+
+/******************************************
+Signup
+******************************************/
+
 
 #signup-container {
   background-color: #68787F;

@@ -107,14 +107,17 @@ var AdminFormComponent = React.createClass({displayName: "AdminFormComponent",
     }
     this.setState({addedSeatpost: addedSeatpost});
   },
-  // handleFile: function(e){
-  //   e.preventDefault();
-  //   var images = this.state.image;
-  //
-  //   var image = new Parse.File(null, file);
-  //   images.save(image);
-  //   this.setState({"images": images});
-  // },
+  handleFile: function(e){
+    e.preventDefault();
+    var self = this;
+    var file = e.target.files[0];
+    var name = "frameset" + Date.now() + ".jpg";
+    var image = new Parse.File(name, file);
+    image.save().then(function(file){
+      self.setState({"image": file});
+    });
+
+  },
   handleSubmit: function(e){
     e.preventDefault();
     // console.log('handleSubmit');
@@ -126,6 +129,7 @@ var AdminFormComponent = React.createClass({displayName: "AdminFormComponent",
       material: this.state.material,
       color: this.state.color,
       url: this.state.url,
+      Image: this.state.image
       // bottomBracket: ,
     };
 
@@ -424,6 +428,7 @@ var SelectedFrameComponent = React.createClass({displayName: "SelectedFrameCompo
     var Bicycle = Parse.Object.extend("Bicycle");
     var newBicycle = new Bicycle();
     newBicycle.set({
+      // 'bikeName': this.state.bikeName,
       'frame': this.state.FrameSet,
       'components': this.state.selectedItem
     });
@@ -465,13 +470,13 @@ var SelectedFrameComponent = React.createClass({displayName: "SelectedFrameCompo
     console.log(this.state.selectedItem);
   },
 
-  handleClick: function(){
-    console.log("clicked!");
-    var allPanels = $('.accordian ul h3');
-    var panelContent = $('.accordian li');
-    allPanels.slideDown();
-    panelContent.colapse();
-  },
+  // handleClick: function(){
+  //   console.log("clicked!");
+  //   var allPanels = $('.accordian ul h3');
+  //   var panelContent = $('.accordian li');
+  //   allPanels.slideDown();
+  //   panelContent.colapse();
+  // },
 
   render: function(){
 
@@ -479,12 +484,12 @@ var SelectedFrameComponent = React.createClass({displayName: "SelectedFrameCompo
       return (React.createElement("h1", null, "Loading"))
     }
 
-    var allPanels = $('.accordian ul');
-
-    $('.accordian li').click(function(){
-      allPanels.slideUp();
-      $(this).nextAll().slideDown();
-    });
+    // var allPanels = $('.accordian ul');
+    //
+    // $('.accordian li').click(function(){
+    //   allPanels.slideUp();
+    //   $(this).nextAll().slideDown();
+    // });
 
     console.log(this.state.FrameSet);
 
@@ -528,6 +533,10 @@ var SelectedFrameComponent = React.createClass({displayName: "SelectedFrameCompo
         React.createElement("div", {className: "add-parts-form col-md-6"}, 
           React.createElement("img", {className: "frame-image", src: frameImage.url(), alt: ""}), 
           React.createElement("p", {className: "frame-name-caption"}, this.state.FrameSet.get("name")), 
+          React.createElement("fieldset", {className: "form-name-build"}, 
+            React.createElement("label", {className: "form-label", htmlFor: "add-build-name"}, "Build Name"), 
+            React.createElement("input", {type: "text", className: "form-control", id: "add-build-name"})
+          ), 
           React.createElement("div", {id: "build-list", className: "current-build-list "}, 
             React.createElement("table", {id: "build-items-table-container"}, 
               bikeComponents
@@ -3379,9 +3388,30 @@ var ProfileComponent = React.createClass({displayName: "ProfileComponent",
     // query.containedIn("userBikes", "frame");
     query.find().then(function(user){
       // console.log(user);
+      self.setState({"Bikes": user})
     }, function(error){
       console.log(error);
     })
+
+
+    var bikes = this.props.user.get('userBikes');
+    if (bikes == undefined){
+      bikes = []
+    }else{
+      console.log(bikes);
+      var bikeArray = bikes.map(function(bike){
+        console.log("bike, ", bike);
+        var frames = bike.get('frame');
+        console.log("frames, ", frames);
+        // frames.map(function(frames){
+        //   console.log(frames);
+        // })
+        var Image = frame.get('Image');
+        console.log(Image);
+        var url = Image.url();
+        console.log(url);
+      });
+    }
 
     // var frameSetId = "kyyH8a27q5"
     // var frameSet = Parse.Object.extend("frameSets");
@@ -3400,8 +3430,11 @@ var ProfileComponent = React.createClass({displayName: "ProfileComponent",
     // console.log(user.current);
     console.log(this.props.user);
 
-    // var image = this.state.frameSet.get("Image");
+    // var bikes = this.props.Bikes;
+    // var image = bikes.get("Image");
     // var frameImage = image;
+
+
 
     return (
       React.createElement("div", {className: "container-fluid"}, 

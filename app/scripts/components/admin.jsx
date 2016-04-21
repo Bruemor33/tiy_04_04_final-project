@@ -11,16 +11,6 @@ var LinkedStateMixin = require('react/lib/LinkedStateMixin');
 Parse.initialize("bikebuilder");
 Parse.serverURL = "http://bikebuilders3.herokuapp.com/";
 
-//Testing Parse Data.
-// var Frames = Parse.Object.extend("Frames");
-// var frameSet = new Parse.Query( Frames );
-// frameSet.find().then(function(mod){
-//   console.log(mod);
-//   self.setState({"frameSet": mod});
-// }, function(error){
-//   console.log(error);
-// });
-
 //Local Imports
 var BbSelectionComponent = require('./checkbox-comps/bottombracket-check.jsx').BbSelectionComponent;
 var HeadsetSelectionComponent = require('./checkbox-comps/headset-check.jsx').HeadsetSelectionComponent;

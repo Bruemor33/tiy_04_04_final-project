@@ -6042,6 +6042,9 @@ Building Page
   .compatible-parts .stem-caption {
     display: inline-block; }
 
+#add-frame-form-button {
+  display: inline-block; }
+
 /*****************************************************************************************
 FOOTER
 *****************************************************************************************/

@@ -2960,14 +2960,14 @@ var SeatpostForm = React.createClass({displayName: "SeatpostForm",
           ), 
           React.createElement("div", {className: "col-md-4"}, 
             React.createElement("fieldset", {className: "form-group add-comp-form"}, 
-              React.createElement("h3", {className: "component-title"}, "Chainrings"), 
+              React.createElement("h3", {className: "relation-title"}, "Saddles"), 
               React.createElement("div", {className: "col-md-12 add-comp-form-bottombracket-checklist"}, 
                 this.state.Saddles.map(newSaddles.bind(this))
               )
             )
           )
         ), 
-        React.createElement("button", {type: "submit", form: "add-component-form", id: "add-frame-form-button", className: "btn btn-primary "}, "Add")
+        React.createElement("button", {type: "submit", form: "add-component-form", id: "add-frame-form-button", className: "btn btn-primary"}, "Add")
       )
     )
   }
@@ -3394,24 +3394,24 @@ var ProfileComponent = React.createClass({displayName: "ProfileComponent",
     })
 
 
-    var bikes = this.props.user.get('userBikes');
-    if (bikes == undefined){
-      bikes = []
-    }else{
-      console.log(bikes);
-      var bikeArray = bikes.map(function(bike){
-        console.log("bike, ", bike);
-        var frames = bike.get('frame');
-        console.log("frames, ", frames);
-        // frames.map(function(frames){
-        //   console.log(frames);
-        // })
-        var Image = frame.get('Image');
-        console.log(Image);
-        var url = Image.url();
-        console.log(url);
-      });
-    }
+    // var bikes = this.props.user.get('userBikes');
+    // if (bikes == undefined){
+    //   bikes = []
+    // }else{
+    //   console.log(bikes);
+    //   var bikeArray = bikes.map(function(bike){
+    //     console.log("bike, ", bike);
+    //     var frames = bike.get('frame');
+    //     console.log("frames, ", frames);
+    //     // frames.map(function(frames){
+    //     //   console.log(frames);
+    //     // })
+    //     var Image = frame.get('Image');
+    //     console.log(Image);
+    //     var url = Image.url();
+    //     console.log(url);
+    //   });
+    // }
 
     // var frameSetId = "kyyH8a27q5"
     // var frameSet = Parse.Object.extend("frameSets");
@@ -3434,7 +3434,16 @@ var ProfileComponent = React.createClass({displayName: "ProfileComponent",
     // var image = bikes.get("Image");
     // var frameImage = image;
 
-
+    var bikes = this.props.user.get('userBikes');
+    console.log(bikes);
+    var single = bikes[0];
+    console.log(single);
+    var frame = single.get('frame');
+    console.log(frame);
+    var image = frame.get('Image');
+    console.log(image);
+    var url = image.url();
+    console.log(url);
 
     return (
       React.createElement("div", {className: "container-fluid"}, 
@@ -3444,8 +3453,8 @@ var ProfileComponent = React.createClass({displayName: "ProfileComponent",
               React.createElement("h3", {className: "build-title"}, "Build"), 
               React.createElement("img", {src: "images/mechanic1.jpg", onClick: this.handleBuild, className: "build-image"})
             ), 
-            React.createElement("div", {className: "col-md-8 bikes-built"}
-
+            React.createElement("div", {className: "col-md-8 bikes-built"}, 
+              React.createElement("img", {src: url})
             )
           )
         )

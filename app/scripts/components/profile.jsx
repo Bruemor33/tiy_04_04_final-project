@@ -60,14 +60,28 @@ var ProfileComponent = React.createClass({
         <div className="row">
           <div className="col-md-12">
 
-            <a href={"#frameselection"}>
-              <h3 className="build-title">Build</h3>
-              <img src="images/mechanic1.jpg" onClick={this.handleBuild} className="build-image" />
-            </a>
+            <div className="col-md-4">
 
-            <div className="col-md-8 bikes-built">
-              <h3>Your Built Bikes</h3>
-              <a href="#bicycle">See Builds - {bikes.length}</a>
+              <a href={"#components"}>
+                <div className="bike-components"></div>
+                <h3 className="components-link">Components</h3>
+              </a>
+            </div>
+
+            <div className="col-md-4">
+
+              <a href={"#frameselection"}>
+                <div className="build-bike"></div>
+                <h3 className="build-title">Build</h3>
+              </a>
+            </div>
+
+            <div className="col-md-4">
+
+              <a href="#bicycle">
+                <div className="build-bike"></div>
+                <h3 className="builds-link">Builds</h3>
+              </a>
             </div>
 
           </div>

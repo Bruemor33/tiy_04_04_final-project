@@ -302,16 +302,17 @@ var BicycleListComponent = React.createClass({displayName: "BicycleListComponent
   },
   render: function(){
     var bikes = this.state.bikes;
-
+    console.log(bikes);
     var builtBikes = bikes.map(function(bike, index){
       var frame = bike.get('frame');
+      console.log(frame.id);
       var frameImage = frame.get('Image');
       var picUrl = frameImage.url();
 
       return (
-        React.createElement("div", {className: "frame-display-container col-md-6", key: bike.id}, 
+        React.createElement("div", {className: "frame-display-container col-md-6", key: frame.objectid}, 
           React.createElement("div", {className: "frame-button-and-caption"}, 
-            React.createElement("a", {className: "frame-button", href: "#bicycle/" + bike.id}, 
+            React.createElement("a", {className: "frame-button", href: "#yourbikes/" + frame.id}, 
               React.createElement("img", {className: "frame-image", src: picUrl, alt: ""})
             ), 
             React.createElement("p", {className: "image-caption"}, bike.get("name"))
@@ -358,11 +359,24 @@ var ParseReact = require('parse-react');
 require('Backbone-React-Component');
 var LinkedStateMixin = require('react/lib/LinkedStateMixin');
 
-// var BuildDetailComponent = React.createClass({
-//   mixins: [Backbone.React.Component.mixin, LinkedStateMixin],
-//
-//
-// })
+var BuildDetailComponent = React.createClass({displayName: "BuildDetailComponent",
+  mixins: [Backbone.React.Component.mixin, LinkedStateMixin],
+
+  render: function(){
+    console.log(this.state.router);
+
+    return (
+      React.createElement("div", null, 
+        React.createElement("h1", null, "Hello World")
+      )
+    )
+  }
+})
+
+//exports
+module.exports = {
+  'BuildDetailComponent': BuildDetailComponent
+}
 
 },{"Backbone-React-Component":40,"backbone":57,"jquery":156,"parse":177,"parse-react":157,"react":352,"react-dom":220,"react/lib/LinkedStateMixin":241,"underscore":353}],4:[function(require,module,exports){
 "use strict";
@@ -1294,22 +1308,22 @@ var ComponentForms = React.createClass({displayName: "ComponentForms",
     return (
       React.createElement("div", {className: "container-fluid"}, 
         React.createElement("div", {className: "component-form-list col-md-12"}, 
-          React.createElement("h1", null, "Component form Selection"), 
-          React.createElement("ul", null, 
-            React.createElement("li", null, React.createElement("a", {href: "#chain"}, "Chains")), 
-            React.createElement("li", null, React.createElement("a", {href: "#chainring"}, "Chainrings")), 
-            React.createElement("li", null, React.createElement("a", {href: "#cranks"}, "Cranksets")), 
-            React.createElement("li", null, React.createElement("a", {href: "#bottombracket"}, "Bottombrackets")), 
-            React.createElement("li", null, React.createElement("a", {href: "#clip"}, "Foot Retention")), 
-            React.createElement("li", null, React.createElement("a", {href: "#pedal"}, "Pedals")), 
-            React.createElement("li", null, React.createElement("a", {href: "#saddle"}, "Saddles")), 
-            React.createElement("li", null, React.createElement("a", {href: "#seatpost"}, "Seatposts")), 
-            React.createElement("li", null, React.createElement("a", {href: "#headset"}, "Headsets")), 
-            React.createElement("li", null, React.createElement("a", {href: "#stem"}, "Stems")), 
-            React.createElement("li", null, React.createElement("a", {href: "#handle"}, "Handlebars")), 
-            React.createElement("li", null, React.createElement("a", {href: "#frame"}, "Frames")), 
-            React.createElement("li", null, React.createElement("a", {href: "#wheel"}, "Wheelsets")), 
-            React.createElement("li", null, React.createElement("a", {href: "#tire"}, "Tires"))
+          React.createElement("h1", {className: "part-selection"}, "Component form Selection"), 
+          React.createElement("ul", {className: "part-list"}, 
+            React.createElement("li", {className: "part-item"}, React.createElement("a", {href: "#chain"}, "Chains")), 
+            React.createElement("li", {className: "part-item"}, React.createElement("a", {href: "#chainring"}, "Chainrings")), 
+            React.createElement("li", {className: "part-item"}, React.createElement("a", {href: "#cranks"}, "Cranksets")), 
+            React.createElement("li", {className: "part-item"}, React.createElement("a", {href: "#bottombracket"}, "Bottombrackets")), 
+            React.createElement("li", {className: "part-item"}, React.createElement("a", {href: "#clip"}, "Foot Retention")), 
+            React.createElement("li", {className: "part-item"}, React.createElement("a", {href: "#pedal"}, "Pedals")), 
+            React.createElement("li", {className: "part-item"}, React.createElement("a", {href: "#saddle"}, "Saddles")), 
+            React.createElement("li", {className: "part-item"}, React.createElement("a", {href: "#seatpost"}, "Seatposts")), 
+            React.createElement("li", {className: "part-item"}, React.createElement("a", {href: "#headset"}, "Headsets")), 
+            React.createElement("li", {className: "part-item"}, React.createElement("a", {href: "#stem"}, "Stems")), 
+            React.createElement("li", {className: "part-item"}, React.createElement("a", {href: "#handle"}, "Handlebars")), 
+            React.createElement("li", {className: "part-item"}, React.createElement("a", {href: "#frame"}, "Frames")), 
+            React.createElement("li", {className: "part-item"}, React.createElement("a", {href: "#wheel"}, "Wheelsets")), 
+            React.createElement("li", {className: "part-item"}, React.createElement("a", {href: "#tire"}, "Tires"))
           )
         )
       )
@@ -1445,7 +1459,7 @@ var ControllerComponent = React.createClass({displayName: "ControllerComponent",
   // },
 
   render: function(){
-    // console.log(this.state.user);
+    console.log(this.state.router);
     var body;
     var navigation;
 
@@ -1483,9 +1497,9 @@ var ControllerComponent = React.createClass({displayName: "ControllerComponent",
       body = (React.createElement(BicycleListComponent, {user: this.user}))
     }
 
-    if(this.state.router.current == "bicycledetail"){
+    if(this.state.router.current == "yourbikes"){
       navigation = (React.createElement(Navigation, {logout: this.logout}))
-      body = (React.createElement(BicycleListComponent, {user: this.user, framesetId: this.state.router.framesetId}))
+      body = (React.createElement(BuildDetailComponent, {user: this.user, framesetId: this.state.router.framesetId}))
     }
 
     if(this.state.router.current == "frame"){
@@ -3610,14 +3624,28 @@ var ProfileComponent = React.createClass({displayName: "ProfileComponent",
         React.createElement("div", {className: "row"}, 
           React.createElement("div", {className: "col-md-12"}, 
 
-            React.createElement("a", {href: "#frameselection"}, 
-              React.createElement("h3", {className: "build-title"}, "Build"), 
-              React.createElement("img", {src: "images/mechanic1.jpg", onClick: this.handleBuild, className: "build-image"})
+            React.createElement("div", {className: "col-md-4"}, 
+
+              React.createElement("a", {href: "#components"}, 
+                React.createElement("div", {className: "bike-components"}), 
+                React.createElement("h3", {className: "components-link"}, "Components")
+              )
             ), 
 
-            React.createElement("div", {className: "col-md-8 bikes-built"}, 
-              React.createElement("h3", null, "Your Built Bikes"), 
-              React.createElement("a", {href: "#bicycle"}, "See Builds - ", bikes.length)
+            React.createElement("div", {className: "col-md-4"}, 
+
+              React.createElement("a", {href: "#frameselection"}, 
+                React.createElement("div", {className: "build-bike"}), 
+                React.createElement("h3", {className: "build-title"}, "Build")
+              )
+            ), 
+
+            React.createElement("div", {className: "col-md-4"}, 
+
+              React.createElement("a", {href: "#bicycle"}, 
+                React.createElement("div", {className: "build-bike"}), 
+                React.createElement("h3", {className: "builds-link"}, "Builds")
+              )
             )
 
           ), 
@@ -3690,7 +3718,7 @@ var HomePageComponent = React.createClass({displayName: "HomePageComponent",
   render: function(){
     return (
       React.createElement("div", {className: "container-fluid"}, 
-        React.createElement("div", {className: "row"}, 
+        React.createElement("div", {className: "row entrance-container"}, 
           React.createElement("div", {className: "col-md-6", id: "signup-container"}, 
             React.createElement(SignupComponent, {createUser: this.createUser})
           ), 
@@ -3818,7 +3846,7 @@ var Router = Backbone.Router.extend({
     "components": "components",
     "frameselection": "frameselection",
     "bicycle": "bicycleList",
-    "bicycledetail/:id": "bicycledetail",
+    "bicycle/:id": "yourbikes",
     "bicycle/:id/add": "bicycle", // Add/Create a bike build
     "frame": "frame",
     "bottombracket": "bottombracket",
@@ -3864,8 +3892,8 @@ var Router = Backbone.Router.extend({
   bicycleList: function(){
     this.current = "bicycleList";
   },
-  bicycleDetail: function(id){
-    this.current = "bicycledetail";
+  yourbikes: function(id){
+    this.current = "yourbikes";
     this.framesetId = id;
   },
   components: function(){

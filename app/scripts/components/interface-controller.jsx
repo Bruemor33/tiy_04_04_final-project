@@ -75,7 +75,7 @@ var ControllerComponent = React.createClass({
   // },
 
   render: function(){
-    // console.log(this.state.user);
+    console.log(this.state.router);
     var body;
     var navigation;
 
@@ -113,9 +113,9 @@ var ControllerComponent = React.createClass({
       body = (<BicycleListComponent user={this.user} />)
     }
 
-    if(this.state.router.current == "bicycledetail"){
+    if(this.state.router.current == "yourbikes"){
       navigation = (<Navigation logout={this.logout}/>)
-      body = (<BicycleListComponent user={this.user} framesetId={this.state.router.framesetId} />)
+      body = (<BuildDetailComponent user={this.user} framesetId={this.state.router.framesetId} />)
     }
 
     if(this.state.router.current == "frame"){

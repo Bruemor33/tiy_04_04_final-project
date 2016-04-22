@@ -5974,13 +5974,18 @@ Signup
 /******************************************
 Profile
 ******************************************/
+.navigation-links {
+  margin-top: 50px; }
+
 .bike-components {
   position: absolute;
   top: 20px;
   background-color: rgba(114, 112, 118, 0.6);
   width: 235px;
   height: 235px;
-  border-radius: 120px; }
+  border-radius: 120px;
+  margin-left: 110px;
+  padding-right: 90px; }
 
 .components-link {
   text-align: center;
@@ -5993,7 +5998,9 @@ Profile
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-  border-radius: 120px; }
+  border-radius: 120px;
+  margin-left: 110px;
+  margin-right: 80px; }
 
 .build-bike {
   position: absolute;
@@ -6001,7 +6008,8 @@ Profile
   background-color: rgba(114, 112, 118, 0.6);
   width: 235px;
   height: 235px;
-  border-radius: 120px; }
+  border-radius: 120px;
+  margin-left: 65px; }
 
 .build-title {
   text-align: center;
@@ -6014,7 +6022,17 @@ Profile
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-  border-radius: 120px; }
+  border-radius: 120px;
+  margin-left: 65px; }
+
+.bike-builds {
+  position: absolute;
+  top: 20px;
+  background-color: rgba(114, 112, 118, 0.6);
+  width: 235px;
+  height: 235px;
+  border-radius: 120px;
+  margin-left: 20px; }
 
 .builds-link {
   text-align: center;
@@ -6027,10 +6045,15 @@ Profile
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-  border-radius: 120px; }
+  border-radius: 120px;
+  margin-left: 20px; }
 
 .build-image::before {
   background-color: rgba(0, 0, 0, 0.5); }
+
+.frame-display {
+  color: #fff;
+  font-size: 18px; }
 
 .build-image {
   height: 300px; }
@@ -6063,7 +6086,8 @@ Frame Selection
     width: 500px;
     height: 30px;
     padding-left: 30px;
-    padding-top: 15px; }
+    padding-top: 10px;
+    margin-bottom: 20px; }
 
 /******************************************
 Building Page

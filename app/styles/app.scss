@@ -244,6 +244,10 @@ Profile
 ******************************************/
 
 
+.navigation-links {
+  margin-top: 50px;
+}
+
 .bike-components {
   position: absolute;
   top: 20px;
@@ -251,6 +255,8 @@ Profile
   width: 235px;
   height: 235px;
   border-radius: 120px;
+  margin-left: 110px;
+  padding-right: 90px;
 }
 
 .components-link {
@@ -265,6 +271,8 @@ Profile
   background-size: cover;
   background-repeat: no-repeat;
   border-radius: 120px;
+  margin-left: 110px;
+  margin-right: 80px;
 }
 
 .build-bike {
@@ -274,6 +282,7 @@ Profile
   width: 235px;
   height: 235px;
   border-radius: 120px;
+  margin-left: 65px;
 }
 
 .build-title {
@@ -288,6 +297,17 @@ Profile
   background-size: cover;
   background-repeat: no-repeat;
   border-radius: 120px;
+  margin-left: 65px;
+}
+
+.bike-builds {
+  position: absolute;
+  top: 20px;
+  background-color: rgba(114, 112, 118, 0.6);
+  width: 235px;
+  height: 235px;
+  border-radius: 120px;
+  margin-left: 20px;
 }
 
 .builds-link {
@@ -302,10 +322,20 @@ Profile
   background-size: cover;
   background-repeat: no-repeat;
   border-radius: 120px;
+  margin-left: 20px;
 }
 
 .build-image::before {
   background-color: rgba(0, 0, 0, 0.5);
+}
+
+.frames {
+
+}
+
+.frame-display {
+  color: #fff;
+  font-size: 18px;
 }
 
 .build-image {
@@ -350,7 +380,8 @@ Frame Selection
     width: 500px;
     height: 30px;
     padding-left: 30px;
-    padding-top: 15px;
+    padding-top: 10px;
+    margin-bottom: 20px;
   }
 }
 

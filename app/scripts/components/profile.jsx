@@ -45,8 +45,8 @@ var ProfileComponent = React.createClass({
 
       return (
         <div className="col-md-6">
-          <a><img src={frameImage.url()} /></a>
-          <p>{frameName}</p>
+          <a className="frame-button"><img className="frame-image" src={frameImage.url()} /></a>
+          <p className="image-caption">{frameName}</p>
         </div>
       )
     })
@@ -58,7 +58,7 @@ var ProfileComponent = React.createClass({
     return (
       <div className="container-fluid">
         <div className="row">
-          <div className="col-md-12">
+          <div className="navigation-links col-md-12">
 
             <div className="col-md-4">
 
@@ -79,7 +79,7 @@ var ProfileComponent = React.createClass({
             <div className="col-md-4">
 
               <a href="#bicycle">
-                <div className="build-bike"></div>
+                <div className="bike-builds"></div>
                 <h3 className="builds-link">Builds</h3>
               </a>
             </div>

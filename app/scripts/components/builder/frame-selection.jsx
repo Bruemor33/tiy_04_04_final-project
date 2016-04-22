@@ -24,6 +24,10 @@ var BuilderComponent = React.createClass({
     }
   },
 
+  componentShouldMount: function(){
+    location.reload();
+  },
+
   componentWillMount: function(){
     var self = this;
     var FrameSets = Parse.Object.extend("frameSets");
@@ -34,6 +38,7 @@ var BuilderComponent = React.createClass({
     }, function(error){
       console.log(error);
     });
+
   },
 
   handleFrameSelection: function(FrameSets, selected){

@@ -872,6 +872,10 @@ var BuilderComponent = React.createClass({displayName: "BuilderComponent",
     }
   },
 
+  componentShouldMount: function(){
+    location.reload();
+  },
+
   componentWillMount: function(){
     var self = this;
     var FrameSets = Parse.Object.extend("frameSets");
@@ -882,6 +886,7 @@ var BuilderComponent = React.createClass({displayName: "BuilderComponent",
     }, function(error){
       console.log(error);
     });
+
   },
 
   handleFrameSelection: function(FrameSets, selected){
@@ -3679,8 +3684,8 @@ var ProfileComponent = React.createClass({displayName: "ProfileComponent",
 
       return (
         React.createElement("div", {className: "col-md-6"}, 
-          React.createElement("a", null, React.createElement("img", {src: frameImage.url()})), 
-          React.createElement("p", null, frameName)
+          React.createElement("a", {className: "frame-button"}, React.createElement("img", {className: "frame-image", src: frameImage.url()})), 
+          React.createElement("p", {className: "image-caption"}, frameName)
         )
       )
     })
@@ -3692,7 +3697,7 @@ var ProfileComponent = React.createClass({displayName: "ProfileComponent",
     return (
       React.createElement("div", {className: "container-fluid"}, 
         React.createElement("div", {className: "row"}, 
-          React.createElement("div", {className: "col-md-12"}, 
+          React.createElement("div", {className: "navigation-links col-md-12"}, 
 
             React.createElement("div", {className: "col-md-4"}, 
 
@@ -3713,7 +3718,7 @@ var ProfileComponent = React.createClass({displayName: "ProfileComponent",
             React.createElement("div", {className: "col-md-4"}, 
 
               React.createElement("a", {href: "#bicycle"}, 
-                React.createElement("div", {className: "build-bike"}), 
+                React.createElement("div", {className: "bike-builds"}), 
                 React.createElement("h3", {className: "builds-link"}, "Builds")
               )
             )

@@ -12,11 +12,14 @@ require('Backbone-React-Component')
 var Router = Backbone.Router.extend({
   routes: {
     "": "index",
-    "home": "home",
+    "login": "home",
+    "logout": "logout",
     "profile": "profile",
     "components": "components",
     "frameselection": "frameselection",
-    "bicycle/:id": "bicycle",
+    "bicycle": "bicycleList",
+    "bicycle/:id": "yourbikes",
+    "bicycle/:id/add": "bicycle", // Add/Create a bike build
     "frame": "frame",
     "bottombracket": "bottombracket",
     "headset": "headset",
@@ -35,6 +38,20 @@ var Router = Backbone.Router.extend({
     "saddle": "saddle",
     "*notFound": "notFound"
   },
+  initialize: function(){
+    Parse.initialize("bikebuilder");
+    Parse.serverURL = "http://bikebuilders3.herokuapp.com/";
+  },
+  logout: function(){
+    var self = this;
+    Parse.User.logOut().then(function(){
+        localStorage.removeItem('Parse/bikebuilder/currentUser');
+        window.location = '/';
+        //self.navigate('', {trigger: true});
+    }, function(error){
+      console.log(error);
+    });
+  },
   index: function(){
     this.current = "index";
   },
@@ -44,6 +61,13 @@ var Router = Backbone.Router.extend({
   profile: function(){
     this.current = "profile";
   },
+  bicycleList: function(){
+    this.current = "bicycleList";
+  },
+  yourbikes: function(id){
+    this.current = "yourbikes";
+    this.framesetId = id;
+  },
   components: function(){
     this.current = "components";
   },
@@ -51,7 +75,6 @@ var Router = Backbone.Router.extend({
     this.current = "frameselection";
   },
   bicycle: function(id){
-    console.log(id);
     this.current = "bicycle";
     this.framesetId = id;
   },

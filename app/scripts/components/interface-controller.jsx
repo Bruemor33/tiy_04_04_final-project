@@ -14,6 +14,8 @@ var Navigation = require('./header.jsx').Navigation;
 var LandingPageComponent = require('./landing-page.jsx').LandingPageComponent;
 var HomePageComponent = require('./signup.jsx').HomePageComponent;
 var ProfileComponent = require('./profile.jsx').ProfileComponent;
+var BicycleListComponent = require('./bicycleList.jsx').BicycleListComponent;
+var BuildDetailComponent = require('./build-detail.jsx').BuildDetailComponent;
 var BuilderComponent = require('./builder/frame-selection.jsx').BuilderComponent;
 var ComponentForms = require('./component-form-page.jsx').ComponentForms;
 var SelectedFrameComponent = require('./builder/bike-builder.jsx').SelectedFrameComponent;
@@ -34,10 +36,6 @@ var HandlebarFormComponent = require('./partforms/handlebar-form.jsx').Handlebar
 var CranksetFormComponent = require('./partforms/crankset-form.jsx').CranksetFormComponent;
 var SaddleFormComponent = require('./partforms/saddle-form.jsx').SaddleFormComponent;
 
-$(function(){
-  Parse.initialize("bikebuilder");
-  Parse.serverURL = "http://bikebuilders3.herokuapp.com/";
-});
 
 var ControllerComponent = React.createClass({
   mixins: [Backbone.React.Component.mixin],
@@ -45,8 +43,17 @@ var ControllerComponent = React.createClass({
   getInitialState: function(){
     return {
       router: this.props.router,
-      user: null
+      //user: null
     };
+  },
+  checkUserLoggedIn: function(){
+    var router = this.props.router;
+
+    console.log('checkUserLoggedIn', Parse.User.current());
+
+    if(Parse.User.current()){
+        router.navigate('profile', {trigger: true})
+    }
   },
   componentWillMount: function(){
     this.callback = (function(){
@@ -54,45 +61,44 @@ var ControllerComponent = React.createClass({
     }).bind(this);
     this.state.router.on('route', this.callback);
 
-    var currentUser = Parse.User.current();
-      if (currentUser){
-        this.setState({'user': currentUser})
-      }
+    // var currentUser = Parse.User.current();
+    //   if (currentUser){
+    //     this.setState({'user': currentUser})
+    //   }
   },
   componentWillUnmount: function(){
     this.state.router.off('route', this.callback);
   },
-  logout: function(e){
-    e.preventDefault();
-    Parse.User.logOut().then(function(data, code, xhr){
-      this.setState({'user': null});
-    }.bind(this));
-    Backbone.history.navigate('', {trigger: true});
-  },
+
   // setUser: function(user){
   //   this.setState({"userId": user.id});
   // },
 
   render: function(){
-    // console.log(this.state.user);
+    console.log(this.state.router);
     var body;
     var navigation;
-    console.log(this.state.router);
 
     if(this.state.router.current == "index"){
       body = (<LandingPageComponent />);
     }
+
+    // Login Screen
     if(this.state.router.current == "home"){
+      this.checkUserLoggedIn();
       body = (<HomePageComponent />)
     }
+
     if(this.state.router.current == "profile"){
       navigation = (<Navigation logout={this.logout}/>)
       body = (<ProfileComponent user={this.state.user}/>)
     }
+
     if(this.state.router.current == "components"){
       navigation = (<Navigation />)
       body = (<ComponentForms user={this.state.user} />)
     }
+
     if(this.state.router.current == "frameselection"){
       navigation = (<Navigation logout={this.logout}/>)
       body = (<BuilderComponent user={this.user} />)
@@ -101,6 +107,17 @@ var ControllerComponent = React.createClass({
       navigation = (<Navigation logout={this.logout}/>)
       body = (<SelectedFrameComponent user={this.user} framesetId={this.state.router.framesetId} />)
     }
+
+    if(this.state.router.current == "bicycleList"){
+      navigation = (<Navigation logout={this.logout}/>)
+      body = (<BicycleListComponent user={this.user} />)
+    }
+
+    if(this.state.router.current == "yourbikes"){
+      navigation = (<Navigation logout={this.logout}/>)
+      body = (<BuildDetailComponent user={this.user} framesetId={this.state.router.framesetId} />)
+    }
+
     if(this.state.router.current == "frame"){
       navigation = (<Navigation />)
       body = (<AdminFormComponent />)

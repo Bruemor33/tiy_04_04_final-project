@@ -44,7 +44,7 @@ var HomePageComponent = React.createClass({
   render: function(){
     return (
       <div className="container-fluid">
-        <div className="row">
+        <div className="row entrance-container">
           <div className="col-md-6" id="signup-container">
             <SignupComponent createUser={this.createUser} />
           </div>

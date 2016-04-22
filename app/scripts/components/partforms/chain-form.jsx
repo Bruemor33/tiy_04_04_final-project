@@ -69,6 +69,7 @@ var ChainFormComponent = React.createClass({
     chain.save(null, {
       success: function(user){
         console.log("You pushed successfully");
+        Backbone.history.navigate("components", {trigger: true});
       },
       error: function(user, error){
         alert("Error" + error.code + " " + error.message);
@@ -80,7 +81,7 @@ var ChainFormComponent = React.createClass({
 
     return (
       <div className="container-fluid col-md-12">
-        <h2 className="add-component-heading text-center">Add Comp Here</h2>
+        <h2 className="add-component-heading text-center">Add Chain</h2>
         <form id="add-component-form" onSubmit={this.handleSubmit}>
           <div className="col-md-4">
             <fieldset className="form-group add-comp-form">
@@ -115,9 +116,10 @@ var ChainFormComponent = React.createClass({
               <label className="form-label" htmlFor="add-chain-url">url</label>
               <input valueLink={this.linkState('url')} type="text" className="form-control" id="add-chain-url" />
             </fieldset>
+            <button type="submit" form="add-component-form" id="add-frame-form-button" className="btn btn-primary ">Add</button>
+
           </div>
         </form>
-        <button type="submit" form="add-component-form" id="add-frame-form-button" className="btn btn-primary ">Add</button>
       </div>
     )
   }

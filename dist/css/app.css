@@ -5825,19 +5825,23 @@ NAVIGATION
 *****************************************************************************************/
 .top-navigation {
   height: 80px;
-  background-color: #2C3A44;
+  background-color: #000;
   color: #FFFFFF; }
-  .top-navigation .logo img {
-    height: 80px;
-    width: 80px; }
-  .top-navigation .title {
+  .top-navigation #profile-nav {
     display: inline-block; }
+    .top-navigation #profile-nav h3 {
+      display: inline-block;
+      margin-left: 10px;
+      font-size: 30px; }
   .top-navigation a {
-    float: right;
+    display: inline;
     text-decoration: none;
     color: #fff;
-    font-size: 30px;
-    margin-top: 18px; }
+    font-size: 25px;
+    margin-top: 3px;
+    margin-right: 30px; }
+  .top-navigation a:hover {
+    color: #FFBE5D; }
 
 /*****************************************************************************************
 MAIN
@@ -5861,12 +5865,13 @@ a {
     width: 100%;
     text-align: center;
     font-size: 56px;
-    margin-top: 100px; }
+    margin-top: 130px; }
   a .landing-caption {
     color: #fff;
     width: 100%;
     text-align: center;
-    font-size: 18px; }
+    font-size: 18px;
+    margin-bottom: 90px; }
 
 a:hover {
   text-decoration: none; }
@@ -5895,34 +5900,41 @@ a:hover {
 
 .catagory-container {
   width: 250px;
-  height: 300px;
-  background-color: rgba(202, 195, 189, 0.8);
+  height: 100px;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
   -webkit-box-shadow: 0px 0px 35px -6px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 0px 0px 35px -6px rgba(0, 0, 0, 0.75);
   box-shadow: 0px 0px 35px -6px rgba(0, 0, 0, 0.75); }
   .catagory-container .catagory-title {
-    color: black;
+    color: #FFBE5D;
+    font-size: 25px;
     text-align: center;
-    padding-top: 15px;
+    padding-top: 35px;
     padding-bottom: 8px;
-    border-bottom: 2px solid #727076;
     margin-left: 15px;
     margin-right: 15px; }
 
 /******************************************
 Signup
 ******************************************/
+.entrance-container {
+  background-image: url("../images/login3.jpg");
+  background-position: center;
+  background-size: cover;
+  height: 700px; }
+
 #signup-container {
-  background-color: #68787F;
+  background-color: rgba(0, 0, 0, 0.4);
   height: 300px;
-  margin-top: 70px;
+  margin-top: 150px;
   padding-left: 150px; }
   #signup-container #email {
     width: 400px;
     height: 35px;
     border: 1px solid #EEEEEE;
     border-radius: 3px;
-    margin-top: 40px; }
+    margin-top: 60px; }
   #signup-container #password {
     width: 400px;
     height: 35px;
@@ -5934,24 +5946,26 @@ Signup
   width: 400px;
   height: 28px;
   margin-top: 30px;
-  border: 1px solid #DBDBDB;
+  border: 1px solid #727076;
   border-radius: 3px;
-  background-color: #2C3A44;
-  color: #94D181; }
-  .enter-button :after:hover {
-    background-color: #8DED87; }
+  background-color: #000;
+  color: #FFBE5D; }
+
+.enter-button:hover {
+  background-color: #FFBE5D;
+  color: black; }
 
 #login-container {
-  background-color: #68787F;
+  background-color: rgba(0, 0, 0, 0.4);
   height: 300px;
-  margin-top: 70px;
+  margin-top: 150px;
   padding-left: 70px; }
   #login-container #username {
     width: 400px;
     height: 35px;
     border: 1px solid #EEEEEE;
     border-radius: 3px;
-    margin-top: 40px; }
+    margin-top: 60px; }
   #login-container #login-password {
     width: 400px;
     height: 35px;
@@ -5962,19 +5976,92 @@ Signup
 /******************************************
 Profile
 ******************************************/
-.build-title {
+.navigation-links {
+  margin-top: 50px; }
+
+.bike-components {
   position: absolute;
-  left: 490px; }
+  top: 20px;
+  background-color: rgba(114, 112, 118, 0.6);
+  width: 235px;
+  height: 235px;
+  border-radius: 120px;
+  margin-left: 110px;
+  padding-right: 90px; }
+
+.components-link {
+  text-align: center;
+  padding-top: 100px;
+  font-size: 30px;
+  color: #FFBE5D;
+  width: 235px;
+  height: 235px;
+  background-image: url("../images/phil-wood.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-radius: 120px;
+  margin-left: 110px;
+  margin-right: 80px; }
+
+.build-bike {
+  position: absolute;
+  top: 20px;
+  background-color: rgba(114, 112, 118, 0.6);
+  width: 235px;
+  height: 235px;
+  border-radius: 120px;
+  margin-left: 65px; }
+
+.build-title {
+  text-align: center;
+  padding-top: 100px;
+  font-size: 30px;
+  color: #FFBE5D;
+  width: 235px;
+  height: 235px;
+  background-image: url("../images/mechanic1.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-radius: 120px;
+  margin-left: 65px; }
+
+.bike-builds {
+  position: absolute;
+  top: 20px;
+  background-color: rgba(114, 112, 118, 0.6);
+  width: 235px;
+  height: 235px;
+  border-radius: 120px;
+  margin-left: 20px; }
+
+.builds-link {
+  text-align: center;
+  padding-top: 100px;
+  font-size: 30px;
+  color: #FFBE5D;
+  width: 235px;
+  height: 235px;
+  background-image: url("../images/bike1.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-radius: 120px;
+  margin-left: 20px; }
 
 .build-image::before {
   background-color: rgba(0, 0, 0, 0.5); }
+
+.frame-display {
+  color: #fff;
+  font-size: 18px; }
 
 .build-image {
   height: 300px; }
 
 .bikes-built {
-  width: 400px;
-  border: 1px solid black; }
+  width: 400px; }
 
 /******************************************
 Frame Selection
@@ -6001,7 +6088,8 @@ Frame Selection
     width: 500px;
     height: 30px;
     padding-left: 30px;
-    padding-top: 15px; }
+    padding-top: 10px;
+    margin-bottom: 20px; }
 
 /******************************************
 Building Page
@@ -6044,6 +6132,143 @@ Building Page
 
 #add-frame-form-button {
   display: inline-block; }
+
+/******************************************
+Part Forms
+******************************************/
+li {
+  list-style: none; }
+
+.part-selection {
+  margin-top: 28px;
+  margin-bottom: 40px; }
+
+.part-item a {
+  text-decoration: none;
+  color: black;
+  font-size: 25px;
+  font-weight: 600; }
+.part-item .link-container {
+  background-color: #727076;
+  color: #fff;
+  border-radius: 5px;
+  padding-top: 10px;
+  padding-bottom: 10px; }
+.part-item .link-container:hover {
+  background-color: #FFBE5D;
+  color: #000; }
+.part-item .form-title {
+  display: inline-block;
+  text-align: right;
+  padding-left: 20px;
+  padding-bottom: 20px;
+  height: 40px; }
+.part-item .chain-description {
+  display: inline-block;
+  font-size: 18px;
+  font-weight: 600;
+  margin-left: 145px;
+  padding-bottom: 20px;
+  width: 500px;
+  height: 40px; }
+.part-item .chainring-description {
+  display: inline-block;
+  font-size: 18px;
+  font-weight: 600;
+  margin-left: 98px;
+  padding-bottom: 16px;
+  width: 500px; }
+.part-item .cranks-description {
+  display: inline-block;
+  font-size: 18px;
+  font-weight: 600;
+  margin-left: 105px;
+  padding-bottom: 16px;
+  width: 500px; }
+.part-item .bottombracket-description {
+  display: inline-block;
+  font-size: 18px;
+  font-weight: 600;
+  margin-left: 34px;
+  padding-bottom: 16px;
+  width: 500px; }
+.part-item .retention-description {
+  display: inline-block;
+  font-size: 18px;
+  font-weight: 600;
+  margin-left: 50px;
+  padding-bottom: 16px;
+  width: 500px; }
+.part-item .pedals-description {
+  display: inline-block;
+  font-size: 18px;
+  font-weight: 600;
+  margin-left: 147px;
+  padding-bottom: 16px;
+  width: 500px; }
+.part-item .saddles-description {
+  display: inline-block;
+  font-size: 18px;
+  font-weight: 600;
+  margin-left: 134px;
+  padding-bottom: 16px;
+  width: 500px; }
+.part-item .seatposts-description {
+  display: inline-block;
+  font-size: 18px;
+  font-weight: 600;
+  margin-left: 109px;
+  padding-bottom: 16px;
+  width: 500px; }
+.part-item .headset-description {
+  display: inline-block;
+  font-size: 18px;
+  font-weight: 600;
+  margin-left: 117px;
+  padding-bottom: 16px;
+  width: 500px; }
+.part-item .stem-description {
+  display: inline-block;
+  font-size: 18px;
+  font-weight: 600;
+  margin-left: 155px;
+  padding-bottom: 16px;
+  width: 500px; }
+.part-item .handlebars-description {
+  display: inline-block;
+  font-size: 18px;
+  font-weight: 600;
+  margin-left: 93px;
+  padding-bottom: 16px;
+  width: 500px; }
+.part-item .frames-description {
+  display: inline-block;
+  font-size: 18px;
+  font-weight: 600;
+  margin-left: 142px;
+  padding-bottom: 16px;
+  width: 500px; }
+.part-item .wheels-description {
+  display: inline-block;
+  font-size: 18px;
+  font-weight: 600;
+  margin-left: 108px;
+  padding-bottom: 16px;
+  width: 500px; }
+.part-item .tires-description {
+  display: inline-block;
+  font-size: 18px;
+  font-weight: 600;
+  margin-left: 174px;
+  padding-bottom: 16px;
+  width: 500px; }
+
+.add-component-heading {
+  margin-top: 40px;
+  margin-bottom: 15px; }
+
+.btn-primary {
+  margin-bottom: 80px; }
 
 /*****************************************************************************************
 FOOTER

@@ -78,6 +78,7 @@ var BottomBracketForm = React.createClass({
     bb.save(null, {
       success: function(user){
         console.log("You pushed successfully");
+        Backbone.history.navigate("components", {trigger: true});
       },
       error: function(user, error){
         alert("Error" + error.code + " " + error.message);
@@ -105,8 +106,10 @@ var BottomBracketForm = React.createClass({
 
     return (
       <div className="container-fluid col-md-12">
-        <h2 className="add-component-heading text-center">Add Comp Here</h2>
+        <h2 className="add-component-heading text-center">Add a Bottom Bracket</h2>
+
         <form id="add-component-form" onSubmit={this.handleSubmit}>
+
           <div className="col-md-4">
             <fieldset className="form-group add-comp-form">
               <label className="form-label" htmlFor="add-bb-name">Bracket name</label>
@@ -128,7 +131,11 @@ var BottomBracketForm = React.createClass({
               <label className="form-label" htmlFor="add-bb-url">Url</label>
               <input valueLink={this.linkState('url')} type="text" className="form-control" id="add-bb-url" />
             </fieldset>
+
+            <button type="submit" form="add-component-form" id="add-frame-form-button" className="btn btn-primary ">Add</button>
+
           </div>
+
           <div className="col-md-4">
             <fieldset className="form-group add-comp-form">
               <h3 className="component-title">CrankSets</h3>
@@ -137,8 +144,8 @@ var BottomBracketForm = React.createClass({
               </div>
             </fieldset>
           </div>
+
         </form>
-        <button type="submit" form="add-component-form" id="add-frame-form-button" className="btn btn-primary ">Add</button>
       </div>
     )
   }

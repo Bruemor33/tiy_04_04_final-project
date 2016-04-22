@@ -73,6 +73,7 @@ var StemFormComponent = React.createClass({
     stem.save(null, {
       success: function(user){
         console.log("You pushed successfully");
+        Backbone.history.navigate("components", {trigger: true});
       },
       error: function(user, error){
         alert("Error" + error.code + " " + error.message);
@@ -100,7 +101,7 @@ var StemFormComponent = React.createClass({
 
     return (
       <div className="container-fluid col-md-12">
-        <h2 className="add-component-heading text-center">Add Comp Here</h2>
+        <h2 className="add-component-heading text-center">Add a Stem</h2>
         <form id="add-component-form" onSubmit={this.handleSubmit}>
           <div className="col-md-4">
             <fieldset className="form-group add-comp-form">
@@ -131,6 +132,8 @@ var StemFormComponent = React.createClass({
               <label className="form-label" htmlFor="add-headset-url">url</label>
               <input valueLink={this.linkState('url')} type="text" className="form-control" id="add-headset-url" />
             </fieldset>
+            <button type="submit" form="add-component-form" id="add-frame-form-button" className="btn btn-primary ">Add</button>
+
           </div>
           <div className="col-md-4">
             <fieldset className="form-group add-comp-form">
@@ -141,7 +144,6 @@ var StemFormComponent = React.createClass({
             </fieldset>
           </div>
         </form>
-        <button type="submit" form="add-component-form" id="add-frame-form-button" className="btn btn-primary ">Add</button>
       </div>
     )
   }

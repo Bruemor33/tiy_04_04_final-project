@@ -31,24 +31,12 @@ var ProfileComponent = React.createClass({
       console.log(error);
     });
   },
-  componentDidMount: function(){
-    var self = this;
-    var query = new Parse.Query(Parse.User);
-
-    query.include("userBikes").include('userBikes.frame');
-
-    query.get(Parse.User.current().id).then(function(user){
-      self.setState({"bikes": user.get('userBikes').reverse()})
-    }, function(error){
-      console.log(error);
-    });
-  },
   handleBuild: function(event){
     event.preventDefault();
     Backbone.history.navigate("frameselection", {trigger: true});
   },
   render: function(){
-    var bikes = this.state.bikes;
+    var bikes = []; //Parse.User.current().get('userBikes');
     var frames = this.state.frameSets;
     var currentFrames = frames.map(function(frame, index){
       var images = frame.get("Image");

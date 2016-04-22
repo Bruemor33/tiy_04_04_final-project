@@ -10,12 +10,12 @@ var router = require('./router/router.js');
 var Interface = require('./components/interface-controller.jsx').ControllerComponent;
 
 $(function(){
-  Backbone.history.start();
-
   ReactDOM.render(
     React.createElement(Interface, {
       router: router
     }),
     document.getElementById('main-container')
   );
+
+  Backbone.history.start();
 });

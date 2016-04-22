@@ -44,10 +44,10 @@ var Router = Backbone.Router.extend({
   },
   logout: function(){
     var self = this;
-
     Parse.User.logOut().then(function(){
         localStorage.removeItem('Parse/bikebuilder/currentUser');
         window.location = '/';
+        //self.navigate('', {trigger: true});
     }, function(error){
       console.log(error);
     });

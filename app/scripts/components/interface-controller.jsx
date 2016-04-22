@@ -43,7 +43,7 @@ var ControllerComponent = React.createClass({
   getInitialState: function(){
     return {
       router: this.props.router,
-      user: null
+      //user: null
     };
   },
   checkUserLoggedIn: function(){
@@ -61,10 +61,10 @@ var ControllerComponent = React.createClass({
     }).bind(this);
     this.state.router.on('route', this.callback);
 
-    var currentUser = Parse.User.current();
-      if (currentUser){
-        this.setState({'user': currentUser})
-      }
+    // var currentUser = Parse.User.current();
+    //   if (currentUser){
+    //     this.setState({'user': currentUser})
+    //   }
   },
   componentWillUnmount: function(){
     this.state.router.off('route', this.callback);

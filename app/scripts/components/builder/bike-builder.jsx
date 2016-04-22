@@ -121,34 +121,74 @@ var SelectedFrameComponent = React.createClass({
       'user': Parse.User.current()
     });
 
-    newBicycle.save(null, {
-      success: function(bicycle){
-        var user = Parse.User.current();
-        var userBikes = user.get("userBikes") || [];
+     var user = Parse.User.current().fetch({
+       success: function(fetchedUser){
+         var userBikes = fetchedUser.get("userBikes") || [];
 
-        userBikes.push(newBicycle);
-        user.set("userBikes", userBikes);
+         userBikes.push(newBicycle);
+         fetchedUser.set("userBikes", userBikes);
 
-        // Parse is attempting to do a "batch" save which throws a 206 error code
-        // By adding the user save call to the call stack, it prevents this (unexplained) behavior
-        // DO NOT REMOVE!!
-        window.setTimeout(function(){
+         fetchedUser.save().then(function(savedUser){
+           Backbone.history.navigate("profile", {trigger: true});
+         }, function(error){
+           $('#add-frame-form-button').show();
+           console.log(error);
+           alert("There was an error. Please try again.")
+         });
+       },
+       error: function(){
+         alert('error');
+       }
+     });
 
-          user.save().then(function(savedUser){
-            Backbone.history.navigate("profile", {trigger: true});
-          }, function(error){
-            $('#add-frame-form-button').show();
-            console.log(error);
-            alert("There was an error. Please try again.")
-          });
+  //   try{
+  //    var user = Parse.User.current().fetch(null, {
+  //      success: function(){
+  //        console.log(user);
+  //         var userBikes = user.get("userBikes") || [];
+  //
+  //         userBikes.push(newBicycle);
+  //         user.set("userBikes", userBikes);
+  //
+  //         user.save().then(function(savedUser){
+  //           Backbone.history.navigate("profile", {trigger: true});
+  //         }, function(error){
+  //           $('#add-frame-form-button').show();
+  //           console.log(error);
+  //           alert("There was an error. Please try again.")
+  //         });
+  //
+  //     },
+  //     error: function(){
+  //       alert('error');
+  //     }
+  //   });
+  // }catch(error){
+  //   console.log(error);
+  // }
 
-        }, 0);
-      },
-      error: function(user, error){
-        $('#add-frame-form-button').show();
-        alert("Error" + error.code + " " + error.message);
-      }
-    })
+    // newBicycle.save(null, {
+    //   success: function(bicycle){
+    //     var user = Parse.User.current();
+    //     var userBikes = user.get("userBikes") || [];
+    //
+    //     userBikes.push(newBicycle);
+    //     user.set("userBikes", userBikes);
+    //
+    //     // Parse is attempting to do a "batch" save which throws a 206 error code
+    //     // By adding the user save call to the call stack, it prevents this (unexplained) behavior
+    //     // DO NOT REMOVE!!
+    //     window.setTimeout(function(){
+    //
+    //
+    //
+    //     }, 0);
+    //   },
+    //   error: function(user, error){
+    //     $('#add-frame-form-button').show();
+    //     alert("Error" + error.code + " " + error.message);
+    //   }
+    // })
   },
 
   componentDidMount: function(){

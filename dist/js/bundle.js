@@ -1310,20 +1310,90 @@ var ComponentForms = React.createClass({displayName: "ComponentForms",
         React.createElement("div", {className: "component-form-list col-md-12"}, 
           React.createElement("h1", {className: "part-selection"}, "Component form Selection"), 
           React.createElement("ul", {className: "part-list"}, 
-            React.createElement("li", {className: "part-item"}, React.createElement("a", {href: "#chain"}, "Chains")), 
-            React.createElement("li", {className: "part-item"}, React.createElement("a", {href: "#chainring"}, "Chainrings")), 
-            React.createElement("li", {className: "part-item"}, React.createElement("a", {href: "#cranks"}, "Cranksets")), 
-            React.createElement("li", {className: "part-item"}, React.createElement("a", {href: "#bottombracket"}, "Bottombrackets")), 
-            React.createElement("li", {className: "part-item"}, React.createElement("a", {href: "#clip"}, "Foot Retention")), 
-            React.createElement("li", {className: "part-item"}, React.createElement("a", {href: "#pedal"}, "Pedals")), 
-            React.createElement("li", {className: "part-item"}, React.createElement("a", {href: "#saddle"}, "Saddles")), 
-            React.createElement("li", {className: "part-item"}, React.createElement("a", {href: "#seatpost"}, "Seatposts")), 
-            React.createElement("li", {className: "part-item"}, React.createElement("a", {href: "#headset"}, "Headsets")), 
-            React.createElement("li", {className: "part-item"}, React.createElement("a", {href: "#stem"}, "Stems")), 
-            React.createElement("li", {className: "part-item"}, React.createElement("a", {href: "#handle"}, "Handlebars")), 
-            React.createElement("li", {className: "part-item"}, React.createElement("a", {href: "#frame"}, "Frames")), 
-            React.createElement("li", {className: "part-item"}, React.createElement("a", {href: "#wheel"}, "Wheelsets")), 
-            React.createElement("li", {className: "part-item"}, React.createElement("a", {href: "#tire"}, "Tires"))
+            React.createElement("li", {className: "part-item"}, 
+              React.createElement("a", {href: "#chain"}, 
+                React.createElement("p", {className: "form-title"}, "Chains"), 
+                React.createElement("p", {className: "form-description"}, "- add an additional chain to the collection.")
+              )
+            ), 
+            React.createElement("li", {className: "part-item"}, 
+              React.createElement("a", {href: "#chainring"}, 
+                React.createElement("p", {className: "form-title"}, "Chainrings"), 
+                React.createElement("p", {className: "form-description"}, " add additional ________ to the collection.")
+              )
+            ), 
+            React.createElement("li", {className: "part-item"}, 
+              React.createElement("a", {href: "#cranks"}, 
+                React.createElement("p", {className: "form-title"}, "Cranksets"), 
+                React.createElement("p", {className: "form-description"}, " add additional ________ to the collection.")
+              )
+            ), 
+            React.createElement("li", {className: "part-item"}, 
+              React.createElement("a", {href: "#bottombracket"}, 
+                React.createElement("p", {className: "form-title"}, "Bottombrackets"), 
+                React.createElement("p", {className: "form-description"}, " add additional ________ to the collection.")
+              )
+            ), 
+            React.createElement("li", {className: "part-item"}, 
+              React.createElement("a", {href: "#clip"}, 
+                React.createElement("p", {className: "form-title"}, "Foot Retention"), 
+                React.createElement("p", {className: "form-description"}, " add additional ________ to the collection.")
+              )
+            ), 
+            React.createElement("li", {className: "part-item"}, 
+              React.createElement("a", {href: "#pedal"}, 
+                React.createElement("p", {className: "form-title"}, "Pedals"), 
+                React.createElement("p", {className: "form-description"}, " add additional ________ to the collection.")
+              )
+            ), 
+            React.createElement("li", {className: "part-item"}, 
+              React.createElement("a", {href: "#saddle"}, 
+                React.createElement("p", {className: "form-title"}, "Saddles"), 
+                React.createElement("p", {className: "form-description"}, " add additional ________ to the collection.")
+              )
+            ), 
+            React.createElement("li", {className: "part-item"}, 
+              React.createElement("a", {href: "#seatpost"}, 
+                React.createElement("p", {className: "form-title"}, "Seatposts"), 
+                React.createElement("p", {className: "form-description"}, " add additional ________ to the collection.")
+              )
+            ), 
+            React.createElement("li", {className: "part-item"}, 
+              React.createElement("a", {href: "#headset"}, 
+                React.createElement("p", {className: "form-title"}, "Headsets"), 
+                React.createElement("p", {className: "form-description"}, " add additional ________ to the collection.")
+              )
+            ), 
+            React.createElement("li", {className: "part-item"}, 
+              React.createElement("a", {href: "#stem"}, 
+                React.createElement("p", {className: "form-title"}, "Stems"), 
+                React.createElement("p", {className: "form-description"}, " add additional ________ to the collection.")
+              )
+            ), 
+            React.createElement("li", {className: "part-item"}, 
+              React.createElement("a", {href: "#handle"}, 
+                React.createElement("p", {className: "form-title"}, "Handlebars"), 
+                React.createElement("p", {className: "form-description"}, " add additional ________ to the collection.")
+              )
+            ), 
+            React.createElement("li", {className: "part-item"}, 
+              React.createElement("a", {href: "#frame"}, 
+                React.createElement("p", {className: "form-title"}, "Frames"), 
+                React.createElement("p", {className: "form-description"}, " add additional ________ to the collection.")
+              )
+            ), 
+            React.createElement("li", {className: "part-item"}, 
+              React.createElement("a", {href: "#wheel"}, 
+                React.createElement("p", {className: "form-title"}, "Wheelsets"), 
+                React.createElement("p", {className: "form-description"}, " add additional ________ to the collection.")
+              )
+            ), 
+            React.createElement("li", {className: "part-item"}, 
+              React.createElement("a", {href: "#tire"}, 
+                React.createElement("p", {className: "form-title"}, "Tires"), 
+                React.createElement("p", {className: "form-description"}, " add additional ________ to the collection.")
+              )
+            )
           )
         )
       )

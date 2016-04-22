@@ -423,11 +423,34 @@ Building Page
 ******************************************/
 
 
+li {
+  list-style: none;
+}
+
+
+
 .part-selection {
 
-  li {
-    list-style: none;
+}
+
+.part-item {
+
+  a {
+    text-decoration: none;
+    color: black;
+    font-size: 25px;
   }
+
+  .form-title {
+    display: inline-block;
+    text-align: right;
+  }
+
+  .form-description {
+    display: inline-block;
+    font-size: 18px;
+  }
+
 }
 
 

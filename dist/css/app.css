@@ -6110,8 +6110,19 @@ Building Page
 /******************************************
 Building Page
 ******************************************/
-.part-selection li {
+li {
   list-style: none; }
+
+.part-item a {
+  text-decoration: none;
+  color: black;
+  font-size: 25px; }
+.part-item .form-title {
+  display: inline-block;
+  text-align: right; }
+.part-item .form-description {
+  display: inline-block;
+  font-size: 18px; }
 
 /*****************************************************************************************
 FOOTER

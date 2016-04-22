@@ -3517,7 +3517,7 @@ var HomePageComponent = React.createClass({displayName: "HomePageComponent",
   render: function(){
     return (
       React.createElement("div", {className: "container-fluid"}, 
-        React.createElement("div", {className: "row"}, 
+        React.createElement("div", {className: "row entrance-container"}, 
           React.createElement("div", {className: "col-md-6", id: "signup-container"}, 
             React.createElement(SignupComponent, {createUser: this.createUser})
           ), 
@@ -3609,31 +3609,21 @@ var ReactDOM = require('react-dom');
 var Parse = require('parse');
 var ParseReact = require('parse-react');
 
-console.log("Hello World!");
-
 var router = require('./router/router.js');
-var HomePageComponent = require('./components/signup.jsx').HomePageComponent;
-var ProfileComponent = require('./components/profile.jsx').ProfileComponent;
 var Interface = require('./components/interface-controller.jsx').ControllerComponent;
+
 $(function(){
-  Backbone.history.start();
-  // console.log(router);
   ReactDOM.render(
     React.createElement(Interface, {
       router: router
     }),
     document.getElementById('main-container')
   );
-  // ReactDOM.render(
-  //   React.createElement(ProfileComponent, {
-  //     router: router
-  //   }),
-  //   document.getElementById('main-container')
-  // );
 
+  Backbone.history.start();
 });
 
-},{"./components/interface-controller.jsx":17,"./components/profile.jsx":34,"./components/signup.jsx":35,"./router/router.js":37,"backbone":55,"jquery":154,"parse":175,"parse-react":155,"react":350,"react-dom":218,"underscore":351}],37:[function(require,module,exports){
+},{"./components/interface-controller.jsx":17,"./router/router.js":37,"backbone":55,"jquery":154,"parse":175,"parse-react":155,"react":350,"react-dom":218,"underscore":351}],37:[function(require,module,exports){
 "use strict";
 var $ = require('jquery');
 var _ = require('underscore');
@@ -3649,11 +3639,14 @@ require('Backbone-React-Component')
 var Router = Backbone.Router.extend({
   routes: {
     "": "index",
-    "home": "home",
+    "login": "home",
+    "logout": "logout",
     "profile": "profile",
     "components": "components",
     "frameselection": "frameselection",
-    "bicycle/:id": "bicycle",
+    "bicycle": "bicycleList",
+    "bicycle/:id": "yourbikes",
+    "bicycle/:id/add": "bicycle", // Add/Create a bike build
     "frame": "frame",
     "bottombracket": "bottombracket",
     "headset": "headset",
@@ -3672,6 +3665,20 @@ var Router = Backbone.Router.extend({
     "saddle": "saddle",
     "*notFound": "notFound"
   },
+  initialize: function(){
+    Parse.initialize("bikebuilder");
+    Parse.serverURL = "http://bikebuilders3.herokuapp.com/";
+  },
+  logout: function(){
+    var self = this;
+    Parse.User.logOut().then(function(){
+        localStorage.removeItem('Parse/bikebuilder/currentUser');
+        window.location = '/';
+        //self.navigate('', {trigger: true});
+    }, function(error){
+      console.log(error);
+    });
+  },
   index: function(){
     this.current = "index";
   },
@@ -3681,6 +3688,13 @@ var Router = Backbone.Router.extend({
   profile: function(){
     this.current = "profile";
   },
+  bicycleList: function(){
+    this.current = "bicycleList";
+  },
+  yourbikes: function(id){
+    this.current = "yourbikes";
+    this.framesetId = id;
+  },
   components: function(){
     this.current = "components";
   },
@@ -3688,7 +3702,6 @@ var Router = Backbone.Router.extend({
     this.current = "frameselection";
   },
   bicycle: function(id){
-    console.log(id);
     this.current = "bicycle";
     this.framesetId = id;
   },
